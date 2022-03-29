@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./styles.css";
 
-const prop = ({ id, text, path, icon }) => (
+const prop = ({ id, text, path, icon, isActive }) => (
   <li key={`prop-${id}`} className="nav-item">
     <Link to={path} className={`nav-link ${isActive ? "active-link": ""}`}>
       <i className={`${icon} customIcon`}></i>
