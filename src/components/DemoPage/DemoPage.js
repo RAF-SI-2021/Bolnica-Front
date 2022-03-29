@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./styles.css";
 import SidebarLink from "../SidebarLink/SidebarLink";
+import GeneralStats from "../GeneralStats/GeneralStats.js";
 
 const DemoPage = () => {
   const handleSubmit = (event) => {
@@ -91,7 +92,6 @@ const DemoPage = () => {
           </div>
         </div>
       </nav>
-
       <SidebarLink
         props={[
           {
@@ -115,6 +115,18 @@ const DemoPage = () => {
           },
         ]}
       />
+      <div className="components">
+        <GeneralStats
+          image={"fa-solid fa-briefcase-medical"}
+          text="Zakazani pregledi"
+          number="34"
+        />
+        <GeneralStats
+          image={"fa-solid fa-person-cane"}
+          text="Broj pacijenata"
+          number="10"
+        />
+      </div>
     </>
   );
 };
