@@ -6,7 +6,7 @@ const prop = ({ id, text, path, icon }) => (
   <li key={`prop-${id}`} className="nav-item">
     <Link to={path} className="nav-link">
       <i className={`${icon} customIcon`}></i>
-      <label>{text}</label>
+      <span>{text}</span>
     </Link>
   </li>
 );
