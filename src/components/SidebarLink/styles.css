@@ -24,3 +24,7 @@
 li {
   list-style-type: none;
 }
+
+.active-link {
+  color: #336CFB;
+} 
