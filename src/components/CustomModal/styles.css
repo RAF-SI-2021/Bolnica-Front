@@ -1,0 +1,94 @@
+.component {
+  background: #ffffff;
+  width: 40%;
+}
+
+.title {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.4px;
+  color: #25282b;
+
+  display: flex;
+  align-items: center;
+}
+
+.titleSuccess {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.4px;
+  color: #25282b;
+  padding-top: 5%;
+
+  display: flex;
+  align-items: center;
+}
+
+.info {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0.2px;
+  padding-top: 2%;
+
+  display: flex;
+  align-items: center;
+}
+
+.close {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.2px;
+  color: #cacccf;
+  padding-top: 20%;
+  padding-left: 30%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.notSuccess {
+  width: 60px;
+  height: 60px;
+  padding-top: 2%;
+  padding-left: 20%;
+  color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.success {
+  width: 60px;
+  height: 60px;
+  padding-top: 2%;
+  padding-left: 20%;
+  color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.leftNotSuccess {
+  background-color: #e74f48;
+}
+
+.leftSuccess {
+  background-color: #10b981;
+}
+.vertical {
+  border-left: 2px solid #d7d7d7;
+  height: 100%;
+  left: 50%;
+}

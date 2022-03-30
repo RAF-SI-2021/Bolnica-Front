@@ -99,7 +99,7 @@ const DemoPage = () => {
             text: "Pocetna",
             path: "/",
             icon: "fa-solid fa-chart-pie",
-            isActive: true
+            isActive: true,
           },
           {
             id: 2,
