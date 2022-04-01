@@ -2,63 +2,60 @@ import React from "react";
 import "./styles.css";
 
 const Modal = (props) => {
-  const { title, info, isSuccess } = props;
+  const { title, info, isSuccess, id } = props;
   return (
     <div>
       <button
         type="button"
-        className="btn btn-primary"
+        className="btn btn-primary launchButton"
         data-bs-toggle="modal"
-        data-bs-target="#staticBackdrop"
+        data-bs-target={`#${id}`}
       >
         Launch static backdrop modal
       </button>
 
       <div
         className="modal fade"
-        id="staticBackdrop"
+        id={id}
         data-bs-backdrop="static"
         data-bs-keyboard="false"
         tabindex="-1"
-        aria-labelledby="staticBackdropLabel"
+        aria-labelledby={`${id}Label`}
         aria-hidden="true"
       >
-        <div className="modal-dialog component">
-          <div className="modal-content">
-            <div className="container-fluid">
-              <div className="row">
+        <div className="modal-dialog component fixPadding">
+          <div className="modal-content fixBorder fixPadding component">
+            <div className="container-fluid fixPadding component">
+              <div className="row component">
                 <div
                   className={`col-sm-3 ${
                     isSuccess ? "leftSuccess" : "leftNotSuccess"
                   }`}
                 >
                   <img
-                    className={` ${
+                    className={`success ${
                       isSuccess
-                        ? "success fas fa-check-circle"
-                        : "notSuccess fa-solid fa-circle-xmark"
+                        ? "fas fa-check-circle"
+                        : "fa-solid fa-circle-xmark"
                     }`}
                     alt=""
                   />
                 </div>
                 <div className="col-sm-6">
                   <div className="modal-body">
-                    <h5 className={` ${isSuccess ? "titleSuccess" : "title"}`}>
-                      {title}
-                    </h5>
+                    {/* <h5 className={` ${isSuccess ? "titleSuccess" : "title"}`}> */}
+                    <h5 className="title">{title}</h5>
                     <p className="info">{info}</p>
                   </div>
                 </div>
-                <div className="col-sm-3">
-                  <div className="vertical">
-                    <button
-                      type="button"
-                      className="btn close"
-                      data-bs-dismiss="modal"
-                    >
-                      Zatvori
-                    </button>
-                  </div>
+                <div className="col-sm-3 vertical">
+                  <button
+                    type="button"
+                    className="btn close"
+                    data-bs-dismiss="modal"
+                  >
+                    Zatvori
+                  </button>
                 </div>
               </div>
             </div>
