@@ -95,8 +95,7 @@
 }
 
 .logout-btn {
-    width: 118px;
-    height: 36px;
+    padding: 5px 25px;
     background: #0156FF;
     border-radius: 5px;
     color: #FFFFFF;
