@@ -43,7 +43,6 @@ const Modal = (props) => {
                 </div>
                 <div className="col-sm-6">
                   <div className="modal-body">
-                    {/* <h5 className={` ${isSuccess ? "titleSuccess" : "title"}`}> */}
                     <h5 className="title">{title}</h5>
                     <p className="info">{info}</p>
                   </div>
