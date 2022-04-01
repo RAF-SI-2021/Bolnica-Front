@@ -1,0 +1,30 @@
+.nav-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  width: 20%;
+
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+
+  color: #52575c;
+}
+
+.customIcon {
+  width: 18px;
+  padding-right: 10px;
+}
+
+li {
+  list-style-type: none;
+}
+
+.active-link {
+  color: #336CFB;
+} 
