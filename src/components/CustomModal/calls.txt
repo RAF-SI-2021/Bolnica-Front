@@ -1,0 +1,12 @@
+  <CustomModal
+          title="Greska"
+          info="Pogresno uneta email adresa ili lozinka"
+          isSuccess={false}
+          id="false"
+    />
+    <CustomModal
+          title="Uspesno zakazan termin"
+          info=""
+          isSuccess={true}
+          id="true"
+    />
