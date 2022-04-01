@@ -1,0 +1,108 @@
+.container {
+
+    width: 1143px;
+    height: 94px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.user-container {
+    width: 384px;
+    height: 84px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+}
+
+.user-avatar {
+    width: 75px;
+    height: 69px;
+    border-radius: 50px;
+    margin-right: 17px;
+}
+
+.name-container {
+    font-family: 'Lato';
+    font-style: normal;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.welcome-msg {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+    color: #25282B;
+    margin-bottom: 8px;
+}
+
+.user-name {
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 46px;
+    letter-spacing: 0.2px;
+    color: #52575C;
+}
+
+.user-title {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+    color: #52575C;
+}
+
+.date-container {
+    width: 197px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar-icon {
+    width: 36px;
+    height: 40px;
+    color: #336CFB;
+    margin-right: 18px;
+}
+
+.date-span {
+    height: 100%;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 26px;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    letter-spacing: 0.2px;
+
+    color: #25282B;
+}
+
+.button-container {
+    height: 40px;
+    width: 350px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logout-btn {
+    width: 118px;
+    height: 36px;
+    background: #0156FF;
+    border-radius: 5px;
+    color: #FFFFFF;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+}
