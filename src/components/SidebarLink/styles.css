@@ -2,9 +2,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-
-  width: 20%;
-
+  width: 100%;
   padding-top: 8px;
   padding-bottom: 8px;
   font-family: "Roboto";
@@ -19,12 +17,20 @@
 .customIcon {
   width: 18px;
   padding-right: 10px;
+  padding-left: 6px;
+  color: #cdd3da;
 }
 
 li {
   list-style-type: none;
+  padding: 14px 10px;
 }
 
 .active-link {
-  color: #336CFB;
-} 
+  color: #336cfb;
+}
+
+.active-link,
+.active-link .customIcon {
+  color: #336cfb;
+}
