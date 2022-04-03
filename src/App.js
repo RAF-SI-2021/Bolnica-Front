@@ -1,5 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import DemoPage from "./components/DemoPage/DemoPage";
+import DemoLogin from "./components/DemoLogin/DemoLogin";
 import Login from   "./components/LoginComponent/Login"
 
 const App = () => {
