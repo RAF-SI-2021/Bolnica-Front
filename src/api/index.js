@@ -15,6 +15,7 @@ API.interceptors.request.use((req) => {
 // DEMO ROUTES
 
 export const fetchDemos = () => API.get(`/demos`);
+
 export const fetchDemo = (id) => API.get(`/demos/${id}`);
 export const createDemo = (data) => API.post("/demos", data);
 export const updateDemo = (id, data) => API.put(`/demos/${id}`, data);
