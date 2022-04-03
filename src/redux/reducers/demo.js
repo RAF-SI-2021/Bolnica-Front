@@ -11,13 +11,13 @@ const demoReducer = (state = [], action) => {
 			return [
 				...state,
 				state.map((demo) =>
-					demo.id != action.id ? demo : action.data
+					demo.id !==action.id ? demo : action.data
 				),
 			];
 		case actionType.DELETE_DEMO:
 			return [
 				...state,
-				state.filter((demo) => (demo.id != action.id ? demo : false)),
+				state.filter((demo) => (demo.id !== action.id ? demo : false)),
 			];
 		default:
 			return state;
