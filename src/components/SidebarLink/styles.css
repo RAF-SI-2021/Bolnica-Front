@@ -1,30 +1,35 @@
-.nav-link {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  width: 20%;
-
-  padding-top: 8px;
-  padding-bottom: 8px;
-  font-family: "Roboto";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.5px;
-
-  color: #52575c;
-}
-
 .customIcon {
-  width: 18px;
-  padding-right: 10px;
+	width: 18px;
+	padding-right: 10px;
+	padding-left: 6px;
 }
 
 li {
-  list-style-type: none;
+	list-style-type: none;
+	padding: 14px 10px;
 }
 
 .active-link {
-  color: #336CFB;
-} 
+	color: #336cfb;
+}
+
+.active-link,
+.active-link .customIcon {
+	color: #336cfb;
+}
+
+.divider {
+	width: 100%;
+	border: 1px solid #a0a4a8;
+	margin-top: 15px;
+}
+
+.link-item {
+	margin: 15px 0px;
+}
+
+.link-text {
+	font-size: 16px;
+	color: #a0a4a8;
+	font-weight: 700;
+}
