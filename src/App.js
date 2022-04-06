@@ -1,19 +1,17 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import DemoPage from "./components/DemoPage/DemoPage";
-import DemoLogin from "./components/DemoLogin/DemoLogin";
-import Login from   "./components/LoginComponent/Login"
+import DemoPage from "./pages/DemoPage/DemoPage";
+import LoginPage from "./pages/LoginPage/LoginPage";
 
 const App = () => {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/demo-login" exact element={<DemoLogin />} />
-        <Route path="/" exact element={<DemoPage />} />
-				<Route path="/login" exact element={<Login />} />
-      </Routes>
-    </BrowserRouter>
-  );
+	return (
+		<BrowserRouter>
+			<Routes>
+				<Route path="/" exact element={<DemoPage />} />
+				<Route path="/login" exact element={<LoginPage />} />
+			</Routes>
+		</BrowserRouter>
+	);
 };
 
 export default App;
