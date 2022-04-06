@@ -18,7 +18,6 @@ const Table = (props) => {
       </td>
     </tr>
   ));
-
   const numberOfItems = listTable.length;
   const numberPerPage = 8;
   const pageLimit = 3;
@@ -42,7 +41,6 @@ const Table = (props) => {
     let start = Math.floor((currentPage - 1) / pageLimit) * pageLimit;
     return new Array(pageLimit).fill().map((_, idx) => start + idx + 1);
   };
-
   return (
     <div>
       <div>
