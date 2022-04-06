@@ -47,23 +47,24 @@ table.table-bordered > tbody > tr {
   padding-left: 5%;
 }
 
-.pagination .page-link {
-  color: #25282b;
+.myPagButton {
   font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
-  border: 1px solid #e9f0ff;
-  border-radius: 4px;
-  margin: 5px;
+  background-color: #ffffff;
+  border-color: #336cfb;
+  color: #25282b;
+}
+.paginationItem.active {
+  background-color: #336cfb;
+  color: #ffffff;
 }
 
-.pagination a:hover:not(.active) {
-  color: #ffffff;
-  background-color: #336cfb;
-}
-.pagination a.active {
-  color: #ffffff;
-  background-color: #336cfb;
+.prev.disabled,
+.next.disabled {
+  pointer-events: none;
+  box-shadow: none;
+  color: #999;
 }
 .header {
   background-color: #e9f0ff;
