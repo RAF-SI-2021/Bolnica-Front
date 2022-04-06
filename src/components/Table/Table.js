@@ -45,6 +45,13 @@ const Table = (props) => {
 
   return (
     <div>
+      <div class="form-group pull-right">
+        <input
+          type="text"
+          class="search form-control"
+          placeholder="What you looking for?"
+        ></input>
+      </div>
       <div>
         <h1 className="myTitle">Zaposleni</h1>
       </div>

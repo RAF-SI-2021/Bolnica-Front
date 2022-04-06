@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Header from "../../components/Header/Header";
 import { format } from "date-fns";
 import Table from "../../components/Table/Table";
+import { useDispatch, useSelector } from "react-redux";
+import { getEmployees } from "../../redux/actions/employee";
 
 const EmployeePreview = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getEmployees());
+  }, []);
+
+  const employees = useSelector((state) => state.employees);
+
   const linksSidebar = [
     {
       id: 1,
