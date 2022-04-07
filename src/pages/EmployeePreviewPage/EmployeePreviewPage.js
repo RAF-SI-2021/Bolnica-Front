@@ -245,7 +245,6 @@ const EmployeePreview = () => {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(value);
     dispatch(searchEmployees(value));
   }
 
