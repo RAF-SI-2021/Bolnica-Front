@@ -17,6 +17,15 @@
   margin-left: 5%;
   margin-top: 2%;
   width: 90%;
+  /* display: flex; */
+  text-align: center;
+  flex-direction: column;
+  align-self: center;
+  justify-content: center;
+}
+
+.responsivnes {
+  overflow-x: auto;
 }
 
 .buttonIcon {
@@ -53,6 +62,9 @@ table.table-bordered > tbody > tr {
   background-color: #ffffff;
   border-color: #336cfb;
   color: #25282b;
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin: 2px;
 }
 .paginationItem.active {
   background-color: #336cfb;

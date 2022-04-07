@@ -11,7 +11,7 @@ const Table = (props) => {
       {Object.values(content).map((item) => (
         <td>{item}</td>
       ))}
-      <td>
+      <td style={{ width: "15%" }}>
         <button className="buttonIcon" onClick={() => handleClick(i)}>
           <i className="fa fa-trash fa-sm myIcon" aria-hidden="false"></i>
         </button>
@@ -43,65 +43,57 @@ const Table = (props) => {
   };
   return (
     <div>
-      <div class="form-group pull-right">
-        <input
-          type="text"
-          class="search form-control"
-          placeholder="What you looking for?"
-        ></input>
-      </div>
-      <div>
-        <h1 className="myTitle">Zaposleni</h1>
-      </div>
-      <table className=" myTable table table-hover table-bordered">
-        <thead className="header">
-          <tr>
-            {listHeaders}
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>{listTable.slice(trimStart, trimEnd)}</tbody>
-      </table>
-      <div>
-        <nav className="myPagination" aria-label="Page navigation example">
-          <ul className="pagination">
-            <li className="page-item">
-              <button
-                onClick={goToPreviousPage}
-                className={`prev myPagButton ${
-                  currentPage === 1 ? "disabled" : null
-                }`}
-              >
-                <span aria-hidden="true">&laquo;</span>
-                <span className="sr-only">Previous</span>
-              </button>
-            </li>
-            <li className="page-item">
-              {getPaginationGroup().map((item, index) => (
+      <div className="responsivnes">
+        <table className=" myTable table table-hover table-bordered">
+          <thead className="header">
+            <tr>
+              {listHeaders}
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>{listTable.slice(trimStart, trimEnd)}</tbody>
+        </table>
+        <div>
+          <nav className="myPagination" aria-label="Page navigation example">
+            <ul className="pagination">
+              <li className="page-item">
                 <button
-                  key={index}
-                  onClick={changePage}
-                  className={`paginationItem myPagButton ${
-                    currentPage === item ? "active" : null
+                  onClick={goToPreviousPage}
+                  className={`prev myPagButton ${
+                    currentPage === 1 ? "disabled" : null
                   }`}
                 >
-                  <span>{item}</span>
+                  <span aria-hidden="true">&laquo;</span>
+                  <span className="sr-only">Previous</span>
                 </button>
-              ))}
-            </li>
-            <li className="page-item">
-              <button
-                onClick={goToNextPage}
-                className={`next myPagButton ${
-                  currentPage === numberOfPages ? "disabled" : null
-                }`}
-              >
-                <span aria-hidden="true">&raquo;</span>
-                <span className="sr-only">Next</span>
-              </button>
-            </li>
-          </ul>
-        </nav>
+              </li>
+              <li className="page-item">
+                {getPaginationGroup().map((item, index) => (
+                  <button
+                    key={index}
+                    onClick={changePage}
+                    className={`paginationItem myPagButton ${
+                      currentPage === item ? "active" : null
+                    }`}
+                  >
+                    <span>{item}</span>
+                  </button>
+                ))}
+              </li>
+              <li className="page-item">
+                <button
+                  onClick={goToNextPage}
+                  className={`next myPagButton ${
+                    currentPage === numberOfPages ? "disabled" : null
+                  }`}
+                >
+                  <span aria-hidden="true">&raquo;</span>
+                  <span className="sr-only">Next</span>
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
   );
