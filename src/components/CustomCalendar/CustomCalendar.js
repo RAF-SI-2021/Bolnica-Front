@@ -61,7 +61,6 @@ const CustomCalendar = () => {
                 calendarIDsHidden={['work']}
                 language={'en'}
             />
-
     )
 }
 
