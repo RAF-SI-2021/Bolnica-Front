@@ -30,10 +30,10 @@ const ScheduleAppointmentPage = () => {
 
     return (
         <div>
-            <div className="sidebar-link-container">
+            <div>
                 <Sidebar links={links} />
             </div>
-            <div style={{ marginLeft: "15%"}}>
+            <div style={{ marginLeft: "15%", height: "100vh"}}>
                 <CustomCalendar/>
             </div>
         </div>
