@@ -5,6 +5,7 @@ import GeneralStats from "../../components/GeneralStats/GeneralStats";
 import { format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { getAppointments } from "../../redux/actions/appointment";
+import ScheduledAppointments from "../../components/ScheduledAppointments/ScheduledAppointments";
 
 const DoctorHomepage = () => {
   const dispatch = useDispatch();
@@ -72,6 +73,7 @@ const DoctorHomepage = () => {
             number={generalStatsProps[1].number}
           />
         </div>
+        <ScheduledAppointments />
       </div>
     </>
   );

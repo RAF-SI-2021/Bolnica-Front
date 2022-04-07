@@ -24,3 +24,5 @@ export const deleteDemo = (id) => API.delete(`/demos/${id}`);
 // SCHEDULED APPOINTMENTS ROUTES
 
 export const fetchAppointments = () => API.get(`/appointments`);
+export const updateAppointment = (id, data) =>
+  API.put(`/appointment/${id}`, data);

@@ -1,5 +1,8 @@
 import "./styles.css";
 import { format } from "date-fns";
+import { updateAppointment } from "../../redux/actions/appointment";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
 
 const SingleAppointment = ({ props }) => {
   const { id, firstname, lastname, dob, gender, appointmentStatus, time } =
@@ -8,10 +11,18 @@ const SingleAppointment = ({ props }) => {
   let age = format(new Date(), "yyyy") - format(dob, "yyyy");
   let appointTime = format(new Date(time), "HH:mm");
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  function updateAppointmentStatus(id, data) {
+    dispatch(updateAppointment(id, data));
+    navigate("/appointment");
+  }
   return (
     <div
       key={`prop-${id}`}
       className={` ${appointmentStatus === "Trenutno" ? "isCurrently" : null}`}
+      onClick={() => updateAppointmentStatus(id, "Trenutno")}
     >
       <div className="d-flex flex-row align-items-center ">
         <div className="appTime">
