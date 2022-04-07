@@ -9,8 +9,8 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - local_network
+      - bolnica-back_local_network
 
 networks:
-  local_network:
-    name: local_network
+  bolnica-back_local_network:
+    external: true
