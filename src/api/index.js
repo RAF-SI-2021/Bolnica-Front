@@ -21,7 +21,6 @@ export const createDemo = (data) => API.post("/demos", data);
 export const updateDemo = (id, data) => API.put(`/demos/${id}`, data);
 export const deleteDemo = (id) => API.delete(`/demos/${id}`);
 
-//EMPLOYEES
 export const fetchEmployees = () => API.get(`/employees`);
 export const searchEmployees = (searchValues) =>
   API.post("/employees", searchValues);

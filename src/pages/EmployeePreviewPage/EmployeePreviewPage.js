@@ -11,7 +11,7 @@ const EmployeePreview = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getEmployees());
-  }, [dispatch]);
+  }, []);
 
   const [value, setValue] = useState("");
 
