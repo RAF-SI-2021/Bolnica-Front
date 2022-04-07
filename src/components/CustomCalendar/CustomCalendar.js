@@ -1,68 +1,82 @@
-import React from "react";
-import Kalend, { CalendarView } from 'kalend';
-import Date  from "react";
-import 'kalend/dist/styles/index.css';
-import './styles.css'
-import  {
-    OnEventClickData,
-    OnNewEventClickData,
-    ShowMoreMonthData,
-    OnPageChangeData,
-    OnSelectViewData
-} from 'kalend';
+import React, { useEffect } from "react";
+import { FaChartPie, FaUser, FaWheelchair } from "react-icons/fa";
+import Sidebar from "../../components/Sidebar/Sidebar";
+import CustomCalendar from "../../components/CustomCalendar/CustomCalendar";
+import { Dropdown } from "react-bootstrap";
+import "./styles.css";
+import { useDispatch, useSelector } from "react-redux";
+import { getDoctors } from "../../redux/actions/doctors";
 
-const CustomCalendar = () => {
+const ScheduleAppointmentPage = () => {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getDoctors());
+    }, []);
 
-    const events = [
+    const doctors = useSelector((state) => state.doctors);
+
+    const links = [
         {
             id: 1,
-            startAt: '2022-04-17T18:00:00.000Z',
-            endAt: '2022-04-17T19:00:00.000Z',
-            timezoneStartAt: 'Europe/Berlin', // optional
-            summary: 'test',
-            color: '#336cfb',
-            calendarID: 'work'
+            text: "Pocetna",
+            path: "/admin",
+            icon: <FaChartPie />,
+            isActive: true,
         },
         {
             id: 2,
-            startAt: '2022-04-16T18:00:00.000Z',
-            endAt: '2022-04-16T19:00:00.000Z',
-            timezoneStartAt: 'Europe/Berlin', // optional
-            summary: 'test',
-            color: '#336cfb',
-        }
-    ]
+            text: "Pacijenti",
+            path: "/admin/employee-preview",
+            icon: <FaWheelchair />,
+            dividerAfter: true,
+        },
+        {
+            id: 3,
+            text: "Profil",
+            path: "/profil",
+            icon: <FaUser />,
+        },
+    ];
 
-    function onNewEventClick(data) {
-        console.log(data)
-    }
+    const getDoctorAppointments = (id) => {
+        console.log(id);
+    };
 
-    function onEventClick() {
-        console.log("nesto 2")
-    }
+    // if (doctors) getDoctorAppointments(doctors[0].id);
 
-    return(
+    return (
+        <div>
+            <div>
+                <Sidebar links={links} />
+            </div>
+            <Dropdown className="dropdownButton">
+                <Dropdown.Toggle variant="primary" id="dropdown-basic">
+                    Dr. Paun
+                </Dropdown.Toggle>
 
-            <Kalend
-                style={{
-                    primaryColor: '#336cfb',
-                    baseColor: '#3d3c3c',
-                    inverseBaseColor: '#f2ecec',
-                }}
-                onEventClick={onEventClick}
-                onNewEventClick={onNewEventClick}
-                events={events}
-                initialDate={'2019-11-21T18:00:00.000Z'}
-                hourHeight={40}
-                initialView={CalendarView.WEEK}
-                disabledViews={[CalendarView.AGENDA, CalendarView.THREE_DAYS]}
-                timeFormat={'24'}
-                weekDayStart={'Monday'}
-                calendarIDsHidden={['work']}
-                language={'en'}
-            />
+                <Dropdown.Menu>
+                    {/* {doctors.map((doctor) => {
+						return (
+							<Dropdown.Item
+								onClick={() => getDoctorAppointments(doctor.id)}
+							>
+								Dr. {doctor.name}
+							</Dropdown.Item>
+						);
+					})} */}
+                    <Dropdown.Item onClick={() => getDoctorAppointments(1)}>
+                        Dr. Prvi
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => getDoctorAppointments(2)}>
+                        Dr. Drugi
+                    </Dropdown.Item>
+                </Dropdown.Menu>
+            </Dropdown>
+            <div style={{ marginLeft: "15%", height: "100vh" }}>
+                <CustomCalendar />
+            </div>
+        </div>
+    );
+};
 
-    )
-}
-
-export default CustomCalendar;
+export default ScheduleAppointmentPage;
