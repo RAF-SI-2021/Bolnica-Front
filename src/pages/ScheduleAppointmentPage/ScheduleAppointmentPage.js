@@ -1,6 +1,7 @@
 import React from "react";
 import {FaChartPie, FaUser, FaWheelchair} from "react-icons/fa";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import CustomCalendar from "../../components/CustomCalendar/CustomCalendar";
 
 const ScheduleAppointmentPage = () => {
     const links = [
@@ -28,8 +29,13 @@ const ScheduleAppointmentPage = () => {
 
 
     return (
-        <div className="sidebar-link-container">
-            <Sidebar links={links} />
+        <div>
+            <div className="sidebar-link-container">
+                <Sidebar links={links} />
+            </div>
+            <div style={{ marginLeft: "15%"}}>
+                <CustomCalendar/>
+            </div>
         </div>
     );
 }
