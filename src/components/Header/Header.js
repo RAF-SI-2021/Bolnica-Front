@@ -1,5 +1,6 @@
 import React from "react";
 import "./styles.css";
+import { FaCalendar } from "react-icons/fa";
 
 const Header = (props) => {
 	const { avatarUrl, welcomeMsg, userName, userTitle, day, date } = props;
@@ -21,7 +22,9 @@ const Header = (props) => {
 				</div>
 			</div>
 			<div className="date-container">
-				<i className="fa-regular fa-calendar calendar-icon">{day}</i>
+				<span className="calendar-icon">
+					<FaCalendar />
+				</span>
 				<span className="date-span">{date}</span>
 			</div>
 			<div className="button-container">
