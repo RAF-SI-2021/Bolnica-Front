@@ -1,17 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Header from "../../components/Header/Header";
 import { format } from "date-fns";
 import Table from "../../components/Table/Table";
 import { useDispatch, useSelector } from "react-redux";
-import { getEmployees } from "../../redux/actions/employee";
+import { getEmployees, searchEmployees } from "../../redux/actions/employee";
 import "./styles.css";
 
 const EmployeePreview = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getEmployees());
-  }, []);
+  }, [dispatch]);
+
+  const [value, setValue] = useState("");
 
   const employees = useSelector((state) => state.employees);
 
@@ -237,6 +239,16 @@ const EmployeePreview = () => {
     console.log("I have been clicked");
   };
 
+  function handleOnChange(event) {
+    setValue(event.target.value);
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    console.log(value);
+    dispatch(searchEmployees(value));
+  }
+
   return (
     <div>
       <div className="sidebar-link-container">
@@ -252,21 +264,14 @@ const EmployeePreview = () => {
           day={linksHeader.day}
           date={linksHeader.date}
         />
-
-        {/* <div class="form-group pull-right">
+        <form className="example myInline">
           <input
             type="text"
-            class="search form-control"
-            placeholder="Search..."
-          >
-            <button type="submit">
-              <i class="fa fa-search"></i>
-            </button>
-          </input>
-        </div> */}
-        <form className="example myInline">
-          <input type="text" placeholder="Search.." name="search" />
-          <button type="submit">
+            placeholder="Search.."
+            name="search"
+            onChange={handleOnChange}
+          />
+          <button type="submit" onClick={handleSubmit}>
             <i className="fa fa-search"></i>
           </button>
         </form>
