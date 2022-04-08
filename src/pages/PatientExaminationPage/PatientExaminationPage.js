@@ -53,6 +53,7 @@ const PatientExaminationPage = () => {
 					day={format(new Date(), "d")}
 					date={format(new Date(), "d MMMM, yyyy")}
 				/>
+				Main
 			</div>
 		</>
 	);
