@@ -1,27 +1,22 @@
-
-
-
-
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
 
 * {
 	box-sizing: border-box;
 }
 
 body {
-	background: #F6F8FB;
-	font-family:'Helvetica, Sans-Serif';
-	
+	background: #f6f8fb;
+	font-family: "Helvetica, Sans-Serif";
 }
 
 h1 {
-    font-weight: 700;
+	font-weight: 700;
 	margin: 0;
-    color: #336CFB;
+	color: #336cfb;
 }
 
 a {
-	color: #336CFB;
+	color: #336cfb;
 	font-size: 14px;
 	text-decoration: none;
 	margin: 15px 0;
@@ -29,15 +24,14 @@ a {
 
 button {
 	border-radius: 10px;
-	border: 1px solid #336CFB;
-	background-color: #336CFB;
-	color: #FFFFFF;
+	border: 1px solid #336cfb;
+	background-color: #336cfb;
+	color: #ffffff;
 	font-size: 16px;
 	font-weight: bold;
 	padding: 10px 65px;
 	letter-spacing: 1px;
 }
-
 
 form {
 	display: flex;
@@ -50,16 +44,16 @@ form {
 }
 
 input {
-	background-color: #E9F0FF;
+	background-color: #e9f0ff;
 	border: none;
-    border-radius:10px;
+	border-radius: 10px;
 	padding: 10px 15px;
 	margin: 8px 0;
 	width: 100%;
 }
 
 .container {
-    margin:auto;
+	margin: auto;
 	align-items: center;
 	position: relative;
 	overflow: hidden;
@@ -78,17 +72,13 @@ input {
 	left: 0;
 	width: 100%;
 }
-.image-container{
-    display:flex;
+.image-container {
+	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
 }
-.image{
-   
-    width:500px;
-    height:300px;
+.image {
+	width: 500px;
+	height: 300px;
 }
-
-
-

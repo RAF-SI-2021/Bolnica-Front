@@ -6,6 +6,8 @@ import { FaChartPie, FaWheelchair, FaUser } from "react-icons/fa";
 import { useLocation } from "react-router";
 import { Button } from "reactstrap";
 import "./styles.css";
+import ExaminationForm from "../../components/ExaminationForm/ExaminationForm";
+import MedicalRecord from "../../components/MedicalRecord/MedicalRecord";
 
 const PatientExaminationPage = () => {
 	const location = useLocation();
@@ -74,6 +76,9 @@ const PatientExaminationPage = () => {
 					>
 						Zdravstveni karton
 					</Button>
+				</div>
+				<div className="main">
+					{isExamination ? <ExaminationForm /> : <MedicalRecord />}
 				</div>
 			</div>
 		</>
