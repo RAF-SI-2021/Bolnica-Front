@@ -6,6 +6,8 @@ import { Dropdown } from "react-bootstrap";
 import "./styles.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getDoctors } from "../../redux/actions/doctors";
+import NewAppointment from "../../components/NewAppointment/NewAppointment";
+import Header from "../../components/Header/Header";
 
 const ScheduleAppointmentPage = () => {
     const dispatch = useDispatch();
@@ -45,7 +47,7 @@ const ScheduleAppointmentPage = () => {
     // if (doctors) getDoctorAppointments(doctors[0].id);
 
     return (
-        <div>
+        <div className="page-container">
             <div>
                 <Sidebar links={links} />
             </div>
@@ -75,6 +77,11 @@ const ScheduleAppointmentPage = () => {
             <div style={{ marginLeft: "15%", height: "100vh" }}>
                 <CustomCalendar />
             </div>
+            <NewAppointment
+                avatarUrl={"nikolaSlika 1.jpg"}
+                userName={"Dr. Paun"}
+                userTitle={"Kardiolog"}
+            />
         </div>
     );
 };
