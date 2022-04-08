@@ -24,3 +24,7 @@ export const deleteDemo = (id) => API.delete(`/demos/${id}`);
 export const fetchEmployees = () => API.get(`/employees`);
 export const searchEmployees = (searchValues) =>
   API.post("/employees", searchValues);
+
+export const fetchPatients = () => API.get(`/patients`);
+export const searchPatients = (searchValues) =>
+  API.post("/patients", searchValues);

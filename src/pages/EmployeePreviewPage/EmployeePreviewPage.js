@@ -276,6 +276,8 @@ const EmployeePreview = () => {
             <BiSearchAlt />
           </button>
         </form>
+        <br />
+        <br />
         <div>
           <h1 className="myTitle">Zaposleni</h1>
         </div>
