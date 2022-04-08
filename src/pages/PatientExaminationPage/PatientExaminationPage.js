@@ -4,11 +4,13 @@ import Header from "../../components/Header/Header";
 import { format } from "date-fns";
 import { FaChartPie, FaWheelchair, FaUser } from "react-icons/fa";
 import { useLocation } from "react-router";
-import { Button } from "react-bootstrap";
+import { Button } from "reactstrap";
+import "./styles.css";
 
 const PatientExaminationPage = () => {
 	const location = useLocation();
 	const [patientId, setPatientId] = useState();
+	const [isExamination, setIsExamination] = useState(true);
 
 	useEffect(() => {
 		const pathParts = location.pathname.split("/");
@@ -39,6 +41,10 @@ const PatientExaminationPage = () => {
 		},
 	];
 
+	const swapTabs = () => {
+		setIsExamination(!isExamination);
+	};
+
 	return (
 		<>
 			<div className="sidebar-link-container">
@@ -53,7 +59,22 @@ const PatientExaminationPage = () => {
 					day={format(new Date(), "d")}
 					date={format(new Date(), "d MMMM, yyyy")}
 				/>
-				Main
+				<div className="tabButtons">
+					<Button
+						color="primary"
+						outline={!isExamination}
+						onClick={swapTabs}
+					>
+						Zdravstveni pregled
+					</Button>
+					<Button
+						color="primary"
+						outline={isExamination}
+						onClick={swapTabs}
+					>
+						Zdravstveni karton
+					</Button>
+				</div>
 			</div>
 		</>
 	);
