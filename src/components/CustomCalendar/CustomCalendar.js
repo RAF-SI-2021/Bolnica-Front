@@ -10,7 +10,7 @@ import  {
     OnSelectViewData
 } from 'kalend';
 
-const CustomCalendar = ({setDate, setNewAppointmentVisible , events}) => {
+const CustomCalendar = ({setDate, setNewAppointmentVisible , events, setDeleteAppointmentVisible, setAppointmentIdDelete}) => {
 
 
     function onNewEventClick(data) {
@@ -21,8 +21,9 @@ const CustomCalendar = ({setDate, setNewAppointmentVisible , events}) => {
         setDate(date);
     }
 
-    function onEventClick() {
-        console.log("nesto 2")
+    function onEventClick(data) {
+        setDeleteAppointmentVisible(true);
+        setAppointmentIdDelete(data.id);
     }
 
     return(

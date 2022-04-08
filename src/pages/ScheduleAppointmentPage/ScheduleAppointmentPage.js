@@ -9,10 +9,14 @@ import { getDoctors } from "../../redux/actions/doctors";
 import NewAppointment from "../../components/NewAppointment/NewAppointment";
 import Header from "../../components/Header/Header";
 import {createAppointmentNurse} from "../../redux/actions/appointments";
+import DeleteAppointment from "../../components/DeleteAppointment/DeleteAppointment";
 
 const ScheduleAppointmentPage = () => {
     const [date, setDate] = useState(new Date());
     const [newAppointmentVisible, setNewAppointmentVisible] = useState(false);
+    const [deleteAppointmentVisible, setDeleteAppointmentVisible] = useState(false);
+    const [currentDoctor, setCurrentDoctor] = useState(1);
+    const [appointmentIdDelete, setAppointmentIdDelete] = useState(1);
     const [events, setEvents] = useState([{
         id: 1,
         startAt: '2022-04-08T08:00:00.000Z',
@@ -62,6 +66,8 @@ const ScheduleAppointmentPage = () => {
         console.log(id);
     };
 
+    // if (doctors) getDoctorAppointments(doctors[0].id);
+
     const createNewAppointment = (doctorId, patientId, date, examinationType) => {
         console.log({doctorId, patientId, date, examinationType})
         console.log(events)
@@ -79,7 +85,12 @@ const ScheduleAppointmentPage = () => {
         dispatch((doctorId, patientId, date, examinationType) => createAppointmentNurse({doctorId, patientId, date, examinationType}));
     };
 
-    // if (doctors) getDoctorAppointments(doctors[0].id);
+
+    const deleteAppointment = () => {
+        setNewAppointmentVisible(false);
+        //delete event from list
+        //dispatch( (currentDoctor, appointmentIdDelete) => deleteAppointmentNurse({currentDoctor, appointmentIdDelete}));
+    }
 
     return (
         <div className="page-container">
@@ -114,6 +125,8 @@ const ScheduleAppointmentPage = () => {
                     events={events}
                     setDate={setDate}
                     setNewAppointmentVisible={setNewAppointmentVisible}
+                    setDeleteAppointmentVisible={setDeleteAppointmentVisible}
+                    setAppointmentIdDelete={setAppointmentIdDelete}
                 />
             </div>
             {newAppointmentVisible ? <NewAppointment
@@ -123,6 +136,14 @@ const ScheduleAppointmentPage = () => {
                 doctorId={1}
                 createNewAppointment = {createNewAppointment}
                 setNewAppointmentVisible={setNewAppointmentVisible}
+                date={date}
+            /> : <></>}
+
+            {deleteAppointmentVisible ? <DeleteAppointment
+                avatarUrl={"nikolaSlika 1.jpg"}
+                userName={"Dr. Paun"}
+                userTitle={"Kardiolog"}
+                deleteAppointment = {deleteAppointment}
                 date={date}
             /> : <></>}
 
