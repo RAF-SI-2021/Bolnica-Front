@@ -12,7 +12,7 @@ const SidebarLink = ({ link }) => {
 					isActive ? "active-link" : ""
 				}`}
 			>
-				<i className={`${icon} customIcon `}></i>
+				<span className="customIcon">{icon}</span>
 				<span>{text}</span>
 			</Link>
 			{dividerAfter ? <div className="divider"></div> : <></>}
