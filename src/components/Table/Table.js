@@ -66,8 +66,6 @@ const Table = (props) => {
                   }`}
                 >
                   <GrFormPrevious />
-                  {/* <span aria-hidden="true">&laquo;</span>
-                  <span className="sr-only">Previous</span> */}
                 </button>
               </li>
               <li className="page-item">
@@ -91,8 +89,6 @@ const Table = (props) => {
                   }`}
                 >
                   <GrFormNext />
-                  {/* <span aria-hidden="true">&raquo;</span>
-                  <span className="sr-only">Next</span> */}
                 </button>
               </li>
             </ul>
