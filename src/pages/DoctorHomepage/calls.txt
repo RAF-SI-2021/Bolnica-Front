@@ -1,0 +1,32 @@
+const sidebarProps = [
+  {
+    id: 1,
+    text: "Pocetna",
+    path: "/",
+    icon: "fa-solid fa-chart-pie",
+    isActive: true,
+  },
+];
+
+const headerProps = {
+  avatarUrl: "nikolaSlika 1.jpg",
+  welcomeMsg: "Dobro jutro",
+  userName: "Dr. Paun",
+  userTitle: "Kardiolog",
+};
+
+const generalStatsProps = [
+  {
+    image: "fa-solid fa-briefcase-medical",
+    text: "Zakazani pregledi",
+    number: "34",
+  },
+];
+
+const props = [
+  {
+    sidebarProps: sidebarProps,
+    headerProps: headerProps,
+    generalStatsProps: generalStatsProps,
+  },
+];
