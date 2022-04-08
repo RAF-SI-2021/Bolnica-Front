@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "backend_api_path" });
+const API = axios.create({ baseURL: "http://localhost:9092" });
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("loggedUser")) {

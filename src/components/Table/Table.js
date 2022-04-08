@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./styles.css";
+import { ImBin } from "react-icons/im";
+import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 
 const Table = (props) => {
   const { headers, tableContent, handleClick } = props;
@@ -13,7 +15,7 @@ const Table = (props) => {
       ))}
       <td style={{ width: "15%" }}>
         <button className="buttonIcon" onClick={() => handleClick(i)}>
-          <i className="fa fa-trash fa-sm myIcon" aria-hidden="false"></i>
+          <ImBin />
         </button>
       </td>
     </tr>
@@ -63,8 +65,9 @@ const Table = (props) => {
                     currentPage === 1 ? "disabled" : null
                   }`}
                 >
-                  <span aria-hidden="true">&laquo;</span>
-                  <span className="sr-only">Previous</span>
+                  <GrFormPrevious />
+                  {/* <span aria-hidden="true">&laquo;</span>
+                  <span className="sr-only">Previous</span> */}
                 </button>
               </li>
               <li className="page-item">
@@ -87,8 +90,9 @@ const Table = (props) => {
                     currentPage === numberOfPages ? "disabled" : null
                   }`}
                 >
-                  <span aria-hidden="true">&raquo;</span>
-                  <span className="sr-only">Next</span>
+                  <GrFormNext />
+                  {/* <span aria-hidden="true">&raquo;</span>
+                  <span className="sr-only">Next</span> */}
                 </button>
               </li>
             </ul>

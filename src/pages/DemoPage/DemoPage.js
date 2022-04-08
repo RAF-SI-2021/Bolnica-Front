@@ -7,28 +7,28 @@ import { format } from "date-fns";
 import { FaChartPie, FaWheelchair, FaUser } from "react-icons/fa";
 
 const DemoPage = () => {
-	const links = [
-		{
-			id: 1,
-			text: "Pocetna",
-			path: "/",
-			icon: <FaChartPie />,
-			isActive: true,
-		},
-		{
-			id: 2,
-			text: "Pacijenti",
-			path: "/pacijenti",
-			icon: <FaWheelchair />,
-			dividerAfter: true,
-		},
-		{
-			id: 3,
-			text: "Profil",
-			path: "/profil",
-			icon: <FaUser />,
-		},
-	];
+  const links = [
+    {
+      id: 1,
+      text: "Pocetna",
+      path: "/",
+      icon: <FaChartPie />,
+      isActive: true,
+    },
+    {
+      id: 2,
+      text: "Pacijenti",
+      path: "/pacijenti",
+      icon: <FaWheelchair />,
+      dividerAfter: true,
+    },
+    {
+      id: 3,
+      text: "Profil",
+      path: "/profil",
+      icon: <FaUser />,
+    },
+  ];
 
   const handleSubmit = (event) => {
     event.preventDefault();
