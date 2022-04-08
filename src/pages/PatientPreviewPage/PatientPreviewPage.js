@@ -5,7 +5,6 @@ import { format } from "date-fns";
 import { FaChartPie, FaUser, FaWheelchair } from "react-icons/fa";
 import { MdCalendarToday } from "react-icons/md";
 import Table from "../../components/Table/Table";
-
 const PatientPreview = () => {
   const linksSidebar = [
     {
