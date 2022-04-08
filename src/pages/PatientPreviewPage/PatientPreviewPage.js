@@ -4,6 +4,7 @@ import Header from "../../components/Header/Header";
 import { format } from "date-fns";
 import { FaChartPie, FaUser, FaWheelchair } from "react-icons/fa";
 import { MdCalendarToday } from "react-icons/md";
+import Table from "../../components/Table/Table";
 const PatientPreview = () => {
   const linksSidebar = [
     {
@@ -17,6 +18,7 @@ const PatientPreview = () => {
       text: "Pacijenti",
       path: "/patient-preview",
       icon: <FaWheelchair />,
+      dividerAfter: true,
       isActive: true,
     },
     // {
@@ -28,7 +30,7 @@ const PatientPreview = () => {
     // },
     {
       id: 4,
-      text: "Profile",
+      text: "Profil",
       path: "/profile",
       icon: <FaUser />,
     },
@@ -41,6 +43,197 @@ const PatientPreview = () => {
     userTitle: "Kardiolog",
     day: format(new Date(), "d"),
     date: format(new Date(), "d MMMM, yyyy"),
+  };
+
+  const headers = ["Name", "Surname", "Address", "City", "Contact"];
+
+  const tableContent = [
+    {
+      name: "Marija",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Marko",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+    {
+      name: "Dejan",
+      surname: "Markovic",
+      address: "Kursulina 49",
+      city: "Beograd",
+      contact: "0601234567",
+    },
+  ];
+
+  const handleClick = (id) => {
+    console.log("I have been clicked");
   };
 
   return (
@@ -57,6 +250,15 @@ const PatientPreview = () => {
           day={linksHeader.day}
           date={linksHeader.date}
         />
+        <div>
+          <h1 className="myTitle">Zaposleni</h1>
+        </div>
+        <Table
+          headers={headers}
+          tableContent={tableContent}
+          handleClick={handleClick}
+        />
+        <br />
       </div>
     </div>
   );

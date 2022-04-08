@@ -22,7 +22,7 @@ const EmployeePreview = () => {
   const linksSidebar = [
     {
       id: 1,
-      text: "Pocetna",
+      text: "Početna",
       path: "/admin",
       icon: <FaChartPie />,
     },
@@ -37,7 +37,7 @@ const EmployeePreview = () => {
     {
       id: 3,
       text: "Profil",
-      path: "/profil",
+      path: "/profile",
       icon: <FaUser />,
     },
   ];
