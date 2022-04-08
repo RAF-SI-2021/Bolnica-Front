@@ -1,20 +1,33 @@
 import React from "react";
 import { useState } from "react";
+import { createExamination } from "../../redux/actions/examinations";
 import "./styles.css";
+import { useDispatch } from "react-redux";
 
 const initialState = {
 	mainDifficulties: "",
 	currentDisease: "",
+	personalAnamnesis: "",
+	familyAnamnesis: "",
+	patientOpinion: "",
+	objectiveFinding: "",
+	diagnosis: "",
+	healingResult: "",
+	currentStatusDescription: "",
+	existingDiagnosis: false,
+	therapyProposal: "",
+	advice: "",
 };
 
 const ExaminationForm = () => {
 	const [form, setForm] = useState(initialState);
 	const [diagnosisContent, setDiagnosisContent] = useState(false);
+	const dispatch = useDispatch();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		// dispatch(signin(form, navigate, location));
+		dispatch(createExamination(form));
 	};
 
 	const handleChange = (e) =>
@@ -121,29 +134,38 @@ const ExaminationForm = () => {
 							className="form-select-custom "
 							aria-label="Default select example"
 							defaultValue="0"
+							name="diagnosis"
 						>
-							<option value="1">A15.3 - Tuberkuloza pluća</option>
-							<option value="2">D50 - Nedostatkom gvožđa</option>
-							<option value="3">
+							<option value="A15.3">
+								A15.3 - Tuberkuloza pluća
+							</option>
+							<option value="D50">
+								D50 - Nedostatkom gvožđa
+							</option>
+							<option value="I10">
 								I10 - Povišen krvni pritisak
 							</option>
-							<option value="3">
+							<option value="I35.0">
 								I35.0 - Suženje aortnog zaliska
 							</option>
-							<option value="3">
+							<option value="J11">
 								J11 - Grip, virus nedokazan
 							</option>
-							<option value="3">J12.9 - Zapaljenje pluća</option>
-							<option value="3">
+							<option value="J12.9">
+								J12.9 - Zapaljenje pluća
+							</option>
+							<option value="K35">
 								K35 - Akutno zapaljenje slepog creva
 							</option>
-							<option value="3">
+							<option value="K70.3">
 								K70.3 - Ciroza jetre uzrokovana alkoholom
 							</option>
-							<option value="3">
+							<option value="K71.0">
 								K71.0 - Toksička bolest jetre zbog zastoja žuči
 							</option>
-							<option value="3">N20.0 - Kamen u bubregu</option>
+							<option value="N20.0">
+								N20.0 - Kamen u bubregu
+							</option>
 						</select>
 					</div>
 					<div className="form-group-custom">
@@ -155,11 +177,12 @@ const ExaminationForm = () => {
 							className="form-select-custom "
 							aria-label="Default select example"
 							defaultValue="0"
+							name="healingResult"
 						>
 							<option value="1">U toku</option>
-							<option value="1">Oporavljen</option>
-							<option value="1">Stalne posledice</option>
-							<option value="1">Preminuo</option>
+							<option value="2">Oporavljen</option>
+							<option value="3">Stalne posledice</option>
+							<option value="4">Preminuo</option>
 						</select>
 					</div>
 					<div className="form-group-custom">
