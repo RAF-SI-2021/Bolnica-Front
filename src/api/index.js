@@ -29,4 +29,4 @@ export const updateAppointment = (id, data) =>
 
 export const fetchEmployees = () => API.get(`/employees`);
 export const searchEmployees = (searchValues) =>
-  API.post("/employees", searchValues);
+	API.post("/employees", searchValues);
