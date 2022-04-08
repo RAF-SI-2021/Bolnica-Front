@@ -9,8 +9,16 @@ import Table from "../../components/Table/Table";
 import { useDispatch, useSelector } from "react-redux";
 import { GiMedicalPack } from "react-icons/gi";
 import { IoPersonAddSharp } from "react-icons/io5";
+import { getPatients, searchPatients } from "../../redux/actions/patient";
 
 const PatientPreviewNurses = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getPatients());
+  }, []);
+
+  const patient = useSelector((state) => state.patient);
+  const [value, setValue] = useState("");
   const linksSidebar = [
     {
       id: 1,
@@ -194,6 +202,15 @@ const PatientPreviewNurses = () => {
   const handleClick = (id) => {
     console.log("I have been clicked");
   };
+  function handleOnChange(event) {
+    setValue(event.target.value);
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    dispatch(searchPatients(value));
+  }
+
   return (
     <div>
       <div className="sidebar-link-container">
@@ -208,6 +225,19 @@ const PatientPreviewNurses = () => {
           day={linksHeader.day}
           date={linksHeader.date}
         />
+        <form className="example myInline">
+          <input
+            type="text"
+            placeholder="Search.."
+            name="search"
+            onChange={handleOnChange}
+          />
+          <button type="submit" onClick={handleSubmit}>
+            <BiSearchAlt />
+          </button>
+        </form>
+        <br />
+        <br />
         <div>
           <h1 className="myTitle">Pacijenti</h1>
         </div>
