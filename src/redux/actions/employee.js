@@ -12,6 +12,7 @@ export const getEmployees = () => async (dispatch) => {
 
 export const searchEmployees = (searchValue) => async (dispatch) => {
   try {
+    console.log(searchValue);
     const { data } = await api.searchEmployees(searchValue);
     dispatch({ type: GET_EMPLOYEES, data });
   } catch (error) {

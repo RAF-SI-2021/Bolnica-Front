@@ -15,11 +15,7 @@ const App = () => {
           exact
           element={<EmployeePreview />}
         />
-        <Route
-          path="/doctor/patient-preview"
-          exact
-          element={<PatientPreview />}
-        />
+        <Route path="/patient-preview" exact element={<PatientPreview />} />
       </Routes>
     </BrowserRouter>
   );
