@@ -8,7 +8,6 @@ import { BiSearchAlt } from "react-icons/bi";
 import Table from "../../components/Table/Table";
 import { useDispatch, useSelector } from "react-redux";
 import { getPatients, searchPatients } from "../../redux/actions/patient";
-
 const PatientPreview = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -191,7 +190,7 @@ const PatientPreview = () => {
   const handleClick = (id) => {
     console.log("I have been clicked");
   };
-
+  
   function handleOnChange(event) {
     setValue(event.target.value);
   }
@@ -200,7 +199,6 @@ const PatientPreview = () => {
     event.preventDefault();
     dispatch(searchPatients(value));
   }
-
   return (
     <div>
       <div className="sidebar-link-container">
