@@ -1,6 +1,5 @@
 import React from "react";
 import Kalend, { CalendarView } from 'kalend';
-import Date  from "react";
 import 'kalend/dist/styles/index.css';
 import './styles.css'
 import  {
@@ -11,30 +10,15 @@ import  {
     OnSelectViewData
 } from 'kalend';
 
-const CustomCalendar = () => {
+const CustomCalendar = ({setDate, setNewAppointmentVisible , events}) => {
 
-    const events = [
-        {
-            id: 1,
-            startAt: '2022-04-17T18:00:00.000Z',
-            endAt: '2022-04-17T19:00:00.000Z',
-            timezoneStartAt: 'Europe/Berlin', // optional
-            summary: 'test',
-            color: '#336cfb',
-            calendarID: 'work'
-        },
-        {
-            id: 2,
-            startAt: '2022-04-16T18:00:00.000Z',
-            endAt: '2022-04-16T19:00:00.000Z',
-            timezoneStartAt: 'Europe/Berlin', // optional
-            summary: 'test',
-            color: '#336cfb',
-        }
-    ]
 
     function onNewEventClick(data) {
-        console.log(data)
+        console.log(data.startAt);
+        setNewAppointmentVisible(true);
+        const date = new Date(data.startAt);
+        console.log(date);
+        setDate(date);
     }
 
     function onEventClick() {

@@ -23,3 +23,5 @@ export const deleteDemo = (id) => API.delete(`/demos/${id}`);
 // DOCTOR ROUTES
 
 export const fetchDoctors = () => API.get(`/doctors`);
+export const fetchAppointments = (id) => API.get(`/appointments/${id}`);
+export const createAppointmentNurse = (data) => API.post("/nurse/create_appointment", data);
