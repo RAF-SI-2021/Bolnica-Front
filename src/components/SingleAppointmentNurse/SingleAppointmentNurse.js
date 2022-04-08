@@ -1,6 +1,8 @@
 import React from "react";
 import "./styles.css";
 import { format } from "date-fns";
+import { updateAppointment } from "../../redux/actions/appointment";
+import { useDispatch } from "react-redux";
 
 const SingleAppointmentNurse = ({ props }) => {
   const { id, firstname, lastname, dob, gender, time } = props;
@@ -8,9 +10,10 @@ const SingleAppointmentNurse = ({ props }) => {
   let age = format(new Date(), "yyyy") - format(dob, "yyyy");
   let appointTime = format(new Date(time), "HH:mm");
 
+  const dispatch = useDispatch();
+
   function updateAppointmentStatus(id, data) {
-    /*     console.log(data);
-    console.log(id); */
+    dispatch(updateAppointment(id, data));
   }
 
   return (
