@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDoctors } from "../../redux/actions/doctors";
 import NewAppointment from "../../components/NewAppointment/NewAppointment";
 import Header from "../../components/Header/Header";
-import {createAppointmentNurse} from "../../redux/actions/appointments";
+import {createAppointmentNurse, deleteAppointmentNurse} from "../../redux/actions/appointments";
 import DeleteAppointment from "../../components/DeleteAppointment/DeleteAppointment";
 
 const ScheduleAppointmentPage = () => {
@@ -89,7 +89,7 @@ const ScheduleAppointmentPage = () => {
     const deleteAppointment = () => {
         setNewAppointmentVisible(false);
         //delete event from list
-        //dispatch( (currentDoctor, appointmentIdDelete) => deleteAppointmentNurse({currentDoctor, appointmentIdDelete}));
+        dispatch( (appointmentIdDelete) => deleteAppointmentNurse({appointmentIdDelete}));
     }
 
     return (
