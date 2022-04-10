@@ -3,19 +3,20 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import Header from "../../components/Header/Header";
 import { format } from "date-fns";
 import { FaChartPie, FaWheelchair, FaUser } from "react-icons/fa";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { Button } from "reactstrap";
 import "./styles.css";
 import ExaminationForm from "../../components/ExaminationForm/ExaminationForm";
 import MedicalRecord from "../../components/MedicalRecord/MedicalRecord";
 import { useDispatch } from "react-redux";
-import { getRecord } from "../../redux/actions/records";
+import { createRecord, getRecord } from "../../redux/actions/records";
 
 const PatientExaminationPage = () => {
   const location = useLocation();
   const [patientId, setPatientId] = useState();
   const [isExamination, setIsExamination] = useState(true);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const pathParts = location.pathname.split("/");
@@ -47,6 +48,11 @@ const PatientExaminationPage = () => {
     },
   ];
 
+  const saveRecord = (formData) => {
+    dispatch(createRecord(formData));
+    navigate("/");
+  };
+
   const swapTabs = () => {
     setIsExamination(!isExamination);
   };
@@ -74,7 +80,11 @@ const PatientExaminationPage = () => {
           </Button>
         </div>
         <div className="main">
-          {isExamination ? <ExaminationForm /> : <MedicalRecord />}
+          {isExamination ? (
+            <ExaminationForm saveRecord={saveRecord} />
+          ) : (
+            <MedicalRecord />
+          )}
         </div>
       </div>
     </>

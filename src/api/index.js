@@ -37,3 +37,4 @@ export const createExamination = (formData) => API.post("/demos", formData);
 // RECORDS
 
 export const fetchRecord = (id) => API.get(`/records/${id}`);
+export const createRecord = (formData) => API.post(`/records`, formData);
