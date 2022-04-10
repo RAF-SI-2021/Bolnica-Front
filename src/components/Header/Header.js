@@ -8,13 +8,13 @@ const Header = (props) => {
 	return (
 		<div className="containerCustom">
 			<div className="user-container">
-				<div className="avatar-container">
+				{/* <div className="avatar-container">
 					<img
 						className="user-avatar"
 						src={avatarUrl}
 						alt={userName}
 					/>
-				</div>
+				</div> */}
 				<div className="name-container">
 					<p className="welcome-msg">{welcomeMsg}</p>
 					<p className="user-name">{userName}</p>
