@@ -2,40 +2,45 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Header from "../../components/Header/Header";
 import { format } from "date-fns";
+import { FaChartPie, FaUser, FaWheelchair } from "react-icons/fa";
+import { MdCalendarToday } from "react-icons/md";
+import { BiSearchAlt } from "react-icons/bi";
 import Table from "../../components/Table/Table";
 import { useDispatch, useSelector } from "react-redux";
-import { getEmployees, searchEmployees } from "../../redux/actions/employee";
-import "./styles.css";
-import { FaChartPie, FaUserTie, FaUser } from "react-icons/fa";
-import { BiSearchAlt } from "react-icons/bi";
-
-const EmployeePreview = () => {
+import { getPatients, searchPatients } from "../../redux/actions/patient";
+const PatientPreview = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getEmployees());
+    dispatch(getPatients());
   }, []);
 
+  const patient = useSelector((state) => state.patient);
   const [value, setValue] = useState("");
-
-  const employees = useSelector((state) => state.employees);
 
   const linksSidebar = [
     {
       id: 1,
       text: "Početna",
-      path: "/admin",
+      path: "/",
       icon: <FaChartPie />,
     },
     {
       id: 2,
-      text: "Zaposleni",
-      path: "/admin/employee-preview",
-      icon: <FaUserTie />,
+      text: "Pacijenti",
+      path: "/patient-preview",
+      icon: <FaWheelchair />,
       dividerAfter: true,
       isActive: true,
     },
+    // {
+    //   id: 3,
+    //   text: "Zakazani pregledi",
+    //   path: "/",
+    //   icon: <MdCalendarToday />,
+    //   dividerAfter: true,
+    // },
     {
-      id: 3,
+      id: 4,
       text: "Profil",
       path: "/profile",
       icon: <FaUser />,
@@ -180,82 +185,25 @@ const EmployeePreview = () => {
       city: "Beograd",
       contact: "0601234567",
     },
-    {
-      name: "Dejan",
-      surname: "Markovic",
-      address: "Kursulina 49",
-      city: "Beograd",
-      contact: "0601234567",
-    },
-    {
-      name: "Dejan",
-      surname: "Markovic",
-      address: "Kursulina 49",
-      city: "Beograd",
-      contact: "0601234567",
-    },
-    {
-      name: "Dejan",
-      surname: "Markovic",
-      address: "Kursulina 49",
-      city: "Beograd",
-      contact: "0601234567",
-    },
-    {
-      name: "Dejan",
-      surname: "Markovic",
-      address: "Kursulina 49",
-      city: "Beograd",
-      contact: "0601234567",
-    },
-    {
-      name: "Dejan",
-      surname: "Markovic",
-      address: "Kursulina 49",
-      city: "Beograd",
-      contact: "0601234567",
-    },
-    {
-      name: "Dejan",
-      surname: "Markovic",
-      address: "Kursulina 49",
-      city: "Beograd",
-      contact: "0601234567",
-    },
-    {
-      name: "Dejan",
-      surname: "Markovic",
-      address: "Kursulina 49",
-      city: "Beograd",
-      contact: "0601234567",
-    },
-    {
-      name: "Dejan",
-      surname: "Markovic",
-      address: "Kursulina 49",
-      city: "Beograd",
-      contact: "0601234567",
-    },
   ];
+
   const handleClick = (id) => {
     console.log("I have been clicked");
   };
-
+  
   function handleOnChange(event) {
     setValue(event.target.value);
   }
 
   function handleSubmit(event) {
     event.preventDefault();
-    dispatch(searchEmployees(value));
+    dispatch(searchPatients(value));
   }
-
   return (
     <div>
       <div className="sidebar-link-container">
         <Sidebar links={linksSidebar} />
       </div>
-
       <div style={{ marginLeft: "15%" }}>
         <Header
           avatarUrl={linksHeader.avatarUrl}
@@ -279,7 +227,7 @@ const EmployeePreview = () => {
         <br />
         <br />
         <div>
-          <h1 className="myTitle">Zaposleni</h1>
+          <h1 className="myTitle">Pacijenti</h1>
         </div>
         <Table
           headers={headers}
@@ -291,5 +239,4 @@ const EmployeePreview = () => {
     </div>
   );
 };
-
-export default EmployeePreview;
+export default PatientPreview;

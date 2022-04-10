@@ -1,6 +1,7 @@
 .myTitle {
   margin-left: 5%;
-  margin-top: 5%;
+  margin-top: 6%;
+  margin-bottom: 2%;
   letter-spacing: 0.2px;
   font-family: "Roboto";
   font-style: normal;
@@ -17,7 +18,6 @@
   margin-left: 5%;
   margin-top: 2%;
   width: 90%;
-  /* display: flex; */
   text-align: center;
   flex-direction: column;
   align-self: center;
@@ -30,7 +30,8 @@
 
 .buttonIcon {
   border: 0px;
-  background-color: #ffffff;
+  background: transparent;
+  color: #ff6760;
 }
 
 .myIcon {
@@ -70,12 +71,16 @@ table.table-bordered > tbody > tr {
   background-color: #336cfb;
   color: #ffffff;
 }
-
+.prev,
+.next {
+  padding: 9px 11px;
+}
 .prev.disabled,
 .next.disabled {
   pointer-events: none;
   box-shadow: none;
   color: #999;
+  border-color: #999;
 }
 .header {
   background-color: #e9f0ff;

@@ -1,7 +1,7 @@
 .myInline {
   display: inline;
 }
-/* Style the search field */
+
 form.example input[type="text"] {
   padding: 10px;
   font-size: 15px;
@@ -11,13 +11,13 @@ form.example input[type="text"] {
   width: 30%;
   background: #ffffff;
   margin-left: 5%;
-  /* border-color: #e9f0ff; */
 }
 
-/* Style the submit button */
+form.example input:focus {
+  outline-color: #336cfb;
+}
 form.example button {
   float: left;
-  /* width: 20%; */
   padding: 10px;
   background: #ffffff;
   color: #a0a4a8;
@@ -25,17 +25,10 @@ form.example button {
   border: 1px solid #e9f0ff;
   border-left: none;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 form.example button:hover {
   background: #336cfb;
   color: #ffffff;
 }
-
-/* Clear floats */
-/* form.example::after {
-  content: "";
-  clear: both;
-  display: table;
-} */

@@ -2,40 +2,58 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Header from "../../components/Header/Header";
 import { format } from "date-fns";
+import { FaChartPie, FaUser, FaWheelchair } from "react-icons/fa";
+import { MdCalendarToday } from "react-icons/md";
+import { BiSearchAlt } from "react-icons/bi";
 import Table from "../../components/Table/Table";
 import { useDispatch, useSelector } from "react-redux";
-import { getEmployees, searchEmployees } from "../../redux/actions/employee";
-import "./styles.css";
-import { FaChartPie, FaUserTie, FaUser } from "react-icons/fa";
-import { BiSearchAlt } from "react-icons/bi";
+import { GiMedicalPack } from "react-icons/gi";
+import { IoPersonAddSharp } from "react-icons/io5";
+import { getPatients, searchPatients } from "../../redux/actions/patient";
 
-const EmployeePreview = () => {
+const PatientPreviewNurses = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getEmployees());
+    dispatch(getPatients());
   }, []);
 
+  const patient = useSelector((state) => state.patient);
   const [value, setValue] = useState("");
-
-  const employees = useSelector((state) => state.employees);
-
   const linksSidebar = [
     {
       id: 1,
       text: "Početna",
-      path: "/admin",
+      path: "/nurse",
       icon: <FaChartPie />,
     },
     {
       id: 2,
-      text: "Zaposleni",
-      path: "/admin/employee-preview",
-      icon: <FaUserTie />,
-      dividerAfter: true,
+      text: "Pacijenti",
+      path: "/nurse/patient-preview",
+      icon: <FaWheelchair />,
       isActive: true,
     },
     {
       id: 3,
+      text: "Zakazivanje pregleda",
+      path: "/zakazivanje",
+      icon: <GiMedicalPack />,
+    },
+    {
+      id: 4,
+      text: "Dodavanje pacijenta",
+      path: "/dodavanjepcijenta",
+      icon: <IoPersonAddSharp />,
+    },
+    {
+      id: 5,
+      text: "Zakazani pacijenti",
+      path: "/zakazanipacijenti",
+      icon: <MdCalendarToday />,
+      dividerAfter: true,
+    },
+    {
+      id: 6,
       text: "Profil",
       path: "/profile",
       icon: <FaUser />,
@@ -45,8 +63,8 @@ const EmployeePreview = () => {
   const linksHeader = {
     avatarUrl: "../nikolaSlika 1.jpg",
     welcomeMsg: "Dobro jutro",
-    userName: "Dr. Paun",
-    userTitle: "Kardiolog",
+    userName: "Ana Reljić",
+    userTitle: "Med sestra",
     day: format(new Date(), "d"),
     date: format(new Date(), "d MMMM, yyyy"),
   };
@@ -180,74 +198,17 @@ const EmployeePreview = () => {
       city: "Beograd",
       contact: "0601234567",
     },
-    {
-      name: "Dejan",
-      surname: "Markovic",
-      address: "Kursulina 49",
-      city: "Beograd",
-      contact: "0601234567",
-    },
-    {
-      name: "Dejan",
-      surname: "Markovic",
-      address: "Kursulina 49",
-      city: "Beograd",
-      contact: "0601234567",
-    },
-    {
-      name: "Dejan",
-      surname: "Markovic",
-      address: "Kursulina 49",
-      city: "Beograd",
-      contact: "0601234567",
-    },
-    {
-      name: "Dejan",
-      surname: "Markovic",
-      address: "Kursulina 49",
-      city: "Beograd",
-      contact: "0601234567",
-    },
-    {
-      name: "Dejan",
-      surname: "Markovic",
-      address: "Kursulina 49",
-      city: "Beograd",
-      contact: "0601234567",
-    },
-    {
-      name: "Dejan",
-      surname: "Markovic",
-      address: "Kursulina 49",
-      city: "Beograd",
-      contact: "0601234567",
-    },
-    {
-      name: "Dejan",
-      surname: "Markovic",
-      address: "Kursulina 49",
-      city: "Beograd",
-      contact: "0601234567",
-    },
-    {
-      name: "Dejan",
-      surname: "Markovic",
-      address: "Kursulina 49",
-      city: "Beograd",
-      contact: "0601234567",
-    },
   ];
   const handleClick = (id) => {
     console.log("I have been clicked");
   };
-
   function handleOnChange(event) {
     setValue(event.target.value);
   }
 
   function handleSubmit(event) {
     event.preventDefault();
-    dispatch(searchEmployees(value));
+    dispatch(searchPatients(value));
   }
 
   return (
@@ -255,7 +216,6 @@ const EmployeePreview = () => {
       <div className="sidebar-link-container">
         <Sidebar links={linksSidebar} />
       </div>
-
       <div style={{ marginLeft: "15%" }}>
         <Header
           avatarUrl={linksHeader.avatarUrl}
@@ -279,7 +239,7 @@ const EmployeePreview = () => {
         <br />
         <br />
         <div>
-          <h1 className="myTitle">Zaposleni</h1>
+          <h1 className="myTitle">Pacijenti</h1>
         </div>
         <Table
           headers={headers}
@@ -292,4 +252,4 @@ const EmployeePreview = () => {
   );
 };
 
-export default EmployeePreview;
+export default PatientPreviewNurses;
