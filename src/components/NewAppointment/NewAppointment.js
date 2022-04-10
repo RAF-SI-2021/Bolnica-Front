@@ -1,10 +1,14 @@
-import React from "react";
+import React, {useState} from "react";
 import {FormSelect} from "react-bootstrap";
 import "./styles.css";
 
 const NewAppointment = (props) => {
-    const {avatarUrl, userName, userTitle} = props;
+    const {avatarUrl, userName, userTitle, doctorId, createNewAppointment, date, setNewAppointmentVisible} = props;
 
+    const [examinationType, setVal] = useState('');
+
+    console.log(date)
+    const dateString = date.toLocaleString()
     return(
         <div className="new-appointment-container">
             <div className="new-appointment-header">
@@ -33,7 +37,7 @@ const NewAppointment = (props) => {
             <div className="new-appointment-body">
                 <div className="dropdown1">
                     <p className="reason-p">Razlog pregleda</p>
-                    <FormSelect aria-label="select type of medical examination">
+                    <FormSelect aria-label="select type of medical examination" onChange={(e) => setVal(e.target.value)}>
                         <option>Izaberi</option>
                         <option value="pregled">Pregled</option>
                         <option value="kontrola">Kontrola</option>
@@ -52,12 +56,12 @@ const NewAppointment = (props) => {
                 </div>
                 <div className="dropdown3">
                     <p className="date-p">Datum pregleda</p>
-                    <p>23.03.2022., 11:00</p>
+                    <p>{dateString}</p>
                 </div>
             </div>
             <div className="new-appointment-buttons">
-                <button className="my-close-btn">Zatvori</button>
-                <button className="my-save-btn">Sačuvaj</button>
+                <button className="my-close-btn" onClick={() => setNewAppointmentVisible(false)}>Zatvori</button>
+                <button className="my-save-btn" onClick={() => createNewAppointment(doctorId, 3, date, examinationType)}>Sačuvaj</button>
             </div>
         </div>
     )

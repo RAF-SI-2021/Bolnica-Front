@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FaChartPie, FaUser, FaWheelchair } from "react-icons/fa";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import CustomCalendar from "../../components/CustomCalendar/CustomCalendar";
@@ -8,9 +8,31 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDoctors } from "../../redux/actions/doctors";
 import NewAppointment from "../../components/NewAppointment/NewAppointment";
 import Header from "../../components/Header/Header";
+import {createAppointmentNurse, deleteAppointmentNurse} from "../../redux/actions/appointments";
+import DeleteAppointment from "../../components/DeleteAppointment/DeleteAppointment";
 
 const ScheduleAppointmentPage = () => {
+    const [date, setDate] = useState(new Date());
+    const [newAppointmentVisible, setNewAppointmentVisible] = useState(false);
+    const [deleteAppointmentVisible, setDeleteAppointmentVisible] = useState(false);
+    const [currentDoctor, setCurrentDoctor] = useState(1);
+    const [appointmentIdDelete, setAppointmentIdDelete] = useState(1);
+    const [events, setEvents] = useState([{
+        id: 1,
+        startAt: '2022-04-08T08:00:00.000Z',
+        endAt: '2022-04-08T09:00:00.000Z',
+        summary: 'Prvi pregled',
+        color: '#336cfb',
+        calendarID: 'work'
+    }]);
+
+    Date.prototype.addHours = function(h) {
+        this.setTime(this.getTime() + (h*60*60*1000));
+        return this;
+    }
+
     const dispatch = useDispatch();
+
     useEffect(() => {
         dispatch(getDoctors());
     }, []);
@@ -46,6 +68,30 @@ const ScheduleAppointmentPage = () => {
 
     // if (doctors) getDoctorAppointments(doctors[0].id);
 
+    const createNewAppointment = (doctorId, patientId, date, examinationType) => {
+        console.log({doctorId, patientId, date, examinationType})
+        console.log(events)
+        const newEvent = {
+            id: events.length + 1,
+            startAt: date.toISOString(),
+            endAt: date.addHours(1).toISOString(),
+            summary: events.length + '. pregled',
+            color: '#336cfb',
+            calendarID: 'work'
+        }
+        console.log(events)
+        setNewAppointmentVisible(false)
+        setEvents([...events, newEvent])
+        dispatch((doctorId, patientId, date, examinationType) => createAppointmentNurse({doctorId, patientId, date, examinationType}));
+    };
+
+
+    const deleteAppointment = () => {
+        setNewAppointmentVisible(false);
+        //delete event from list
+        dispatch( (appointmentIdDelete) => deleteAppointmentNurse({appointmentIdDelete}));
+    }
+
     return (
         <div className="page-container">
             <div>
@@ -75,13 +121,32 @@ const ScheduleAppointmentPage = () => {
                 </Dropdown.Menu>
             </Dropdown>
             <div style={{ marginLeft: "15%", height: "100vh" }}>
-                <CustomCalendar />
+                <CustomCalendar
+                    events={events}
+                    setDate={setDate}
+                    setNewAppointmentVisible={setNewAppointmentVisible}
+                    setDeleteAppointmentVisible={setDeleteAppointmentVisible}
+                    setAppointmentIdDelete={setAppointmentIdDelete}
+                />
             </div>
-            <NewAppointment
+            {newAppointmentVisible ? <NewAppointment
                 avatarUrl={"nikolaSlika 1.jpg"}
                 userName={"Dr. Paun"}
                 userTitle={"Kardiolog"}
-            />
+                doctorId={1}
+                createNewAppointment = {createNewAppointment}
+                setNewAppointmentVisible={setNewAppointmentVisible}
+                date={date}
+            /> : <></>}
+
+            {deleteAppointmentVisible ? <DeleteAppointment
+                avatarUrl={"nikolaSlika 1.jpg"}
+                userName={"Dr. Paun"}
+                userTitle={"Kardiolog"}
+                deleteAppointment = {deleteAppointment}
+                date={date}
+            /> : <></>}
+
         </div>
     );
 };
