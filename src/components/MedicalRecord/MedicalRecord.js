@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Table from "../Table/Table";
+import { Button } from "reactstrap";
 
 const MedicalRecord = () => {
   const dummyDate = new Date();
   const stringDate = dummyDate.toLocaleDateString();
+  const [isExamination, setIsExamination] = useState(true);
 
   const alergies = ["polen", "macja dlaka", "mleko"];
   const vaccines = ["covid19", "tetanus"];
@@ -24,8 +26,60 @@ const MedicalRecord = () => {
     },
   ];
 
+  const headers2 = [
+    "Dijagnoza",
+    "Pocetak",
+    "Zavrsetak",
+    "Rezultat lecenja",
+    "Tekuce stanje",
+    "Validan od",
+    "Validan do",
+  ];
+  const tableContent2 = [
+    {
+      diagnosis: "MKB10",
+      start: new Date().toLocaleString(),
+      end: new Date().toLocaleString(),
+      result: "Izlecen",
+      currentStatus: "Stanje je dobro",
+      validFrom: new Date().toLocaleString(),
+      validTo: new Date().toLocaleString(),
+    },
+    {
+      diagnosis: "MKB10",
+      start: new Date().toLocaleString(),
+      end: new Date().toLocaleString(),
+      result: "Izlecen",
+      currentStatus: "Stanje je dobro",
+      validFrom: new Date().toLocaleString(),
+      validTo: new Date().toLocaleString(),
+    },
+    {
+      diagnosis: "MKB10",
+      start: new Date().toLocaleString(),
+      end: new Date().toLocaleString(),
+      result: "Izlecen",
+      currentStatus: "Stanje je dobro",
+      validFrom: new Date().toLocaleString(),
+      validTo: new Date().toLocaleString(),
+    },
+    {
+      diagnosis: "MKB10",
+      start: new Date().toLocaleString(),
+      end: new Date().toLocaleString(),
+      result: "Izlecen",
+      currentStatus: "Stanje je dobro",
+      validFrom: new Date().toLocaleString(),
+      validTo: new Date().toLocaleString(),
+    },
+  ];
+
   const handleClick = () => {
     console.log("Cao");
+  };
+
+  const swapTabs = () => {
+    setIsExamination(!isExamination);
   };
 
   return (
@@ -50,12 +104,46 @@ const MedicalRecord = () => {
           </div>
         </div>
       </div>
-      <p className="form-section-heading">Istorija lekarskih pregleda</p>
-      <Table
-        headers={headers}
-        tableContent={tableContent}
-        handleClick={handleClick}
-      />
+      <p className="form-section-heading">
+        {isExamination ? (
+          <>
+            Istorija lekarskih pregleda{" "}
+            <Button
+              color="primary"
+              outline={!isExamination}
+              onClick={swapTabs}
+              style={{ marginLeft: "30px" }}
+            >
+              Istorija bolesti
+            </Button>
+          </>
+        ) : (
+          <>
+            Istorija bolesti{" "}
+            <Button
+              color="primary"
+              outline={isExamination}
+              onClick={swapTabs}
+              style={{ marginLeft: "30px" }}
+            >
+              Istorija pregleda
+            </Button>
+          </>
+        )}
+      </p>
+      {isExamination ? (
+        <Table
+          headers={headers}
+          tableContent={tableContent}
+          handleClick={handleClick}
+        />
+      ) : (
+        <Table
+          headers={headers2}
+          tableContent={tableContent2}
+          handleClick={handleClick}
+        />
+      )}
     </>
   );
 };
