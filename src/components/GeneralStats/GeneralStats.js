@@ -6,7 +6,9 @@ const Statistika = (props) => {
   return (
     <div className="flex items-center text-center frame">
       <div className="statistics ">
-        <img className={`${image} icon`} alt="briefcase" />
+        <span className="icon">{image}</span>
+        {/*         <img className={`${image} icon`} alt="briefcase" />
+         */}{" "}
         <p className="text">{text}</p>
         <p className="number">{number}</p>
       </div>
