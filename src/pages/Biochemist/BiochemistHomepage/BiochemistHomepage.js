@@ -40,9 +40,31 @@ const DoctorHomepage = () => {
     navigate(`/asdasd`);
   };
 
-  const handleRowClick = (lbp) => {
-    navigate(`/biochemist/detailed-view/:labReportId`);
+  const handleRowClick = (entry) => {
+    console.log(entry);
+    navigate(`/biochemist/detailed-view/${entry[0][1]}`);
   };
+
+  const demoLabReports = [
+    {
+      id: 1,
+      lbpPacijenta: "lbp-pacijenta",
+      ime: "ime pacijaean",
+      prezime: "prezime paricna",
+    },
+    {
+      id: 2,
+      lbpPacijenta: "lbp-pacijenta",
+      ime: "ime pacijaean",
+      prezime: "prezime paricna",
+    },
+    {
+      id: 3,
+      lbpPacijenta: "lbp-pacijenta",
+      ime: "ime pacijaean",
+      prezime: "prezime paricna",
+    },
+  ];
 
   return (
     <>
@@ -71,16 +93,16 @@ const DoctorHomepage = () => {
           </form>
           <HeaderRight userName="Jasda" userTitle="Alskcna" />
         </div>
-        {patients.length > 0 && (
-          <Table
-            headers={getTableHeaders("patientPreview")}
-            tableContent={patients}
-            handleClick={handleClick}
-            handleEdit={handleEdit}
-            handleRowClick={handleRowClick}
-            tableType="patients"
-          />
-        )}
+        {/* {patients.length > 0 && ( */}
+        <Table
+          headers={getTableHeaders("labReportPreview")}
+          tableContent={demoLabReports}
+          handleClick={handleClick}
+          handleEdit={handleEdit}
+          handleRowClick={handleRowClick}
+          tableType="patients"
+        />
+        {/* )} */}
       </div>
     </>
   );

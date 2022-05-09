@@ -43,7 +43,7 @@ const Table = (props) => {
   });
 
   const listTable = info.map((entry) => (
-    <tr key={entry} onClick={handleRowClick}>
+    <tr key={entry} onClick={() => handleRowClick(entry)}>
       {entry.map((element) => {
         if (element[0] === "lbp" || element[0] === "lbz") return <></>;
         if (element[0] === "datumPregleda") {
