@@ -38,6 +38,16 @@ export const deleteAppointment = (id) => API.delete(`/demos/${id}`);
 export const updateAppointment = (data) =>
   API.put(`/bolnica-management-service/api/update-appointment-status`, data);
 
+// REFERRALS
+
+export const fetchReferrals = (data) =>
+  API.post(`/bolnica-management-service/api/list-referralss-by-lbz`, data);
+export const createReferral = (data) =>
+  API.post("/bolnica-management-service/api/set-referrals", data);
+export const deleteReferral = (id) => API.delete(`/demos/${id}`);
+export const updateReferral = (data) =>
+  API.put(`/bolnica-management-service/api/update-referrals-status`, data);
+
 // EXAMINATIONS
 
 export const fetchExaminations = (lbp) =>

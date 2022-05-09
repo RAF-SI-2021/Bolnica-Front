@@ -8,6 +8,7 @@ import diseases from "./diseases";
 import examinations from "./examinations";
 import departments from "./departments";
 import patients from "./patients";
+import referrals from "./referrals";
 import loggedUser from "./auth";
 
 export const reducers = combineReducers({
@@ -20,4 +21,5 @@ export const reducers = combineReducers({
   departments,
   diseases,
   examinations,
+  referrals,
 });

@@ -7,6 +7,7 @@ import { getSidebarLinks } from "../../../commons/sidebarLinks";
 import { Switch } from "pretty-checkbox-react";
 import "@djthoms/pretty-checkbox";
 import "./styles.css";
+import { createReferral } from "../../../redux/actions/referrals";
 
 function RegistrationPatientPage() {
   const [form, setForm] = useState({ comment: "", reason: "" });
@@ -33,7 +34,7 @@ function RegistrationPatientPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // dispatch
+    dispatch(createReferral(form));
     console.log(form);
     // navigate("/");
   };
@@ -92,7 +93,7 @@ function RegistrationPatientPage() {
               <select
                 className="form-select-custom small-select margin-right"
                 onChange={handleChange}
-                name="stepenStrucneSpreme"
+                name="institution"
                 value={form.institution}
                 defaultValue=""
               >
