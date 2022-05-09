@@ -71,6 +71,7 @@ const VisitsPage = () => {
           ></textarea>
         </div>
         <br></br>
+        <br></br>
         <div className="form-group-custom">
           <button className="buttonForm">Zakaži</button>
         </div>
