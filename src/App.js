@@ -29,6 +29,9 @@ import ScheduleAppointmentPage from "./pages/Nurse/ScheduleAppointmentPage/Sched
 // BIOCHEMIST
 import BiochemistHomepage from "./pages/Biochemist/BiochemistHomepage/BiochemistHomepage";
 
+//TECHNICIAN
+import VisitsPage from "./pages/Tehcnician/VisitsPage/VisitsPage";
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -87,6 +90,8 @@ const App = () => {
 
         {/* BIOCHEMIST ROUTES */}
         <Route path="/biochemist" exact element={<BiochemistHomepage />} />
+        {/* TEXHNICIAN ROUTES */}
+        <Route path="/technician/visits" exact element={<VisitsPage />} />
       </Routes>
     </BrowserRouter>
   );
