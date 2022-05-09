@@ -34,8 +34,9 @@ function RegistrationPatientPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createReferral(form));
-    console.log(form);
+    const user = JSON.parse(localStorage.getItem("loggedUser"));
+    dispatch(createReferral({ ...form, lbz: user.LBZ }));
+    console.log({ ...form, lbz: user.LBZ });
     // navigate("/");
   };
 
