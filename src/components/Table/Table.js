@@ -4,7 +4,14 @@ import { ImBin, ImPencil } from "react-icons/im";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 
 const Table = (props) => {
-  const { headers, tableContent, handleClick, tableType, handleEdit } = props;
+  const {
+    headers,
+    tableContent,
+    handleClick,
+    tableType,
+    handleEdit,
+    handleRowClick,
+  } = props;
 
   const listHeaders = headers.map((header) => {
     if (header.key === "lbp" || header.key === "lbz") return <></>;
@@ -36,7 +43,7 @@ const Table = (props) => {
   });
 
   const listTable = info.map((entry) => (
-    <tr key={entry}>
+    <tr key={entry} onClick={handleRowClick}>
       {entry.map((element) => {
         if (element[0] === "lbp" || element[0] === "lbz") return <></>;
         if (element[0] === "datumPregleda") {
@@ -58,7 +65,10 @@ const Table = (props) => {
           <td style={{ width: "5%" }}>
             <button
               className="buttonIconBlue"
-              onClick={() => handleEditButton("lbp", entry)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleEditButton("lbp", entry);
+              }}
             >
               <ImPencil />
             </button>
@@ -66,7 +76,10 @@ const Table = (props) => {
           <td style={{ width: "5%" }}>
             <button
               className="buttonIcon"
-              onClick={() => handleButton("lbp", entry)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleButton("lbp", entry);
+              }}
             >
               <ImBin />
             </button>

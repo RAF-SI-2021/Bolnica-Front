@@ -1,59 +1,48 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../../components/Sidebar/Sidebar";
-import Header from "../../../components/Header/Header";
-import GeneralStats from "../../../components/GeneralStats/GeneralStats";
-import { format } from "date-fns";
+import HeaderRight from "../../../components/HeaderRight/HeaderRight";
+import Table from "../../../components/Table/Table";
 import { useDispatch, useSelector } from "react-redux";
 import { getAppointments } from "../../../redux/actions/appointments";
 import { getPatients } from "../../../redux/actions/patients";
-import ScheduledAppointments from "../../../components/ScheduledAppointments/ScheduledAppointments";
-import { FaUserInjured } from "react-icons/fa";
-import { GiMedicalDrip, GiMedicalPack } from "react-icons/gi";
 import { resetUser } from "../../../redux/actions/auth";
 import { useNavigate } from "react-router";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
+import { BiSearchAlt } from "react-icons/bi";
+import "./styles.css";
+import { getTableHeaders } from "../../../commons/tableHeaders";
 
 const DoctorHomepage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [value, setValue] = useState("");
 
-  const appointments = useSelector((state) => state.appointments);
+  const patients = useSelector((state) => state.patients);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      const doctor = JSON.parse(localStorage.getItem("loggedUser"));
-      dispatch(resetUser());
-      dispatch(getAppointments(doctor.LBZ));
-      dispatch(getPatients());
-    } else navigate("/login");
+    dispatch(getPatients());
   }, []);
 
-  const headerProps = {
-    avatarUrl: "nikolaSlika 1.jpg",
-    welcomeMsg: "Dobro jutro",
-    userName: "Dr. Paun",
-    userTitle: "Kardiolog",
+  function handleOnChange(event) {
+    setValue(event.target.value);
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    // dispatch(searchLabReports(value));
+  }
+
+  const handleClick = (lbp) => {
+    // dispatch(deletePatient(lbp));
   };
 
-  const generalStatsProps = [
-    {
-      image: <GiMedicalPack size="45px" />,
-      text: "Zakazani pregledi",
-      number: "34",
-    },
-    {
-      image: <FaUserInjured size="45px" />,
-      text: "Broj pacijenata",
-      number: "10",
-    },
-    {
-      image: <GiMedicalDrip size="45px" />,
-      text: "Operacije",
-      number: "10",
-    },
-  ];
+  const handleEdit = (lbp) => {
+    navigate(`/asdasd`);
+  };
+
+  const handleRowClick = (lbp) => {
+    navigate(`/biochemist/detailed-view/:labReportId`);
+  };
 
   return (
     <>
@@ -61,14 +50,37 @@ const DoctorHomepage = () => {
         <Sidebar links={getSidebarLinks("biochemist", 1)} />
       </div>
       <div style={{ marginLeft: "15%" }}>
-        <Header
-          avatarUrl={headerProps.avatarUrl}
-          welcomeMsg={headerProps.welcomeMsg}
-          userName={headerProps.userName}
-          userTitle={headerProps.userTitle}
-          day={format(new Date(), "d")}
-          date={format(new Date(), "d MMMM, yyyy")}
-        />
+        <div className="flexRow padding-y-30">
+          <form>
+            <div className="flexRow">
+              <input
+                type="text"
+                placeholder="Search.."
+                name="search"
+                onChange={handleOnChange}
+                className="fullWidth radius-left"
+              />
+              <button
+                type="submit"
+                className="radius-right buttonFix"
+                onClick={handleSubmit}
+              >
+                <BiSearchAlt />
+              </button>
+            </div>
+          </form>
+          <HeaderRight userName="Jasda" userTitle="Alskcna" />
+        </div>
+        {patients.length > 0 && (
+          <Table
+            headers={getTableHeaders("patientPreview")}
+            tableContent={patients}
+            handleClick={handleClick}
+            handleEdit={handleEdit}
+            handleRowClick={handleRowClick}
+            tableType="patients"
+          />
+        )}
       </div>
     </>
   );
