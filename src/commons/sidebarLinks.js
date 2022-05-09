@@ -81,6 +81,24 @@ export const getSidebarLinks = (role, activeId) => {
         isActive: activeId === 5 ? true : false,
       },
     ];
+  } else if (role === "biochemist") {
+    return [
+      {
+        id: 1,
+        text: "Početna",
+        path: "/biochemist",
+        icon: <FaHome />,
+        dividerAfter: true,
+        isActive: activeId === 1 ? true : false,
+      },
+      {
+        id: 2,
+        text: "Profil",
+        path: "/profile",
+        icon: <FaUser />,
+        isActive: activeId === 2 ? true : false,
+      },
+    ];
   } else {
     return [
       {

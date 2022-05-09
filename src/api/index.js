@@ -32,6 +32,8 @@ export const resetPassword = (email) =>
 
 export const fetchAppointments = (data) =>
   API.post(`/bolnica-management-service/api/list-appointments-by-lbz`, data);
+export const searchLabReports = (data) =>
+  API.post(`/bolnica-management-service/api/search-lab-reprots`, data);
 export const createAppointment = (data) =>
   API.post("/bolnica-management-service/api/set-appointment", data);
 export const deleteAppointment = (id) => API.delete(`/demos/${id}`);
@@ -47,6 +49,16 @@ export const createReferral = (data) =>
 export const deleteReferral = (id) => API.delete(`/demos/${id}`);
 export const updateReferral = (data) =>
   API.put(`/bolnica-management-service/api/update-referrals-status`, data);
+
+// LAB REPORTS
+
+export const fetchLabReports = (data) =>
+  API.post(`/bolnica-management-service/api/list-lab-reports-by-lbz`, data);
+export const createLabReport = (data) =>
+  API.post("/bolnica-management-service/api/set-lab-report", data);
+export const deleteLabReport = (id) => API.delete(`/demos/${id}`);
+export const updateLabReport = (data) =>
+  API.put(`/bolnica-management-service/api/update-lab-report-status`, data);
 
 // EXAMINATIONS
 

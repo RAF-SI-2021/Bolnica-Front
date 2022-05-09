@@ -26,24 +26,24 @@ import PatientPreviewNurses from "./pages/Nurse/PatientPreviewPageNurses/Patient
 import RegistrationPatientPage from "./pages/Nurse/RegistrationPatientPage/RegistrationPatientPage";
 import ScheduleAppointmentPage from "./pages/Nurse/ScheduleAppointmentPage/ScheduleAppointmentPage";
 
+// BIOCHEMIST
+import BiochemistHomepage from "./pages/Biochemist/BiochemistHomepage/BiochemistHomepage";
+
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
         {/* DEMO */}
         <Route path="/demo-page" exact element={<DemoPage />} />
-
         {/* GENERAL */}
         <Route path="/login" exact element={<LoginPage />} />
         <Route path="/profile" exact element={<ProfilePage />} />
         <Route path="/forgot-password" exact element={<ForgotPasswordPage />} />
-
         {/* DOCTOR ROUTES */}
         <Route path="/" exact element={<DoctorHomepage />} />
         <Route path="/examination/:id" exact element={<PatientExamination />} />
         <Route path="/patient-preview" exact element={<PatientPreview />} />
         <Route path="/create-refferal" exact element={<CreateRefferalPage />} />
-
         {/* NURSE ROUTES */}
         <Route path="/nurse" exact element={<NurseHomepage />} />
         <Route
@@ -66,7 +66,6 @@ const App = () => {
           exact
           element={<EditPatientPage />}
         />
-
         {/* ADMIN ROUTES */}
         <Route path="/admin" exact element={<AdminHomepage />} />
         <Route
@@ -85,6 +84,9 @@ const App = () => {
           element={<EditEmployeePage />}
         />
         <Route path="/edit-patient/:lbp" exact element={<EditPatientPage />} />
+
+        {/* BIOCHEMIST ROUTES */}
+        <Route path="/biochemist" exact element={<BiochemistHomepage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -107,6 +107,25 @@ export const getTableHeaders = (contentType) => {
         value: "Validan do",
       },
     ];
+  } else if (contentType === "labReportPreview") {
+    return [
+      {
+        key: "id",
+        value: "ID izvestaja",
+      },
+      {
+        key: "lbpPacijenta",
+        value: "LBP",
+      },
+      {
+        key: "ime",
+        value: "Ime",
+      },
+      {
+        key: "prezime",
+        value: "Prezime",
+      },
+    ];
   }
   return [];
 };

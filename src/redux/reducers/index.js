@@ -6,6 +6,7 @@ import employees from "./employee";
 import records from "./records";
 import diseases from "./diseases";
 import examinations from "./examinations";
+import labReports from "./labReports";
 import departments from "./departments";
 import patients from "./patients";
 import referrals from "./referrals";
@@ -22,4 +23,5 @@ export const reducers = combineReducers({
   diseases,
   examinations,
   referrals,
+  labReports,
 });
