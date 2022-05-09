@@ -22,6 +22,62 @@ const VisitsPage = () => {
     }
   };
 
+  let forma;
+  if (isClicked1) {
+    forma = (
+      <form className="form-custom familyFix">
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+
+        <div className="form-group-custom">
+          <input
+            className="margin-right"
+            placeholder="LBP"
+            name="lbp"
+            type="text"
+            required
+          />
+
+          <button className="buttonForm">Dohvati</button>
+        </div>
+        <br></br>
+        <div className="form-group-custom">
+          <input
+            type="date"
+            data-date=""
+            data-date-format="ddmmyyyy"
+            name="dob"
+            className="margin-right"
+          />
+          <input
+            type="text"
+            placeholder="Broj zakazanih pacijenata"
+            name="number"
+            className="margin-left margin-right"
+            disabled="disabled"
+          />
+          <button className="buttonForm">Dohvati</button>
+        </div>
+        <br></br>
+        <div className="form-group-custom">
+          <textarea
+            name="description"
+            rows="4"
+            cols="50"
+            placeholder="Napomena..."
+          ></textarea>
+        </div>
+        <br></br>
+        <div className="form-group-custom">
+          <button className="buttonForm">Zakaži</button>
+        </div>
+      </form>
+    );
+  }
+
   return (
     <div>
       <div className="sidebar-link-container">
@@ -46,6 +102,7 @@ const VisitsPage = () => {
             </button>
           </li>
         </ul>
+        {forma}
       </div>
     </div>
   );

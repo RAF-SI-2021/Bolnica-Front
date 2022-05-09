@@ -17,3 +17,12 @@
   font-style: normal;
   color: #ffffff;
 }
+
+.buttonForm {
+  background: #336cfb;
+  box-shadow: 0px 12px 26px rgba(16, 30, 115, 0.06);
+  border-radius: 5px;
+  font-family: "Roboto";
+  font-style: normal;
+  color: #ffffff;
+}
