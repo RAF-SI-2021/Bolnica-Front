@@ -7,6 +7,7 @@ import {
 } from "react-icons/fa";
 import { BiCalendarPlus } from "react-icons/bi";
 import { MdCalendarToday } from "react-icons/md";
+import { GiNotebook } from "react-icons/gi";
 
 export const getSidebarLinks = (role, activeId) => {
   if (role === "admin") {
@@ -101,8 +102,15 @@ export const getSidebarLinks = (role, activeId) => {
         text: "Zakazani pregledi",
         path: "/appointments",
         icon: <MdCalendarToday />,
-        dividerAfter: true,
         isActive: activeId === 3 ? true : false,
+      },
+      {
+        id: 5,
+        text: "Kreiraj uput",
+        path: "/create-refferal",
+        icon: <GiNotebook />,
+        dividerAfter: true,
+        isActive: activeId === 5 ? true : false,
       },
       {
         id: 4,
