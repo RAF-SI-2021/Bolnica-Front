@@ -211,6 +211,45 @@ export const getTableHeaders = (contentType) => {
         value: "Status pregleda",
       },
     ];
+  } else if (contentType === "detailedResultPreview") {
+    return [
+      {
+        key: "analysisId",
+        value: "ID naloga",
+      },
+      {
+        key: "analysisName",
+        value: "Naziv analize",
+      },
+      {
+        key: "parameterId",
+        value: "ID parametra",
+      },
+      {
+        key: "parameterName",
+        value: "Naziv parametra",
+      },
+      {
+        key: "unit",
+        value: "Jedinica",
+      },
+      {
+        key: "lowerThreshold",
+        value: "Donja granica",
+      },
+      {
+        key: "upperThreshold",
+        value: "Gornja granica",
+      },
+      {
+        key: "doctorName",
+        value: "Ime lekara",
+      },
+      {
+        key: "doctorSurname",
+        value: "Prezime lekara",
+      },
+    ];
   }
   return [];
 };

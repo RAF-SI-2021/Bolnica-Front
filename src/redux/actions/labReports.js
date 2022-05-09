@@ -15,6 +15,15 @@ export const getLabReports = (lbz) => async (dispatch) => {
   }
 };
 
+export const getLabReport = (id) => async (dispatch) => {
+  try {
+    const { data } = await api.fetchLabReport({ id });
+    dispatch({ type: GET_LAB_REPORTS, data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const searchLabReports = (searchInfo) => async (dispatch) => {
   try {
     const { data } = await api.searchLabReports({ searchInfo });

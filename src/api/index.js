@@ -54,6 +54,8 @@ export const updateReferral = (data) =>
 
 export const fetchLabReports = (data) =>
   API.post(`/bolnica-management-service/api/list-lab-reports-by-lbz`, data);
+export const fetchLabReport = (data) =>
+  API.post(`/bolnica-management-service/api/get-lab-report`, data);
 export const createLabReport = (data) =>
   API.post("/bolnica-management-service/api/set-lab-report", data);
 export const deleteLabReport = (id) => API.delete(`/demos/${id}`);
