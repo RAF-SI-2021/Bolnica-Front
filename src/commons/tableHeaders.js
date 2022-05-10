@@ -126,6 +126,41 @@ export const getTableHeaders = (contentType) => {
         value: "Prezime",
       },
     ];
+  } else if (contentType === "unrealizedLabReports") {
+    return [
+      {
+        key: "id",
+        value: "ID izvestaja",
+      },
+      {
+        key: "ime",
+        value: "Ime",
+      },
+      {
+        key: "prezime",
+        value: "Prezime",
+      },
+      {
+        key: "datum",
+        value: "Datum",
+      },
+      {
+        key: "vreme",
+        value: "Vreme",
+      },
+      {
+        key: "odeljenje",
+        value: "Odeljenje",
+      },
+      {
+        key: "spisakAnaliza",
+        value: "spisakAnaliza",
+      },
+      {
+        key: "komentar",
+        value: "Komentar",
+      },
+    ];
   }
   return [];
 };
