@@ -124,3 +124,9 @@ export const fetchDiseases = (lbp, data) =>
     `/bolnica-management-service/api/fetch-istorija-bolesti/${lbp}?page=1&size=5`,
     data
   );
+
+//LAB
+export const fetchNumberOfLabAppointments = (dateNum) =>
+  API.get(
+    `/bolnica-management-service/api/fetch-number-of-appointments/${dateNum}`
+  );
