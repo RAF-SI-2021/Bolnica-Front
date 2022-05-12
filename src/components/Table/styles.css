@@ -104,3 +104,35 @@ table.table-bordered > tbody > tr {
   font-style: normal;
   font-weight: 400;
 }
+
+.searchButton {
+  background-color: #cacccf;
+  border-color: #cacccf;
+  margin-right: 10px;
+  font-family: "Roboto";
+  font-style: normal;
+}
+
+.searchZReserved {
+  background-color: #fac032;
+  border-color: #fac032;
+  margin-right: 10px;
+  font-family: "Roboto";
+  font-style: normal;
+}
+
+.searchCanceled {
+  background-color: #e74f48;
+  border-color: #e74f48;
+  margin-right: 10px;
+  font-family: "Roboto";
+  font-style: normal;
+}
+
+.searchFinished {
+  background-color: #16d090;
+  border-color: #16d090;
+  margin-right: 10px;
+  font-family: "Roboto";
+  font-style: normal;
+}

@@ -11,6 +11,8 @@ const Table = (props) => {
     tableType,
     handleEdit,
     handleRowClick,
+    handleButtonCanceled,
+    handleButtonFinished,
   } = props;
 
   const listHeaders = headers.map((header) => {
@@ -28,6 +30,11 @@ const Table = (props) => {
   };
 
   const handleEditButton = (key, entry) => {
+    const value = entry.filter((element) => element[0] === key);
+    handleEdit(value[0][1]);
+  };
+
+  const handleSearchVisits = (key, entry) => {
     const value = entry.filter((element) => element[0] === key);
     handleEdit(value[0][1]);
   };
@@ -53,7 +60,54 @@ const Table = (props) => {
             </td>
           );
         }
+        if (element[0] === "statusPregleda") {
+          let reserved = false;
+          let canceled = false;
+          let finished = false;
+          if (entry[5][1] === "Zakazano") {
+            reserved = true;
+          } else if (entry[5][1] === "Otkazano") {
+            canceled = true;
+          } else if (entry[5][1] === "Zavrseno") {
+            finished = true;
+          }
+          return (
+            <td style={{ width: "5%" }}>
+              <div className="d-flex">
+                <button
+                  className={` ${
+                    reserved ? "searchZReserved" : "searchButton"
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
+                  Zakazano
+                </button>
 
+                <button
+                  className={` ${canceled ? "searchCanceled" : "searchButton"}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleButtonCanceled("lbz", entry);
+                  }}
+                >
+                  Otkazano
+                </button>
+
+                <button
+                  className={` ${finished ? "searchFinished" : "searchButton"}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleButtonFinished("lbz", entry);
+                  }}
+                >
+                  Završeno
+                </button>
+              </div>
+            </td>
+          );
+        }
         return (
           <td key={element} style={{ padding: "25px 0px" }}>
             {element[1]}
