@@ -6,18 +6,24 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Table from "../../../components/Table/Table";
 import { getTableHeaders } from "../../../commons/tableHeaders";
-import { getReferrals } from "../../../redux/actions/referrals";
 import { getNumberofAppointments } from "../../../redux/actions/numberOfAppointments";
-import ActionConformationModal from "../../../components/ActionConformationModal/ActionConformationModal";
-import { createReferral } from "../../../redux/actions/referrals";
+import {
+  searchLabVisits,
+  updateLabVisits,
+} from "../../../redux/actions/visits";
+import { createVisit } from "../../../redux/actions/visits";
+import { BiSearchAlt } from "react-icons/bi";
 
 const VisitsPage = () => {
   const [isClicked1, setClicked1] = useState(true);
   const [isClicked2, setClicked2] = useState(false);
   const [isReport, setReport] = useState(false);
   const [form, setForm] = useState();
+  const [form2, setForm2] = useState();
   const dispatch = useDispatch();
   const [isModal, setModal] = useState();
+  const [isSearch, setSearch] = useState(false);
+  const [value, setValue] = useState("");
 
   const toggleClass1 = () => {
     if (!isClicked1) {
@@ -34,15 +40,28 @@ const VisitsPage = () => {
   };
 
   const toggleReport = () => {
-    setReport(!isReport);
+    if (isClicked1) setReport(!isReport);
+  };
+
+  const toggleSeach = () => {
+    if (isClicked2) setSearch(!isSearch);
   };
 
   // const toggleModal = () => {
   //   setModal(!isModal);
   // };
 
-  const handleChange = (e) =>
+  const handleChangeInput = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setValue(e.target.value);
+  };
+
+  const handleChangeArea = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleChange = (e) =>
+    setForm2({ ...form2, [e.target.name]: e.target.value });
 
   let formatted;
   const onChangeDateHandler = (e) => {
@@ -61,38 +80,96 @@ const VisitsPage = () => {
     console.log({ ...form });
   };
 
+  const onChangeDateHandler2 = (e) => {
+    const date = new Date(e.target.value);
+    const years = date.toLocaleDateString("en-US", { year: "numeric" });
+    const month = date.toLocaleDateString("en-US", { month: "numeric" });
+    const day = date.toLocaleDateString("en-US", { day: "numeric" });
+    formatted = years;
+    formatted += month.length === 1 ? `-0${month}` : `-${month}`;
+    formatted += day.length === 1 ? `-0${day}` : `-${day}`;
+    setForm2({
+      ...form2,
+      dob: formatted,
+    });
+
+    console.log({ ...form2 });
+  };
+
   function hadleScheduling(event) {
     event.preventDefault();
     console.log({ ...form });
-    dispatch(createReferral({ ...form }));
+    dispatch(createVisit({ ...form }));
   }
 
   function handleReports(event) {
     event.preventDefault();
-    console.log({ ...form });
-    dispatch(getReferrals({ ...form }));
+    console.log({ value });
+    dispatch(searchLabVisits({ value }));
+  }
+
+  let status;
+  function handleButtonCanceled(entry) {
+    console.log("kliknuto");
+    status = "Otkazano";
+    dispatch(updateLabVisits(entry[0][1], { status }));
+  }
+
+  function handleButtonFinished(entry) {
+    console.log("kliknuto2");
+    status = "Zavrseno";
+    dispatch(updateLabVisits(entry[0][1], { status }));
   }
 
   function handleNumberOfReports(event) {
     event.preventDefault();
-    console.log({ ...form });
-    dispatch(getNumberofAppointments({ ...form }));
+    console.log(form.dob);
+    dispatch(getNumberofAppointments(form.dob));
   }
 
-  function handleEnd() {
-    console.log("prosledjeno");
+  let currDate = new Date();
+  function handleLabVisits(event) {
+    event.preventDefault();
+    if (form2.length > 0) dispatch(searchLabVisits({ ...form2 }));
+    else dispatch(searchLabVisits({ currDate }));
   }
 
   const number = useSelector((state) => state.number);
   const referrals = useSelector((state) => state.referrals);
+  const visits = useSelector((state) => state.visits);
 
+  const demoSearchVisits = [
+    {
+      id: 1,
+      lbpPacijenta: 1234,
+      lbzTehnicara: "klm",
+      napomena: "nesto",
+      datumPregleda: new Date().getTime(),
+      statusPregleda: "Zakazano",
+    },
+    {
+      id: 2,
+      lbpPacijenta: 1234,
+      lbzTehnicara: "klm",
+      napomena: "nesto",
+      datumPregleda: new Date().getTime(),
+      statusPregleda: "Zavrseno",
+    },
+    {
+      id: 3,
+      lbpPacijenta: 1234,
+      lbzTehnicara: "klm",
+      napomena: "nesto",
+      datumPregleda: new Date().getTime(),
+      statusPregleda: "Otkazano",
+    },
+  ];
   const demoUnrealizedLabReports = [
     {
       id: 1,
       ime: "Marko",
       prezime: "Markovic",
       datum: "29.05.2020.",
-      vreme: "14:50",
       odeljenje: "ocno",
       spisakAnaliza: "spisakAnaliza",
       komentar: "komentar",
@@ -102,7 +179,6 @@ const VisitsPage = () => {
       ime: "Marko",
       prezime: "Markovic",
       datum: "29.05.2020.",
-      vreme: "14:50",
       odeljenje: "ocno",
       spisakAnaliza: "spisakAnaliza",
       komentar: "komentar",
@@ -112,7 +188,6 @@ const VisitsPage = () => {
       ime: "Marko",
       prezime: "Markovic",
       datum: "29.05.2020.",
-      vreme: "14:50",
       odeljenje: "ocno",
       spisakAnaliza: "spisakAnaliza",
       komentar: "komentar",
@@ -132,36 +207,60 @@ const VisitsPage = () => {
     table = (
       // {referrals.length === 0 && (
       <Table
-        headers={getTableHeaders("unrealizedLabReports")}
+        headers={getTableHeaders("unrealizedLabReferrals")}
         // tableContent={referrals}
         tableContent={demoUnrealizedLabReports}
-        // handleRowClick={handleRowClick}
-        tableType="labReports"
       />
       // )};
     );
   } else {
     table = <div></div>;
   }
+
+  let table2;
+  if (isSearch) {
+    table2 = (
+      // {visits.length === 0 && (
+      <Table
+        headers={getTableHeaders("scheduledVisits")}
+        // tableContent={visits}
+        tableContent={demoSearchVisits}
+        tableType="searchVisits"
+        handleButtonCanceled={handleButtonCanceled}
+        handleButtonFinished={handleButtonFinished}
+      />
+      // )};
+    );
+  } else {
+    table2 = <div></div>;
+  }
+
   let forma;
   if (isClicked1) {
     forma = (
       <div>
-        <form className="form-custom familyFix visits">
+        <form action="#" className="form-custom familyFix visits">
           <div className="form-group-custom">
             <input
               className="margin-right"
               placeholder="LBP"
               name="lbp"
               type="text"
-              onChange={handleChange}
+              onChange={handleChangeInput}
+              value={value}
               required
             />
 
-            <button className="buttonForm" type="button" onClick={toggleReport}>
+            <button
+              className={` ${!value ? "buttonFormDisabled" : "buttonForm"}`}
+              type="button"
+              disabled={!value}
+              onClick={toggleReport}
+            >
               {/* <button
               className="buttonForm"
               type="button"
+              disabled={!value}
               onClick={handleReports}
             > */}
               Dohvati
@@ -185,7 +284,11 @@ const VisitsPage = () => {
               value={number}
               disabled="disabled"
             />
-            <button className="buttonForm" onClick={handleNumberOfReports}>
+            <button
+              className="buttonForm"
+              type="button"
+              onClick={handleNumberOfReports}
+            >
               Dohvati
             </button>
           </div>
@@ -195,7 +298,7 @@ const VisitsPage = () => {
               name="description"
               rows="4"
               cols="50"
-              onChange={handleChange}
+              onChange={handleChangeArea}
               placeholder="Napomena..."
             ></textarea>
           </div>
@@ -214,6 +317,48 @@ const VisitsPage = () => {
           </div>
         </form>
         {table}
+      </div>
+    );
+  }
+
+  let forma2;
+  if (isClicked2) {
+    forma2 = (
+      <div>
+        <form className="form-custom familyFix visits">
+          <div className="form-group-custom">
+            <input
+              className="margin-right"
+              placeholder="LBP"
+              name="lbp"
+              type="text"
+              onChange={handleChange}
+            />
+            <div className="form-group-custom">
+              <input
+                type="date"
+                data-date=""
+                data-date-format="ddmmyyyy"
+                name="dob"
+                onChange={onChangeDateHandler2}
+                className="margin-right"
+              />
+              <button
+                className="buttonForm"
+                type="button"
+                onClick={toggleSeach}
+              >
+                {/* <button
+                className="buttonForm"
+                type="button"
+                onClick={handleLabVisits}
+              > */}
+                <BiSearchAlt />
+              </button>
+            </div>
+          </div>
+        </form>
+        {table2}
       </div>
     );
   }
@@ -243,6 +388,7 @@ const VisitsPage = () => {
           </li>
         </ul>
         {forma}
+        {forma2}
         {/* <ActionConformationModal
           title="Naslov"
           info="info"
