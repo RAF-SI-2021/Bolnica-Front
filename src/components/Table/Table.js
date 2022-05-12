@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./styles.css";
-import { ImBin, ImPencil } from "react-icons/im";
+import { ImBin, ImPencil, ImFileText2 } from "react-icons/im";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 
 const Table = (props) => {
@@ -11,6 +11,9 @@ const Table = (props) => {
     tableType,
     handleEdit,
     handleRowClick,
+    handlecreateLabReport,
+    handleCancelVisit,
+    handleCreateLabReportTab1,
   } = props;
 
   const listHeaders = headers.map((header) => {
@@ -50,6 +53,94 @@ const Table = (props) => {
           return (
             <td key={element} style={{ padding: "25px 0px" }}>
               {new Date(element[1]).toLocaleDateString()}
+            </td>
+          );
+        }
+        /*         if (element[0] === "status") {
+          if (element[1] === "neobradjeno") {
+            return (
+              <td style={{ width: "5%" }}>
+                <button
+                  className="buttonIconBlue"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlecreateLabReport("lbz", entry);
+                  }}
+                >
+                  <ImFileText2 />
+                </button>
+              </td>
+            );
+          } else {
+            return <></>;
+          }
+        } */
+        if (element[0] === "kreiraj") {
+          if (entry[3][1] < new Date().getTime() - 2592000000) {
+            return (
+              <td style={{ width: "5%" }}>
+                <button
+                  className="buttonIconBlue"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlecreateLabReport("lbz", entry);
+                  }}
+                >
+                  <ImFileText2 />
+                </button>
+              </td>
+            );
+          } else {
+            return <></>;
+          }
+        }
+
+        if (element[0] === "statusPregledaZakazaniPacijenti") {
+          let zakazano = false;
+          if (entry[5][1] === "YY") {
+            zakazano = true;
+          }
+          return (
+            <td style={{ width: "5%" }}>
+              {/*               <div className="d-flex flex-row justify-content-center buttons">
+               */}{" "}
+              <div className="d-flex">
+                <button
+                  className={`buttonZakazano ${
+                    zakazano ? "" : "inactiveButton"
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
+                  Zakazano
+                </button>
+                <button
+                  className={`buttonOtkazano ${
+                    !zakazano
+                      ? "buttonOtkazano disbledButton"
+                      : "inactiveButton"
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCancelVisit("lbz", entry);
+                  }}
+                >
+                  Otkazano
+                </button>
+                <button
+                  className={`buttonKreirajNalog ${
+                    zakazano ? "" : "inactiveButton disbledButton"
+                  }`}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCreateLabReportTab1("lbz", entry);
+                  }}
+                >
+                  Kreiraj radni nalog
+                </button>
+              </div>
             </td>
           );
         }

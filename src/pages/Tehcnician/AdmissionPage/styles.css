@@ -10,6 +10,11 @@
 }
 
 .inactive {
+  background-color: #336cfb;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.5px;
   border-color: #cacccf;
   background-color: #cacccf;
   width: 100%;
@@ -24,4 +29,14 @@
 .nav-justified {
   flex: 1 1 auto;
   text-align: center;
+}
+
+.form-custom {
+  width: 60%;
+  margin: auto;
+}
+
+.disabled {
+  background-color: #cacccf;
+  border-color: #cacccf;
 }

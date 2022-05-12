@@ -126,6 +126,72 @@ export const getTableHeaders = (contentType) => {
         value: "Prezime",
       },
     ];
+  } else if (contentType === "unrealizedLabReferrals") {
+    return [
+      {
+        key: "id",
+        value: "ID uputa",
+      },
+      {
+        key: "ime",
+        value: "Ime",
+      },
+      {
+        key: "prezime",
+        value: "Prezime",
+      },
+      {
+        key: "datumPregleda",
+        value: "Datum",
+      },
+      {
+        key: "odeljenje",
+        value: "Odeljenje",
+      },
+      {
+        key: "spisakAnaliza",
+        value: "Analize",
+      },
+      {
+        key: "komentar",
+        value: "Komentar",
+      },
+      /*       {
+        key: "status",
+        value: "Status",
+      }, */
+      {
+        key: "kreiraj",
+        value: "Kreiraj radni nalog",
+      },
+    ];
+  } else if (contentType === "labVisits") {
+    return [
+      {
+        key: "id",
+        value: "Id lab pregleda",
+      },
+      {
+        key: "lbpPacijenta",
+        value: "LBP",
+      },
+      {
+        key: "lbzTehnicara",
+        value: "LBZ",
+      },
+      {
+        key: "napomena",
+        value: "Napomena",
+      },
+      {
+        key: "datumPregleda",
+        value: "Datum",
+      },
+      {
+        key: "statusPregledaZakazaniPacijenti",
+        value: "Status pregleda",
+      },
+    ];
   }
   return [];
 };
