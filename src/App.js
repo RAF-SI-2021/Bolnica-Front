@@ -30,6 +30,7 @@ import ScheduleAppointmentPage from "./pages/Nurse/ScheduleAppointmentPage/Sched
 import BiochemistHomepage from "./pages/Biochemist/BiochemistHomepage/BiochemistHomepage";
 
 //TECHNICIAN
+import TechnicianHomepage from "./pages/Tehcnician/TechnicianHomepage/TechnicianHomepage";
 import VisitsPage from "./pages/Tehcnician/VisitsPage/VisitsPage";
 import AdmissionPage from "./pages/Tehcnician/AdmissionPage/AdmissionPage";
 
@@ -93,6 +94,7 @@ const App = () => {
         <Route path="/biochemist" exact element={<BiochemistHomepage />} />
 
         {/* TECHNICIAN ROUTES */}
+        <Route path="/technician" exact element={<TechnicianHomepage />} />
         <Route
           path="/technican/patient-admission"
           exact

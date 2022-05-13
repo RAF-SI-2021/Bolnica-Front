@@ -4,6 +4,8 @@ import {
   FaUser,
   FaPlusCircle,
   FaUserInjured,
+  FaClipboardList,
+
 } from "react-icons/fa";
 import { BiCalendarPlus } from "react-icons/bi";
 import { MdCalendarToday } from "react-icons/md";
@@ -111,7 +113,7 @@ export const getSidebarLinks = (role, activeId) => {
       {
         id: 2,
         text: "Prijem pacijenata",
-        path: "/technican/patient-admission",
+        path: "/technician/patient-admission",
         icon: <FaUserInjured />,
         isActive: activeId === 2 ? true : false,
       },
@@ -125,7 +127,7 @@ export const getSidebarLinks = (role, activeId) => {
       {
         id: 4,
         text: "Izdavanje rezultata",
-        path: "/technican/issuing-results",
+        path: "/technician/issuing-results",
         icon: <GiNotebook />,
         dividerAfter: true,
         isActive: activeId === 4 ? true : false,
@@ -138,7 +140,46 @@ export const getSidebarLinks = (role, activeId) => {
         isActive: activeId === 5 ? true : false,
       },
     ];
-  } else {
+  }else if (role === "technician") {
+    return [
+      {
+        id: 1,
+        text: "Početna",
+        path: "/technician",
+        icon: <FaHome />,
+        isActive: activeId === 1 ? true : false,
+      },
+      {
+        id: 2,
+        text: "Prijem pacijenata",
+        path: "/technician/patient-admission",
+        icon: <FaUserInjured />,
+        isActive: activeId === 2 ? true : false,
+      },
+      {
+        id: 3,
+        text: "Zakazivanje posete",
+        path: "/technician/visits",
+        icon: <BiCalendarPlus />,
+        isActive: activeId === 3 ? true : false,
+      },
+      {
+        id: 4,
+        text: "Izdavanje rezultata",
+        path: "/technician/issuing-results",
+        icon: <FaClipboardList />,
+        dividerAfter: true,
+        isActive: activeId === 4 ? true : false,
+      },
+      {
+        id: 5,
+        text: "Profil",
+        path: "/profile",
+        icon: <FaUser />,
+        isActive: activeId === 5 ? true : false,
+      },
+    ];
+  }   else {
     return [
       {
         id: 1,
