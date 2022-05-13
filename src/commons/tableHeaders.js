@@ -168,7 +168,7 @@ export const getTableHeaders = (contentType) => {
         value: "Prezime",
       },
       {
-        key: "datum",
+        key: "datumRodjenja",
         value: "Datum",
       },
       {
@@ -182,6 +182,31 @@ export const getTableHeaders = (contentType) => {
       {
         key: "komentar",
         value: "Komentar",
+  } else if (contentType === "labVisits") {
+    return [
+      {
+        key: "id",
+        value: "Id lab pregleda",
+      },
+      {
+        key: "lbpPacijenta",
+        value: "LBP",
+      },
+      {
+        key: "lbzTehnicara",
+        value: "LBZ",
+      },
+      {
+        key: "napomena",
+        value: "Napomena",
+      },
+      {
+        key: "datumPregleda",
+        value: "Datum",
+      },
+      {
+        key: "statusPregledaZakazaniPacijenti",
+        value: "Status pregleda",
       },
     ];
   }
