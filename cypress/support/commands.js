@@ -23,3 +23,31 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+//ADMIN
+Cypress.Commands.add('loginAdmin', ()  => {
+    cy.visit('http://localhost:3000/login');
+    cy.get('input[name="email"]').type("test@gmail.com");
+    cy.get('input[name="password"]').type("superadmin");//.type("{enter}");
+    cy.get('button').click();
+    cy.url({ timeout: 10000 }).should('contain', '/admin');
+});
+
+Cypress.Commands.add('loginAdminBetter', ()  => { //TBD
+    cy.request({
+        method: 'POST',
+        url: 'http://localhost:9092/bolnica-user-service/api/login',
+        body: {
+            email: 'test@gmail.com',
+            password: 'superadmin',
+        }
+    }).then((response) => {
+        localStorage.setItem('token', response.body.token);
+    })
+});
+
+//DOCTOR
+
+//NURSE
+
+//...
