@@ -126,6 +126,91 @@ export const getTableHeaders = (contentType) => {
         value: "Prezime",
       },
     ];
+  } else if (contentType === "scheduledVisits") {
+    return [
+      {
+        key: "id",
+        value: "Id",
+      },
+      {
+        key: "lbpPacijenta",
+        value: "LBP",
+      },
+      {
+        key: "lbzTehnicara",
+        value: "LBZ",
+      },
+      {
+        key: "napomena",
+        value: "Napomena",
+      },
+      {
+        key: "datumPregleda",
+        value: "Datum pregleda",
+      },
+      {
+        key: "statusPregleda",
+        value: "Status pregleda",
+      },
+    ];
+  } else if (contentType === "unrealizedLabReferrals") {
+    return [
+      {
+        key: "id",
+        value: "ID izvestaja",
+      },
+      {
+        key: "ime",
+        value: "Ime",
+      },
+      {
+        key: "prezime",
+        value: "Prezime",
+      },
+      {
+        key: "datumRodjenja",
+        value: "Datum",
+      },
+      {
+        key: "odeljenje",
+        value: "Odeljenje",
+      },
+      {
+        key: "spisakAnaliza",
+        value: "spisakAnaliza",
+      },
+      {
+        key: "komentar",
+        value: "Komentar",
+      },
+    ];
+  } else if (contentType === "labVisits") {
+    return [
+      {
+        key: "id",
+        value: "Id lab pregleda",
+      },
+      {
+        key: "lbpPacijenta",
+        value: "LBP",
+      },
+      {
+        key: "lbzTehnicara",
+        value: "LBZ",
+      },
+      {
+        key: "napomena",
+        value: "Napomena",
+      },
+      {
+        key: "datumPregleda",
+        value: "Datum",
+      },
+      {
+        key: "statusPregledaZakazaniPacijenti",
+        value: "Status pregleda",
+      },
+    ];
   }
   return [];
 };
