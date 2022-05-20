@@ -80,7 +80,7 @@ export const getTableHeaders = (contentType) => {
     return [
       {
         key: "dijagnoza",
-        value: "Dijagnoza",
+        value: "Dijagndoza",
       },
       {
         key: "pocetak",
