@@ -43,6 +43,7 @@ const DoctorHomepage = () => {
       upperThreshold: "10",
       doctorName: "Marko",
       doctorSurname: "Markovic",
+      editLabReportHeader: "true",
     },
     {
       analysisId: "4128319231",
@@ -54,6 +55,7 @@ const DoctorHomepage = () => {
       upperThreshold: "3.2",
       doctorName: "Miroslav",
       doctorSurname: "Zeljic",
+      editLabReportHeader: "true",
     },
     {
       analysisId: "81928319",
@@ -65,6 +67,7 @@ const DoctorHomepage = () => {
       upperThreshold: "200",
       doctorName: "Pera",
       doctorSurname: "Zivkovic",
+      editLabReportHeader: "true",
     },
   ];
 
@@ -85,7 +88,7 @@ const DoctorHomepage = () => {
         <Table
           headers={getTableHeaders("detailedResultPreview")}
           tableContent={demoAnalysisPreview}
-          tableType="labReports"
+          tableType="detailedResultPreview"
         />
       </div>
     </>

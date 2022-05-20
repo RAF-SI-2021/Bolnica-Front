@@ -100,7 +100,7 @@ const App = () => {
 
         {/* TECHNICIAN ROUTES */}
         <Route
-          path="/technican/patient-admission"
+          path="/technician/patient-admission"
           exact
           element={<AdmissionPage />}
         />

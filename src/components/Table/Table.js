@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./styles.css";
-import { ImBin, ImPencil, ImFileText2 } from "react-icons/im";
+import { ImBin, ImPencil, ImFileText2, ImCheckmark } from "react-icons/im";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 
 const Table = (props) => {
@@ -26,6 +26,10 @@ const Table = (props) => {
       </th>
     );
   });
+  if (tableType === "employees" || tableType === "detailedResultPreview") {
+    listHeaders.push(<th scope="col"></th>);
+    listHeaders.push(<th scope="col"></th>);
+  }
 
   const handleButton = (key, entry) => {
     const value = entry.filter((element) => element[0] === key);
@@ -240,6 +244,24 @@ const Table = (props) => {
               }}
             >
               <ImBin />
+            </button>
+          </td>
+        </>
+      ) : tableType === "detailedResultPreview" ? (
+        <>
+          <td style={{ width: "5%" }}>
+            <button className="buttonIconBlue">
+              <ImPencil />
+            </button>
+          </td>
+          <td style={{ width: "5%" }}>
+            <button
+              className="buttonIconGreen"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <ImCheckmark />
             </button>
           </td>
         </>
