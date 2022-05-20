@@ -5,7 +5,6 @@ import {
   FaPlusCircle,
   FaUserInjured,
   FaClipboardList,
-
 } from "react-icons/fa";
 import { BiCalendarPlus } from "react-icons/bi";
 import { MdCalendarToday } from "react-icons/md";
@@ -140,7 +139,7 @@ export const getSidebarLinks = (role, activeId) => {
         isActive: activeId === 5 ? true : false,
       },
     ];
-  }else if (role === "technician") {
+  } else if (role === "technician") {
     return [
       {
         id: 1,
@@ -179,7 +178,7 @@ export const getSidebarLinks = (role, activeId) => {
         isActive: activeId === 5 ? true : false,
       },
     ];
-  }   else {
+  } else {
     return [
       {
         id: 1,

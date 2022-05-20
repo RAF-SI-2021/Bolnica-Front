@@ -34,7 +34,7 @@ const DoctorHomepage = () => {
   }
 
   const handleRowClick = (entry) => {
-    navigate(`/biochemist/detailed-view/${entry[0][1]}`);
+    navigate(`/biochemist/detailed-result/${entry[0][1]}`);
   };
 
   const demoLabReports = [
