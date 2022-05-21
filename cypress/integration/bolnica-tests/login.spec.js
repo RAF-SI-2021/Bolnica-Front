@@ -20,7 +20,7 @@ describe('Login', () => {
         cy.get('a').should('be.visible');
     })
 
-    it('should login with valid credentials', () => {
+    it('should login with valid credentials', () => { //as admin
         cy.get('input[name="email"]').type("test@gmail.com");
         cy.get('input[name="password"]').type("superadmin");//.type("{enter}");
         cy.get('button').click();
@@ -45,7 +45,7 @@ describe('Login', () => {
         cy.get('button').should('be.visible').click();
     })
 
-    //TODO error messages for invalid credentials ---------------------------------------------------------------------------------------------------------------------
+    //TODO error messages for invalid credentials ---------------------------------------------------------------
     
     it('should display error message', () => {
         cy.get('p.error').should('not.be.visible');
