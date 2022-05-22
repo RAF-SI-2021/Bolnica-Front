@@ -1,3 +1,5 @@
+/* eslint-disable testing-library/await-async-utils */
+/* eslint-disable cypress/no-unnecessary-waiting */
 /// <reference types="Cypress" />
 
 import Chance from 'chance';
@@ -23,7 +25,6 @@ describe('Nurse', () => {
 
     it('should be able to see/find patients and change pages', () => {
         cy.get('ul').should('be.visible');
-        //cy.wait(3000);
         cy.get('ul > li:nth-child(2)').should('be.visible').should('contain', 'Pacijenti').click({ multiple: true });
         cy.url({ timeout: 10000 }).should('contain', '/nurse/patient-preview');
         cy.get('.welcome-msg').should('be.visible')
@@ -44,27 +45,42 @@ describe('Nurse', () => {
     })
 
 
-    it('should be able to schedule/view patients for a specific doctor in calendar', () => {
+    it('should be able to schedule/view patients for a specific doctor in calendar', () => { //jebada
         cy.get('ul').should('be.visible');
-        //cy.wait(3000);
         cy.get('ul > li:nth-child(3)').should('be.visible').should('contain', 'Zakazivanje').click({ multiple: true });
         cy.url({ timeout: 10000 }).should('contain', '/nurse/schedule-appointment');
 
         cy.get('.dropdownButton').click();
         cy.get('.dropdown-item').contains('Dr. Test').click();
-
-        //cy.get('div > .Kalend__Calendar__root > .Kalend__Calendar__table > #Kalend__timetable')
-        //                                    .should('contain', dayjs().format('YYYY-MM-DD') ).click();
                                          
         cy.get('.Kalend__ButtonIcon__container:nth-child(3) > .Kalend__ButtonIcon > .Kalend__ButtonIcon__svg-normal > g > g > rect').click();
         cy.get('.Kalend__CalendarDesktopNavigation__buttons > .Kalend__button').click();
         cy.get('.Kalend__HeaderCalendarTitle__container > .Kalend__text').should('be.visible').should('contain', dayjs().format('MMMM YYYY'));
 
-        cy.get('div > .Kalend__DesktopLayout > .Kalend__header_calendar_buttons__container > .Kalend__button:nth-child(1) > .Kalend__text').click();
-        cy.get('div > .Kalend__DesktopLayout > .Kalend__header_calendar_buttons__container > .Kalend__button:nth-child(3) > .Kalend__text').click();
-        cy.get('.Kalend__CalendarDesktopNavigation__buttons > .Kalend__button').click();
-        cy.get('.Kalend__HeaderCalendarTitle__container > .Kalend__text').should('be.visible').should('contain', dayjs().format('MMMM YYYY'));
+        cy.get('#Kalend__timetable').click();
+        //cy.get('div > .Kalend__Calendar__root > .Kalend__Calendar__table > #Kalend__timetable')
+                            //.should('equal', '#Kalend__day__'+ dayjs().format('YYYY-MM-DD')).click();// + 'T13\3A 41\3A 02\.724\+02\3A 00').click();
 
+        cy.get('.new-appointment-doctor > .btn-container > .comment-btn').click()
+        cy.get('.new-appointment-container > textarea').click().type('test');
+        cy.get('.dropdown1 > .form-select').select('pregled');
+        cy.get('.dropdown2 > .form-select').select('Pacijent Pacijent');
+        cy.get('.my-save-btn').click();
+        
+        cy.get('.Kalend__CalendarViewDropdown__wrapper > .Kalend__button').click();
+        cy.get('.Kalend__header_calendar_buttons__container-mobile > .Kalend__button:nth-child(1) > .Kalend__text').click();
+        cy.get('.Kalend__CalendarViewDropdown__wrapper > .Kalend__button').click();
+        cy.get('.Kalend__header_calendar_buttons__container-mobile > .Kalend__button:nth-child(3) > .Kalend__text').click();
+
+        cy.visit('http://localhost:3000/nurse',{ timeout: 10000 });
+
+        cy.get('.dropdown').click(); 
+        cy.get('.dropdown-item').contains('Dr. Test').click();
+        cy.wait(500);
+        cy.get('.customButton1').click({multiple:true},{force: true});
+        //cy.get('.customButton2').click();
+        cy.get('.customButton3').click({force: true});
+        //cy.get('.customButton4').click();
     })
 
 
