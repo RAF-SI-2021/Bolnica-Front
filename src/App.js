@@ -28,8 +28,10 @@ import ScheduleAppointmentPage from "./pages/Nurse/ScheduleAppointmentPage/Sched
 
 // BIOCHEMIST
 import BiochemistHomepage from "./pages/Biochemist/BiochemistHomepage/BiochemistHomepage";
+import DetailedResultPage from "./pages/Biochemist/DetailedResultPage/DetailedResultPage";
 
 //TECHNICIAN
+import TechnicianHomepage from "./pages/Tehcnician/TechnicianHomepage/TechnicianHomepage";
 import VisitsPage from "./pages/Tehcnician/VisitsPage/VisitsPage";
 import AdmissionPage from "./pages/Tehcnician/AdmissionPage/AdmissionPage";
 
@@ -91,10 +93,16 @@ const App = () => {
 
         {/* BIOCHEMIST ROUTES */}
         <Route path="/biochemist" exact element={<BiochemistHomepage />} />
+        <Route
+          path="/biochemist/detailed-result/:labReportId"
+          exact
+          element={<DetailedResultPage />}
+        />
 
         {/* TECHNICIAN ROUTES */}
+        <Route path="/technician" exact element={<TechnicianHomepage />} />
         <Route
-          path="/technican/patient-admission"
+          path="/technician/patient-admission"
           exact
           element={<AdmissionPage />}
         />
