@@ -142,6 +142,9 @@ const DoctorHomepage = () => {
                 className="margin-left"
               />
             </div>
+            <button onClick={handleSubmit} style={{ marginTop: "10px" }}>
+              Pretrazi
+            </button>
           </form>
         </div>
         {/* {labReports.length > 0 && ( */}
