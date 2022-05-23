@@ -34,6 +34,7 @@ import DetailedResultPage from "./pages/Biochemist/DetailedResultPage/DetailedRe
 import TechnicianHomepage from "./pages/Tehcnician/TechnicianHomepage/TechnicianHomepage";
 import VisitsPage from "./pages/Tehcnician/VisitsPage/VisitsPage";
 import AdmissionPage from "./pages/Tehcnician/AdmissionPage/AdmissionPage";
+import IssuingResultsPage from "./pages/Tehcnician/IssuingResultsPage/IssuingResultsPage";
 
 const App = () => {
   return (
@@ -107,6 +108,11 @@ const App = () => {
           element={<AdmissionPage />}
         />
         <Route path="/technician/visits" exact element={<VisitsPage />} />
+        <Route
+          path="/technician/issuing-results"
+          exact
+          element={<IssuingResultsPage />}
+        />
       </Routes>
     </BrowserRouter>
   );
