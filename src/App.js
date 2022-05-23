@@ -35,6 +35,7 @@ import TechnicianHomepage from "./pages/Tehcnician/TechnicianHomepage/Technician
 import VisitsPage from "./pages/Tehcnician/VisitsPage/VisitsPage";
 import AdmissionPage from "./pages/Tehcnician/AdmissionPage/AdmissionPage";
 import IssuingResultsPage from "./pages/Tehcnician/IssuingResultsPage/IssuingResultsPage";
+import IssuingResultsDetailedPage from "./pages/Tehcnician/IssuingResultsDetailedPage/IssuingResultsDetailedPage";
 
 const App = () => {
   return (
@@ -112,6 +113,11 @@ const App = () => {
           path="/technician/issuing-results"
           exact
           element={<IssuingResultsPage />}
+        />
+        <Route
+          path="/technician/issuing-results/:labReportId"
+          exact
+          element={<IssuingResultsDetailedPage />}
         />
       </Routes>
     </BrowserRouter>

@@ -12,6 +12,8 @@ import { getSidebarLinks } from "../../../commons/sidebarLinks";
 import { BiSearchAlt } from "react-icons/bi";
 import { getTableHeaders } from "../../../commons/tableHeaders";
 import { getPatients } from "../../../redux/actions/patients";
+import { format } from "date-fns";
+import Header from "../../../components/Header/Header";
 
 const DoctorHomepage = () => {
   const dispatch = useDispatch();
@@ -90,13 +92,15 @@ const DoctorHomepage = () => {
         <Sidebar links={getSidebarLinks("technician", 4)} />
       </div>
       <div style={{ marginLeft: "15%" }}>
-        <div className="flexRow" style={{ marginLeft: "83%" }}>
-          <HeaderRight
-            userName={headerProps.userName}
-            userTitle={headerProps.userTitle}
-          />
-        </div>
-        <div style={{ width: "60%", margin: "auto", paddingTop: "40px" }}>
+        <Header
+          avatarUrl={headerProps.avatarUrl}
+          welcomeMsg={headerProps.welcomeMsg}
+          userName={headerProps.userName}
+          userTitle={headerProps.userTitle}
+          day={format(new Date(), "d")}
+          date={format(new Date(), "d MMMM, yyyy")}
+        />
+        <div style={{ width: "60%", margin: "auto" }}>
           <form>
             <div className="form-group-custom">
               <select
