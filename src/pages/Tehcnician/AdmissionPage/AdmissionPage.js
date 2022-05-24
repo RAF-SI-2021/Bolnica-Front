@@ -4,7 +4,10 @@ import { getSidebarLinks } from "../../../commons/sidebarLinks";
 import "./styles.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getReferrals } from "../../../redux/actions/referrals";
+import {
+  getReferrals,
+  getUnprocessedReferrals,
+} from "../../../redux/actions/referrals";
 import { createLabReport } from "../../../redux/actions/labReports";
 import {
   searchLabVisits,
@@ -15,6 +18,7 @@ import { getTableHeaders } from "../../../commons/tableHeaders";
 import CustomModal from "../../../components/CustomModal/CustomModal";
 import ActionConfirmationModal from "../../../components/ActionConfirmationModal/ActionConfirmationModal";
 import { useEffect } from "react";
+import { getPatients } from "../../../redux/actions/patients";
 
 const initialStateForm = {
   lbp: "",
@@ -31,6 +35,7 @@ const AdmissionPage = () => {
   let dateValue = new Date();
 
   const referrals = useSelector((state) => state.referrals);
+  const patients = useSelector((state) => state.patients);
 
   const [disable, setDisable] = useState(true);
 
@@ -44,11 +49,13 @@ const AdmissionPage = () => {
   const [isClicked2, setClicked2] = useState(false);
 
   useEffect(() => {
-    dispatch(searchLabVisits(dateValue));
+    // dispatch(searchLabVisits(dateValue));
+    dispatch(getPatients());
   }, []);
 
   const visits = useSelector((state) => state.visits);
-  
+  console.log(visits);
+
   const toggleClass1 = () => {
     if (!isClicked1) {
       setClicked2(!isClicked2);
@@ -70,9 +77,27 @@ const AdmissionPage = () => {
     dispatch(getReferrals({ ...form }));
   };
 
+  const handleSubmitValue = (e) => {
+    e.preventDefault();
+    dispatch(getUnprocessedReferrals(value));
+  };
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setDisable(e.target.value === "");
+  };
+
+  const handleChangeValue = (e) => {
+    setValue(e.target.value);
+    setDisable(e.target.value === "");
+    // dispatch(getUnprocessedReferrals(e.target.value));
+  };
+
+  const handlePatientChange = (event) => {
+    setForm({ ...form, lbp: event.target.value });
+    console.log(event.target.value);
+    // dispatch(getUnprocessedReferrals(event.target.value));
+    dispatch(searchLabVisits({ date: dateValue, lbp: event.target.value }));
   };
 
   const handleChangeLbp = (e) => {
@@ -187,14 +212,30 @@ const AdmissionPage = () => {
         <form className="form-custom familyFix">
           <br></br>
           <div className="form-group-custom">
-            <input
-              className="margin-right"
-              placeholder="LBP"
-              onChange={handleChangeLbp}
-              name="lbpForm"
-              type="text"
-              value={valueLbp}
-            />
+            <select
+              className="form-select-custom small-select margin-right"
+              onChange={handlePatientChange}
+              name="lbp"
+              value={form.lbp}
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Izaberite pacijenta
+              </option>
+              {patients.length > 0 ? (
+                <>
+                  {patients.map((patient) => {
+                    return (
+                      <option key={patient.lbp} value={patient.lbp}>
+                        {patient.ime}
+                      </option>
+                    );
+                  })}
+                </>
+              ) : (
+                <></>
+              )}
+            </select>
           </div>
         </form>
         <Table
@@ -217,14 +258,14 @@ const AdmissionPage = () => {
             <input
               className="margin-right"
               placeholder="LBP"
-              onChange={handleChange}
+              onChange={handleChangeValue}
               name="lbp"
               type="text"
               value={value}
             />
             <button
               disabled={disable}
-              onClick={handleSubmit}
+              onClick={handleSubmitValue}
               className={` ${disable ? "disabled" : ""}`}
               type="button"
             >
