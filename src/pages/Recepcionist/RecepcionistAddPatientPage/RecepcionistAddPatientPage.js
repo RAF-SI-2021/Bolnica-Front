@@ -54,7 +54,7 @@ const RecepcionistAddPatientPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(createPatient({ ...form, pol: "MUSKI" }));
-    navigate("/recepcionist/patient-preview");
+    navigate("/recepcionist");
   };
   return (
     <div style={{ marginLeft: "15%" }}>
