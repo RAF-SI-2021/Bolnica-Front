@@ -34,7 +34,7 @@ const VisitsPage = () => {
   const visits = useSelector((state) => state.visits);
 
   useEffect(() => {
-    dispatch(getLabReports());
+    // dispatch(getLabReports());
     dispatch(getPatients());
   }, []);
 
@@ -135,9 +135,7 @@ const VisitsPage = () => {
 
   let status;
   function handleButtonCanceled(entry) {
-    console.log("kliknuto");
-    status = "Otkazano";
-    dispatch(updateLabVisits(entry[0][1], { status }));
+    dispatch(updateLabVisits({ id: entry[0][1], status: "OTKAZANO" }));
   }
 
   function handleButtonFinished(entry) {
@@ -247,7 +245,7 @@ const VisitsPage = () => {
       <Table
         headers={getTableHeaders("scheduledVisits")}
         // tableContent={visits}
-        tableContent={demoSearchVisits}
+        tableContent={visits}
         tableType="searchVisits"
         handleButtonCanceled={handleButtonCanceled}
         handleButtonFinished={handleButtonFinished}

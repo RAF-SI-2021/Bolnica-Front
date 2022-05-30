@@ -26,6 +26,7 @@ export const getLabReport = (id) => async (dispatch) => {
 export const searchLabReports = (searchInfo) => async (dispatch) => {
   try {
     const { data } = await api.searchLabReports({ searchInfo });
+    console.log(data);
     dispatch({ type: GET_LAB_REPORTS, data });
   } catch (error) {
     console.log(error);

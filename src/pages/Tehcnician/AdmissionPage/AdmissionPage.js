@@ -19,6 +19,7 @@ import CustomModal from "../../../components/CustomModal/CustomModal";
 import ActionConfirmationModal from "../../../components/ActionConfirmationModal/ActionConfirmationModal";
 import { useEffect } from "react";
 import { getPatients } from "../../../redux/actions/patients";
+import { getEmployees } from "../../../redux/actions/employee";
 
 const initialStateForm = {
   lbp: "",
@@ -35,6 +36,7 @@ const AdmissionPage = () => {
   let dateValue = new Date();
 
   const referrals = useSelector((state) => state.referrals);
+  const employees = useSelector((state) => state.employees);
   const patients = useSelector((state) => state.patients);
 
   const [disable, setDisable] = useState(true);
@@ -44,6 +46,7 @@ const AdmissionPage = () => {
   const [formLbp, setFormLbp] = useState(initialStateFormLbp);
   const [value, setValue] = useState();
   const [valueLbp, setValueLbp] = useState();
+  const [referralTableContent, setReferralTableContent] = useState([]);
 
   const [isClicked1, setClicked1] = useState(true);
   const [isClicked2, setClicked2] = useState(false);
@@ -51,10 +54,27 @@ const AdmissionPage = () => {
   useEffect(() => {
     // dispatch(searchLabVisits(dateValue));
     dispatch(getPatients());
+    dispatch(getEmployees());
   }, []);
+
+  useEffect(() => {
+    setReferralTableContent(
+      referrals.map((referral) => {
+        const employee = employees.find(
+          (employee) => employee.lbz === referral.lbz
+        );
+        return {
+          ...referral,
+          ...employee,
+        };
+      })
+    );
+  }, [referrals]);
 
   const visits = useSelector((state) => state.visits);
   console.log(visits);
+  console.log(employees);
+  console.log(referrals);
 
   const toggleClass1 = () => {
     if (!isClicked1) {
@@ -116,12 +136,13 @@ const AdmissionPage = () => {
     dispatch(updateLabVisits(entry[0][1], "Otkazano"));
   };
 
-  const handleCreateLabReportTab1 = (key, entry) => {
-    console.log(entry[0][1]);
-    dispatch(updateLabVisits(entry[0][1], "Zavrseno"));
+  const handleCreateLabReportTab1 = (entry) => {
+    console.log(entry);
+    dispatch(updateLabVisits({ id: entry[0][1], status: "ZAVRSENO" }));
     setClicked2(true);
     setClicked1(false);
-    setValue(entry[1][1]);
+    setDisable(false);
+    setValue(entry[2][1]);
   };
 
   const demoUnrealizedLabReferrals = [
@@ -238,15 +259,21 @@ const AdmissionPage = () => {
             </select>
           </div>
         </form>
-        <Table
-          headers={getTableHeaders("labVisits")}
-          tableContent={demoLabVisits}
-          /*              tableContent={visits}
-           */
-          handleRowClick={handleRowClick}
-          handleCancelVisit={handleCancelVisit}
-          handleCreateLabReportTab1={handleCreateLabReportTab1}
-        />
+        {visits.length > 0 ? (
+          <Table
+            /*              tableContent={visits}
+             */
+            headers={getTableHeaders("scheduledVisits")}
+            // tableContent={visits}
+            tableContent={visits}
+            tableType="admissionVisits"
+            handleRowClick={handleRowClick}
+            handleCancelVisit={handleCancelVisit}
+            handleCreateLabReportTab1={handleCreateLabReportTab1}
+          />
+        ) : (
+          <></>
+        )}
       </div>
     );
   } else {

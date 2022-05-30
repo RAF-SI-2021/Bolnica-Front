@@ -15,9 +15,11 @@ export const searchLabVisits = (formData) => async (dispatch) => {
   }
 };
 
-export const updateLabVisits = (id, status) => async (dispatch) => {
+export const updateLabVisits = (formData) => async (dispatch) => {
   try {
-    const { data } = await api.updateLabVisits(id, status);
+    console.log(formData);
+    const { data } = await api.updateLabVisits(formData);
+    console.log(data);
     dispatch({ type: UPDATE_LAB_VISITS, data });
   } catch (error) {
     console.log(error);

@@ -129,28 +129,32 @@ export const getTableHeaders = (contentType) => {
   } else if (contentType === "scheduledVisits") {
     return [
       {
-        key: "id",
+        key: "zakazanLaboratorijskiPregledId",
         value: "Id",
       },
       {
-        key: "lbpPacijenta",
+        key: "lbp",
         value: "LBP",
       },
       {
-        key: "lbzTehnicara",
+        key: "lbz",
         value: "LBZ",
       },
       {
-        key: "napomena",
-        value: "Napomena",
+        key: "odeljenjeId",
+        value: "Id odeljenja",
       },
       {
-        key: "datumPregleda",
+        key: "zakazanDatum",
         value: "Datum pregleda",
       },
       {
         key: "statusPregleda",
         value: "Status pregleda",
+      },
+      {
+        key: "napomena",
+        value: "Napomena",
       },
     ];
   } else if (contentType === "unrealizedLabReferrals") {

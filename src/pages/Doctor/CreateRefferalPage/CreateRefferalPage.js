@@ -41,6 +41,8 @@ function RegistrationPatientPage() {
         lbz: user.LBZ,
         izOdeljenjaId: 1,
         zahtevaneAnalize: "GLU",
+        datumVremeKreiranja: new Date(),
+        zaOdeljenjeId: 1,
       })
     );
     console.log({ ...form, lbz: user.LBZ, izOdeljenjaId: 1 });

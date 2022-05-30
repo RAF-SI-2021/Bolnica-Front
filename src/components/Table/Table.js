@@ -26,8 +26,15 @@ const Table = (props) => {
       </th>
     );
   });
-  if (tableType === "employees" || tableType === "detailedResultPreview") {
+  if (
+    tableType === "employees" ||
+    tableType === "detailedResultPreview" ||
+    tableType === "admissionVisits"
+  ) {
     listHeaders.push(<th scope="col"></th>);
+    listHeaders.push(<th scope="col"></th>);
+  }
+  if (tableType === "searchVisits") {
     listHeaders.push(<th scope="col"></th>);
   }
 
@@ -60,48 +67,10 @@ const Table = (props) => {
     <tr key={entry} onClick={() => handleRowClick(entry)}>
       {entry.map((element) => {
         if (element[0] === "lbp" || element[0] === "lbz") return <></>;
-        if (element[0] === "datumPregleda") {
+        if (element[0] === "datumPregleda" || element[0] === "zakazanDatum") {
           return (
             <td key={element} style={{ padding: "25px 0px" }}>
               {new Date(element[1]).toLocaleDateString()}
-            </td>
-          );
-        }
-
-        if (element[0] === "statusPregleda") {
-          let reserved = false;
-          let canceled = false;
-          let finished = false;
-          if (entry[5][1] === "Zakazano") {
-            reserved = true;
-          } else if (entry[5][1] === "Otkazano") {
-            canceled = true;
-          } else if (entry[5][1] === "Zavrseno") {
-            finished = true;
-          }
-          return (
-            <td style={{ width: "5%" }}>
-              <div className="d-flex">
-                <button
-                  className={` ${canceled ? "searchCanceled" : "searchButton"}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleButtonCanceled("lbz", entry);
-                  }}
-                >
-                  Otkazano
-                </button>
-
-                <button
-                  className={` ${finished ? "searchFinished" : "searchButton"}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleButtonFinished("lbz", entry);
-                  }}
-                >
-                  Završeno
-                </button>
-              </div>
             </td>
           );
         }
@@ -262,6 +231,62 @@ const Table = (props) => {
               }}
             >
               <ImCheckmark />
+            </button>
+          </td>
+        </>
+      ) : tableType === "searchVisits" ? (
+        <td style={{ width: "5%" }}>
+          <>
+            <button
+              className={"searchCanceled"}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleButtonCanceled(entry);
+              }}
+              disabled={
+                entry[4][1] === "OTKAZANO" || entry[4][1] === "ZAVRSENO"
+              }
+              style={
+                entry[4][1] === "OTKAZANO" || entry[4][1] === "ZAVRSENO"
+                  ? { backgroundColor: "#cacccf", borderColor: "#cacccf" }
+                  : {}
+              }
+            >
+              Otkazi
+            </button>
+          </>
+        </td>
+      ) : tableType === "admissionVisits" ? (
+        <>
+          {" "}
+          <td style={{ width: "5%" }}>
+            <button
+              className={"searchCanceled"}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleButtonCanceled(entry);
+              }}
+              disabled={
+                entry[4][1] === "OTKAZANO" || entry[4][1] === "ZAVRSENO"
+              }
+              style={
+                entry[4][1] === "OTKAZANO" || entry[4][1] === "ZAVRSENO"
+                  ? { backgroundColor: "#cacccf", borderColor: "#cacccf" }
+                  : {}
+              }
+            >
+              Otkazi
+            </button>
+          </td>{" "}
+          <td style={{ width: "5%" }}>
+            <button
+              className={""}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleCreateLabReportTab1(entry);
+              }}
+            >
+              Nalog
             </button>
           </td>
         </>

@@ -34,7 +34,7 @@ export const fetchAppointments = (data) =>
   API.post(`/bolnica-management-service/api/list-appointments-by-lbz`, data);
 export const searchLabReports = (data) =>
   API.post(
-    `/bolnica-laboratory-service/api/fetch-laboratory-work-orders`,
+    `/bolnica-laboratory-service/api/fetch-laboratory-work-orders?page=1&size=5`,
     data
   );
 export const createAppointment = (data) =>
@@ -46,7 +46,7 @@ export const updateAppointment = (data) =>
 // REFERRALS
 
 export const fetchReferrals = (data) =>
-  API.get(`/bolnica-laboratory-service/api/uput-history?page=1&size=5`, data);
+  API.post(`/bolnica-laboratory-service/api/uput-history?page=1&size=5`, data);
 export const fetchUnprocessedReferrals = (data) =>
   API.get(
     `/bolnica-laboratory-service/api/unprocessed-uputi?lbp=${data}`,
@@ -62,7 +62,7 @@ export const updateReferral = (data) =>
 
 export const fetchLabReports = (data) =>
   API.post(
-    `/bolnica-laboratory-service/api/laboratory-work-order-history`,
+    `/bolnica-laboratory-service/api/laboratory-work-order-history?page=1&size=5`,
     data
   );
 export const fetchLabReport = (data) =>
@@ -147,7 +147,8 @@ export const fetchNumberOfLabAppointments = (dateNum) =>
 //LAB VISITS
 export const searchLabVisits = (data) =>
   API.post("/bolnica-laboratory-service/api/get-lab-examinations", data);
-export const updateLabVisits = (id, status) => API.put("/visits", id, status);
+export const updateLabVisits = (data) =>
+  API.put("/bolnica-laboratory-service/api/set-lab-examination-status", data);
 export const createVisit = (formData) =>
   API.post(
     "/bolnica-laboratory-service/api/schedule-lab-examination",
