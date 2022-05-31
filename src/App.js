@@ -37,6 +37,9 @@ import AdmissionPage from "./pages/Tehcnician/AdmissionPage/AdmissionPage";
 import IssuingResultsPage from "./pages/Tehcnician/IssuingResultsPage/IssuingResultsPage";
 import IssuingResultsDetailedPage from "./pages/Tehcnician/IssuingResultsDetailedPage/IssuingResultsDetailedPage";
 
+//RECEPCIONIST
+import RecepcionistAddPatientPage from "./pages/Recepcionist/RecepcionistAddPatientPage/RecepcionistAddPatientPage";
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -118,6 +121,13 @@ const App = () => {
           path="/technician/issuing-results/:labReportId"
           exact
           element={<IssuingResultsDetailedPage />}
+        />
+
+        {/* RECEPCIONIST ROUTS */}
+        <Route
+          path="/recepcionist/add-patient"
+          exact
+          element={<RecepcionistAddPatientPage />}
         />
       </Routes>
     </BrowserRouter>
