@@ -37,6 +37,9 @@ import AdmissionPage from "./pages/Tehcnician/AdmissionPage/AdmissionPage";
 import IssuingResultsPage from "./pages/Tehcnician/IssuingResultsPage/IssuingResultsPage";
 import IssuingResultsDetailedPage from "./pages/Tehcnician/IssuingResultsDetailedPage/IssuingResultsDetailedPage";
 
+//RECEPCIONIST
+import RecepcionistHomepage from "./pages/Recepcionist/RecepcionistHomepage/RecepcionistHomepage";
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -119,6 +122,9 @@ const App = () => {
           exact
           element={<IssuingResultsDetailedPage />}
         />
+
+        {/* RECEPTIONIST */}
+        <Route path="/recepcionist" exact element={<RecepcionistHomepage />} />
       </Routes>
     </BrowserRouter>
   );
