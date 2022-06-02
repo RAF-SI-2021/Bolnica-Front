@@ -125,9 +125,8 @@ const App = () => {
           element={<IssuingResultsDetailedPage />}
         />
 
-        {/* RECEPTIONIST */}
+        {/* RECEPCIONIST ROUTES */}
         <Route path="/recepcionist" exact element={<RecepcionistHomepage />} />
-        {/* RECEPCIONIST ROUTS */}
         <Route
           path="/recepcionist/add-patient"
           exact
