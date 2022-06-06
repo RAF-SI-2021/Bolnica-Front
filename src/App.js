@@ -34,6 +34,13 @@ import DetailedResultPage from "./pages/Biochemist/DetailedResultPage/DetailedRe
 import TechnicianHomepage from "./pages/Tehcnician/TechnicianHomepage/TechnicianHomepage";
 import VisitsPage from "./pages/Tehcnician/VisitsPage/VisitsPage";
 import AdmissionPage from "./pages/Tehcnician/AdmissionPage/AdmissionPage";
+import IssuingResultsPage from "./pages/Tehcnician/IssuingResultsPage/IssuingResultsPage";
+import IssuingResultsDetailedPage from "./pages/Tehcnician/IssuingResultsDetailedPage/IssuingResultsDetailedPage";
+
+//RECEPCIONIST
+import RecepcionistHomepage from "./pages/Recepcionist/RecepcionistHomepage/RecepcionistHomepage";
+import RecepcionistAddPatientPage from "./pages/Recepcionist/RecepcionistAddPatientPage/RecepcionistAddPatientPage";
+import RecepcionistScheduleAppPage from "./pages/Recepcionist/RecepcionistScheduleAppPage/RecepcionistScheduleAppPage";
 
 const App = () => {
   return (
@@ -107,6 +114,29 @@ const App = () => {
           element={<AdmissionPage />}
         />
         <Route path="/technician/visits" exact element={<VisitsPage />} />
+        <Route
+          path="/technician/issuing-results"
+          exact
+          element={<IssuingResultsPage />}
+        />
+        <Route
+          path="/technician/issuing-results/:labReportId"
+          exact
+          element={<IssuingResultsDetailedPage />}
+        />
+
+        {/* RECEPCIONIST ROUTES */}
+        <Route path="/recepcionist" exact element={<RecepcionistHomepage />} />
+        <Route
+          path="/recepcionist/add-patient"
+          exact
+          element={<RecepcionistAddPatientPage />}
+        />
+        <Route
+            path="/recepcionist/add-appointment"
+            exact
+            element={<RecepcionistScheduleAppPage />}
+        />
       </Routes>
     </BrowserRouter>
   );

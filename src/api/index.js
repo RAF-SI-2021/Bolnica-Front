@@ -89,6 +89,10 @@ export const fetchEmployees = () =>
   API.post(`/bolnica-user-service/api/list-employees?page=1&size=5`, {
     department: 1,
   });
+export const fetchEmployeesDep = (id) =>
+    API.post(`/bolnica-user-service/api/list-employees?page=1&size=5`,{
+        department: id,
+    });
 export const fetchEmployee = (lbz) =>
   API.get(`/bolnica-user-service/api/get-employee/${lbz}`);
 export const createEmployee = (formData) =>

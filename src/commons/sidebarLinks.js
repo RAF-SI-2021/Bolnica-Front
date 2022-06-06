@@ -178,6 +178,45 @@ export const getSidebarLinks = (role, activeId) => {
         isActive: activeId === 5 ? true : false,
       },
     ];
+  } else if (role === "recepcionist") {
+    return [
+      {
+        id: 1,
+        text: "Početna",
+        path: "/recepcionist",
+        icon: <FaHome />,
+        isActive: activeId === 1 ? true : false,
+      },
+      {
+        id: 2,
+        text: "Dodavanje pacijenta",
+        path: "/recepcionist/add-patient",
+        icon: <FaUserInjured />,
+        isActive: activeId === 2 ? true : false,
+      },
+      {
+        id: 3,
+        text: "Zakazivanje pregleda",
+        path: "/recepcionist/add-appointment",
+        icon: <BiCalendarPlus />,
+        isActive: activeId === 3 ? true : false,
+      },
+      {
+        id: 4,
+        text: "Pretraga pacijenata",
+        path: "/recepcionist/search-patient",
+        icon: <FaClipboardList />,
+        dividerAfter: true,
+        isActive: activeId === 4 ? true : false,
+      },
+      {
+        id: 5,
+        text: "Profil",
+        path: "/profile",
+        icon: <FaUser />,
+        isActive: activeId === 5 ? true : false,
+      },
+    ];
   } else {
     return [
       {
