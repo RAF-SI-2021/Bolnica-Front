@@ -80,6 +80,45 @@ export const getTableHeaders = (contentType) => {
         value: "JMBG",
       },
     ];
+  } else if (contentType === "patientsHistory") {
+    return [
+      {
+        key: "stanjePacijenta",
+        value: "ID",
+      },
+      {
+        key: "lbpPacijenta",
+        value: "LBP",
+      },
+      {
+        key: "lbzPacijenta",
+        value: "LBZ",
+      },
+      {
+        key: "datumPregleda",
+        value: "Datum",
+      },
+      {
+        key: "temperatura",
+        value: "Temperatura",
+      },
+      {
+        key: "krvniPritisak",
+        value: "Krvni pritisak",
+      },
+      {
+        key: "puls",
+        value: "Puls",
+      },
+      {
+        key: "primenjeneTerapije",
+        value: "Primenjene terapije",
+      },
+      {
+        key: "opis",
+        value: "Opis",
+      },
+    ];
   } else if (contentType === "examinationHistory") {
     return [
       {

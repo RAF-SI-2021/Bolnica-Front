@@ -1,8 +1,13 @@
+import { formatRFC7231 } from "date-fns";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
+import { fetchPatientsHistory } from "../../../api";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
+import { getTableHeaders } from "../../../commons/tableHeaders";
+import History from "../../../components/PatientsOfTheDepartment/History";
 import Sidebar from "../../../components/Sidebar/Sidebar";
+import Table from "../../../components/Table/Table";
 
 const NurseInfirmaryPatientsOfTheDepartmentHistory = () => {
   const location = useLocation();
@@ -66,6 +71,11 @@ const NurseInfirmaryPatientsOfTheDepartmentHistory = () => {
       else if (isTab1) setTab1(!isTab1);
     }
   };
+
+  let history;
+  if (isTab1) {
+    history = <History lbp={lbp} toggleClass2={toggleClass2} />;
+  }
 
   return (
     <div>
@@ -145,6 +155,7 @@ const NurseInfirmaryPatientsOfTheDepartmentHistory = () => {
             />
           </div>
         </form>
+        {history}
       </div>
     </div>
   );
