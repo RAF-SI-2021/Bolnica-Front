@@ -13,7 +13,7 @@ import referrals from "./referrals";
 import loggedUser from "./auth";
 import visits from "./visits";
 import numberOfAppointments from "./numberOfAppointments";
-import patientHistoryReducer from "./patientsHistory";
+import patientHistoryReducer from "./patientsOfTheDepartment";
 
 export const reducers = combineReducers({
   demo,

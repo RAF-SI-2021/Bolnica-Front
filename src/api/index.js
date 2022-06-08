@@ -145,9 +145,15 @@ export const createVisit = (formData) => API.post("/visits", formData);
 
 //PATIENT HISTORY
 export const fetchPatientsHistory = (dateFrom, dateTo, lbp) =>
-  API.post(
-    `/nurse/infirmary/patients-department/history`,
-    dateFrom,
-    dateTo,
-    lbp
+  API.get(
+    `/nurse/infirmary/patients-department/history/${(dateFrom, dateTo, lbp)}`
   );
+
+export const createPatientHistory = (lbp, formData) =>
+  API.post(`/nurse/infirmary/patients-department/history`, lbp, formData);
+
+export const fetchPatientsVisits = (lbp) =>
+  API.get(`/nurse/infirmary/patients-department/history/${lbp}`);
+
+export const createPatientVisits = (lbp, formData) =>
+  API.post(`/nurse/infirmary/patients-department/history`, lbp, formData);

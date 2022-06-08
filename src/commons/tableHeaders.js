@@ -119,6 +119,41 @@ export const getTableHeaders = (contentType) => {
         value: "Opis",
       },
     ];
+  } else if (contentType === "patientsVisit") {
+    return [
+      {
+        key: "idPosete",
+        value: "ID posete",
+      },
+      {
+        key: "lbpPacijenta",
+        value: "LBP",
+      },
+      {
+        key: "lbzPacijenta",
+        value: "LBZ",
+      },
+      {
+        key: "datumPosete",
+        value: "Datum",
+      },
+      {
+        key: "ime",
+        value: "Ime",
+      },
+      {
+        key: "prezime",
+        value: "Prezime",
+      },
+      {
+        key: "jmbg",
+        value: "JMBG",
+      },
+      {
+        key: "napomena",
+        value: "Napomena",
+      },
+    ];
   } else if (contentType === "examinationHistory") {
     return [
       {
