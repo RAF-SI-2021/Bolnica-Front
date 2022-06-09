@@ -25,7 +25,7 @@ describe('Admin', () => {
         cy.get('.user-title').should('be.visible')
                     .should('contain', 'Kardiolog');//localStorage.getItem('title'));
         cy.get('.date-span').should('be.visible')
-                    .should('contain', dayjs().format('DD MMMM, YYYY'));
+                    .should('contain', dayjs().format('D MMMM, YYYY'));
     })
 
     it('should be able to register new employees', () => {

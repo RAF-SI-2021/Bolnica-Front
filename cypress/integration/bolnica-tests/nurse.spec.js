@@ -34,7 +34,7 @@ describe('Nurse', () => {
         cy.get('.user-title').should('be.visible')
                 .should('contain', 'Med sestra');//localStorage.getItem('title'));  
         cy.get('.date-span').should('be.visible')
-                .should('contain', dayjs().format('DD MMMM, YYYY'));
+                .should('contain', dayjs().format('D MMMM, YYYY'));
         cy.url({ timeout: 10000 }).should('contain', '/patient-preview');
         cy.get('h1').should('be.visible').should('contain', 'Pacijenti');
         cy.get('input[name="search"]').should('be.visible').type("Test");
@@ -129,5 +129,18 @@ describe('Nurse', () => {
         cy.get('button').should('be.visible').last().click();
         cy.url({ timeout: 10000 }).should('contain', '/nurse/patient-preview');
     })
-    
+
+    it('should be able to see user profile and update its data', () => {//vraca na admina 
+        cy.get('ul').should('be.visible');
+        cy.get('ul > li:nth-child(5)').should('be.visible').should('contain', 'Profil').click({ multiple: true });
+        cy.get('h1').should('be.visible').should('contain', 'Profil');
+        cy.get('form').should('be.visible');
+        cy.get('.buttonIconBlue').click({ multiple: true })
+        cy.get('input[name="surname"]').should('be.visible').clear().type(chance.word());
+        cy.get('body > #root > div > .form-custom > button').click({ multiple: true })
+    })
+
+    it('should be able to logout', () => {
+      cy.get('button').should('be.visible').last().click();
+    })
 })
