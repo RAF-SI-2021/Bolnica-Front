@@ -79,7 +79,7 @@ describe('Nurse', () => {
         cy.wait(500);
         cy.get('.customButton1').click({multiple:true},{force: true});
         //cy.get('.customButton2').click();
-        cy.get('.customButton3').click({force: true});
+        cy.get('.customButton3').first().click({force: true});
         //cy.get('.customButton4').click();
     })
 
@@ -135,7 +135,7 @@ describe('Nurse', () => {
         cy.get('ul > li:nth-child(5)').should('be.visible').should('contain', 'Profil').click({ multiple: true });
         cy.get('h1').should('be.visible').should('contain', 'Profil');
         cy.get('form').should('be.visible');
-        cy.get('.buttonIconBlue').click({ multiple: true })
+        cy.get('.buttonIconBlue').first().click({ multiple: true })
         cy.get('input[name="surname"]').should('be.visible').clear().type(chance.word());
         cy.get('body > #root > div > .form-custom > button').click({ multiple: true })
     })

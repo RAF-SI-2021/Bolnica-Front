@@ -23,7 +23,7 @@ describe('Doctor', () => {
         cy.get('.user-title').should('be.visible')
                     .should('contain', 'Kardiolog');//localStorage.getItem('title'));
         cy.get('.date-span').should('be.visible')
-                    .should('contain', dayjs().format('DD MMMM, YYYY'));
+                    .should('contain', dayjs().format('D MMMM, YYYY'));
         cy.get('.flex:nth-child(1) > .statistics').should('be.visible');
         cy.get('.flex:nth-child(1) > .statistics > .text').should('be.visible')
                     .should('contain', 'Zakazani pregledi');
@@ -124,7 +124,7 @@ describe('Doctor', () => {
         cy.get('ul > li:nth-child(5)').should('be.visible').should('contain', 'Profil').click({ multiple: true });
         cy.get('h1').should('be.visible').should('contain', 'Profil');
         cy.get('form').should('be.visible');
-        cy.get('.buttonIconBlue').click({ multiple: true })
+        cy.get('.buttonIconBlue').first().click({ multiple: true })
         cy.get('input[name="surname"]').should('be.visible').clear().type(chance.word());
         cy.get('body > #root > div > .form-custom > button').click({ multiple: true })
     })
