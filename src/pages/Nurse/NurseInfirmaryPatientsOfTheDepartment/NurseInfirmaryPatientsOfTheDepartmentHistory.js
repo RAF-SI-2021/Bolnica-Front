@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
+import History from "../../../components/PatientsOfTheDepartment/History";
+import Registration from "../../../components/PatientsOfTheDepartment/Registration";
+import RegistrationOfVisits from "../../../components/PatientsOfTheDepartment/RegistrationOfVisits";
+import Visits from "../../../components/PatientsOfTheDepartment/Visits";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 
 const NurseInfirmaryPatientsOfTheDepartmentHistory = () => {
@@ -66,6 +70,26 @@ const NurseInfirmaryPatientsOfTheDepartmentHistory = () => {
       else if (isTab1) setTab1(!isTab1);
     }
   };
+
+  let history;
+  if (isTab1) {
+    history = <History lbp={lbp} toggleClass2={toggleClass2} />;
+  }
+
+  let registration;
+  if (isTab2) {
+    registration = <Registration lbp={lbp} />;
+  }
+
+  let visit;
+  if (isTab3) {
+    visit = <Visits isTab3={isTab3} lbp={lbp} />;
+  }
+
+  let regOfVisits;
+  if (isTab4) {
+    regOfVisits = <RegistrationOfVisits />;
+  }
 
   return (
     <div>
@@ -145,6 +169,10 @@ const NurseInfirmaryPatientsOfTheDepartmentHistory = () => {
             />
           </div>
         </form>
+        {history}
+        {registration}
+        {visit}
+        {regOfVisits}
       </div>
     </div>
   );

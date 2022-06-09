@@ -80,6 +80,80 @@ export const getTableHeaders = (contentType) => {
         value: "JMBG",
       },
     ];
+  } else if (contentType === "patientsHistory") {
+    return [
+      {
+        key: "stanjePacijenta",
+        value: "ID",
+      },
+      {
+        key: "lbpPacijenta",
+        value: "LBP",
+      },
+      {
+        key: "lbzPacijenta",
+        value: "LBZ",
+      },
+      {
+        key: "datumPregleda",
+        value: "Datum",
+      },
+      {
+        key: "temperatura",
+        value: "Temperatura",
+      },
+      {
+        key: "krvniPritisak",
+        value: "Krvni pritisak",
+      },
+      {
+        key: "puls",
+        value: "Puls",
+      },
+      {
+        key: "primenjeneTerapije",
+        value: "Primenjene terapije",
+      },
+      {
+        key: "opis",
+        value: "Opis",
+      },
+    ];
+  } else if (contentType === "patientsVisit") {
+    return [
+      {
+        key: "idPosete",
+        value: "ID posete",
+      },
+      {
+        key: "lbpPacijenta",
+        value: "LBP",
+      },
+      {
+        key: "lbzPacijenta",
+        value: "LBZ",
+      },
+      {
+        key: "datumPosete",
+        value: "Datum",
+      },
+      {
+        key: "ime",
+        value: "Ime",
+      },
+      {
+        key: "prezime",
+        value: "Prezime",
+      },
+      {
+        key: "jmbg",
+        value: "JMBG",
+      },
+      {
+        key: "napomena",
+        value: "Napomena",
+      },
+    ];
   } else if (contentType === "examinationHistory") {
     return [
       {
