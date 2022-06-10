@@ -1,10 +1,22 @@
 import React, { useState } from "react";
 import "./styles.css";
-import { ImBin, ImPencil } from "react-icons/im";
+import { ImBin, ImPencil, ImFileText2, ImCheckmark } from "react-icons/im";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 
 const Table = (props) => {
-  const { headers, tableContent, handleClick, tableType, handleEdit } = props;
+  const {
+    headers,
+    tableContent,
+    handleClick,
+    tableType,
+    handleEdit,
+    handleRowClick,
+    handleButtonCanceled,
+    handleButtonFinished,
+    handlecreateLabReport,
+    handleCancelVisit,
+    handleCreateLabReportTab1,
+  } = props;
 
   const listHeaders = headers.map((header) => {
     if (header.key === "lbp" || header.key === "lbz") return <></>;
@@ -14,6 +26,10 @@ const Table = (props) => {
       </th>
     );
   });
+  if (tableType === "employees" || tableType === "detailedResultPreview") {
+    listHeaders.push(<th scope="col"></th>);
+    listHeaders.push(<th scope="col"></th>);
+  }
 
   const handleButton = (key, entry) => {
     const value = entry.filter((element) => element[0] === key);
@@ -21,6 +37,11 @@ const Table = (props) => {
   };
 
   const handleEditButton = (key, entry) => {
+    const value = entry.filter((element) => element[0] === key);
+    handleEdit(value[0][1]);
+  };
+
+  const handleSearchVisits = (key, entry) => {
     const value = entry.filter((element) => element[0] === key);
     handleEdit(value[0][1]);
   };
@@ -36,7 +57,7 @@ const Table = (props) => {
   });
 
   const listTable = info.map((entry) => (
-    <tr key={entry}>
+    <tr key={entry} onClick={() => handleRowClick(entry)}>
       {entry.map((element) => {
         if (element[0] === "lbp" || element[0] === "lbz") return <></>;
         if (element[0] === "datumPregleda") {
@@ -47,6 +68,132 @@ const Table = (props) => {
           );
         }
 
+        if (element[0] === "statusPregleda") {
+          let reserved = false;
+          let canceled = false;
+          let finished = false;
+          if (entry[5][1] === "Zakazano") {
+            reserved = true;
+          } else if (entry[5][1] === "Otkazano") {
+            canceled = true;
+          } else if (entry[5][1] === "Zavrseno") {
+            finished = true;
+          }
+          return (
+            <td style={{ width: "5%" }}>
+              <div className="d-flex">
+                <button
+                  className={` ${canceled ? "searchCanceled" : "searchButton"}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleButtonCanceled("lbz", entry);
+                  }}
+                >
+                  Otkazano
+                </button>
+
+                <button
+                  className={` ${finished ? "searchFinished" : "searchButton"}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleButtonFinished("lbz", entry);
+                  }}
+                >
+                  Završeno
+                </button>
+              </div>
+            </td>
+          );
+        }
+
+        if (element[0] === "status") {
+          if (element[1] === "neobradjeno") {
+            return (
+              <td style={{ width: "5%" }}>
+                <button
+                  className="buttonIconBlue"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlecreateLabReport("lbz", entry);
+                  }}
+                >
+                  <ImFileText2 />
+                </button>
+              </td>
+            );
+          } else {
+            return <></>;
+          }
+        }
+        if (element[0] === "kreiraj") {
+          if (entry[3][1] < new Date().getTime() - 2592000000) {
+            return (
+              <td style={{ width: "5%" }}>
+                <button
+                  className="buttonIconBlue"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlecreateLabReport("lbz", entry);
+                  }}
+                >
+                  <ImFileText2 />
+                </button>
+              </td>
+            );
+          } else {
+            return <></>;
+          }
+        }
+
+        if (element[0] === "statusPregledaZakazaniPacijenti") {
+          let zakazano = false;
+          if (entry[5][1] === "YY") {
+            zakazano = true;
+          }
+          return (
+            <td style={{ width: "5%" }}>
+              {/*               <div className="d-flex flex-row justify-content-center buttons">
+               */}{" "}
+              <div className="d-flex">
+                <button
+                  className={`buttonZakazano ${
+                    zakazano ? "" : "inactiveButton"
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
+                  Zakazano
+                </button>
+                <button
+                  className={`buttonOtkazano ${
+                    !zakazano
+                      ? "buttonOtkazano disbledButton"
+                      : "inactiveButton"
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCancelVisit("lbz", entry);
+                  }}
+                >
+                  Otkazano
+                </button>
+                <button
+                  className={`buttonKreirajNalog ${
+                    zakazano ? "" : "inactiveButton disbledButton"
+                  }`}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCreateLabReportTab1("lbz", entry);
+                  }}
+                >
+                  Kreiraj radni nalog
+                </button>
+              </div>
+            </td>
+          );
+        }
         return (
           <td key={element} style={{ padding: "25px 0px" }}>
             {element[1]}
@@ -58,7 +205,10 @@ const Table = (props) => {
           <td style={{ width: "5%" }}>
             <button
               className="buttonIconBlue"
-              onClick={() => handleEditButton("lbp", entry)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleEditButton("lbp", entry);
+              }}
             >
               <ImPencil />
             </button>
@@ -66,7 +216,10 @@ const Table = (props) => {
           <td style={{ width: "5%" }}>
             <button
               className="buttonIcon"
-              onClick={() => handleButton("lbp", entry)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleButton("lbp", entry);
+              }}
             >
               <ImBin />
             </button>
@@ -85,9 +238,30 @@ const Table = (props) => {
           <td style={{ width: "5%" }}>
             <button
               className="buttonIcon"
-              onClick={() => handleButton("lbz", entry)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleButton("lbz", entry);
+              }}
             >
               <ImBin />
+            </button>
+          </td>
+        </>
+      ) : tableType === "detailedResultPreview" ? (
+        <>
+          <td style={{ width: "5%" }}>
+            <button className="buttonIconBlue">
+              <ImPencil />
+            </button>
+          </td>
+          <td style={{ width: "5%" }}>
+            <button
+              className="buttonIconGreen"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <ImCheckmark />
             </button>
           </td>
         </>

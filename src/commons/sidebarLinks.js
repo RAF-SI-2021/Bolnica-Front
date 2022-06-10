@@ -4,9 +4,11 @@ import {
   FaUser,
   FaPlusCircle,
   FaUserInjured,
+  FaClipboardList,
 } from "react-icons/fa";
 import { BiCalendarPlus } from "react-icons/bi";
 import { MdCalendarToday } from "react-icons/md";
+import { GiNotebook } from "react-icons/gi";
 
 export const getSidebarLinks = (role, activeId) => {
   if (role === "admin") {
@@ -80,6 +82,141 @@ export const getSidebarLinks = (role, activeId) => {
         isActive: activeId === 5 ? true : false,
       },
     ];
+  } else if (role === "biochemist") {
+    return [
+      {
+        id: 1,
+        text: "Početna",
+        path: "/biochemist",
+        icon: <FaHome />,
+        dividerAfter: true,
+        isActive: activeId === 1 ? true : false,
+      },
+      {
+        id: 2,
+        text: "Profil",
+        path: "/profile",
+        icon: <FaUser />,
+        isActive: activeId === 2 ? true : false,
+      },
+    ];
+  } else if (role === "technician") {
+    return [
+      {
+        id: 1,
+        text: "Početna",
+        path: "/technician",
+        icon: <FaHome />,
+        isActive: activeId === 1 ? true : false,
+      },
+      {
+        id: 2,
+        text: "Prijem pacijenata",
+        path: "/technician/patient-admission",
+        icon: <FaUserInjured />,
+        isActive: activeId === 2 ? true : false,
+      },
+      {
+        id: 3,
+        text: "Zakazivanje posete",
+        path: "/technician/visits",
+        icon: <FaPlusCircle />,
+        isActive: activeId === 3 ? true : false,
+      },
+      {
+        id: 4,
+        text: "Izdavanje rezultata",
+        path: "/technician/issuing-results",
+        icon: <GiNotebook />,
+        dividerAfter: true,
+        isActive: activeId === 4 ? true : false,
+      },
+      {
+        id: 5,
+        text: "Profil",
+        path: "/profile",
+        icon: <FaUser />,
+        isActive: activeId === 5 ? true : false,
+      },
+    ];
+  } else if (role === "technician") {
+    return [
+      {
+        id: 1,
+        text: "Početna",
+        path: "/technician",
+        icon: <FaHome />,
+        isActive: activeId === 1 ? true : false,
+      },
+      {
+        id: 2,
+        text: "Prijem pacijenata",
+        path: "/technician/patient-admission",
+        icon: <FaUserInjured />,
+        isActive: activeId === 2 ? true : false,
+      },
+      {
+        id: 3,
+        text: "Zakazivanje posete",
+        path: "/technician/visits",
+        icon: <BiCalendarPlus />,
+        isActive: activeId === 3 ? true : false,
+      },
+      {
+        id: 4,
+        text: "Izdavanje rezultata",
+        path: "/technician/issuing-results",
+        icon: <FaClipboardList />,
+        dividerAfter: true,
+        isActive: activeId === 4 ? true : false,
+      },
+      {
+        id: 5,
+        text: "Profil",
+        path: "/profile",
+        icon: <FaUser />,
+        isActive: activeId === 5 ? true : false,
+      },
+    ];
+  } else if (role === "recepcionist") {
+    return [
+      {
+        id: 1,
+        text: "Početna",
+        path: "/recepcionist",
+        icon: <FaHome />,
+        isActive: activeId === 1 ? true : false,
+      },
+      {
+        id: 2,
+        text: "Dodavanje pacijenta",
+        path: "/recepcionist/add-patient",
+        icon: <FaUserInjured />,
+        isActive: activeId === 2 ? true : false,
+      },
+      {
+        id: 3,
+        text: "Zakazivanje pregleda",
+        path: "/recepcionist/add-appointment",
+        icon: <BiCalendarPlus />,
+        isActive: activeId === 3 ? true : false,
+      },
+      {
+        id: 4,
+        text: "Pretraga pacijenata",
+        path: "/recepcionist/search-patient",
+        icon: <FaClipboardList />,
+        dividerAfter: true,
+        isActive: activeId === 4 ? true : false,
+      },
+      {
+        id: 5,
+        text: "Profil",
+        path: "/profile",
+        icon: <FaUser />,
+        isActive: activeId === 5 ? true : false,
+      },
+    ];
   } else {
     return [
       {
@@ -101,8 +238,15 @@ export const getSidebarLinks = (role, activeId) => {
         text: "Zakazani pregledi",
         path: "/appointments",
         icon: <MdCalendarToday />,
-        dividerAfter: true,
         isActive: activeId === 3 ? true : false,
+      },
+      {
+        id: 5,
+        text: "Kreiraj uput",
+        path: "/create-refferal",
+        icon: <GiNotebook />,
+        dividerAfter: true,
+        isActive: activeId === 5 ? true : false,
       },
       {
         id: 4,

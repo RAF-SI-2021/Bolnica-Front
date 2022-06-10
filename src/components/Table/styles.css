@@ -40,6 +40,12 @@
   color: #336cfb;
 }
 
+.buttonIconGreen {
+  border: 0px;
+  background: transparent;
+  color: #10b981;
+}
+
 .myIcon {
   color: #336cfb;
 }
@@ -103,4 +109,137 @@ table.table-bordered > tbody > tr {
   font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
+}
+
+.searchButton {
+  background-color: #cacccf;
+  border-color: #cacccf;
+  margin-right: 10px;
+  font-family: "Roboto";
+  font-style: normal;
+}
+
+.searchZReserved {
+  background-color: #fac032;
+  border-color: #fac032;
+  margin-right: 10px;
+  font-family: "Roboto";
+  font-style: normal;
+}
+
+.searchCanceled {
+  background-color: #e74f48;
+  border-color: #e74f48;
+  margin-right: 10px;
+  font-family: "Roboto";
+  font-style: normal;
+}
+
+.searchFinished {
+  background-color: #16d090;
+  border-color: #16d090;
+  margin-right: 10px;
+  font-family: "Roboto";
+  font-style: normal;
+}
+
+.buttonZakazano {
+  /*   display: flex;
+  align-items: center;
+  justify-content: center; */
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-radius: 6px;
+  /*   width: 20%;
+  height: 50%; */
+  font-size: 12px;
+  background-color: #fac032;
+  color: white;
+  border: 1px solid white;
+  margin-left: 10px;
+  margin-right: 10px;
+  cursor: not-allowed;
+  pointer-events: none;
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.buttonOtkazano {
+  /*   display: flex;
+  align-items: center;
+  justify-content: center; */
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-radius: 6px;
+  /*   width: 20%;
+  height: 50%; */
+  font-size: 12px;
+  background-color: #e74f48;
+  color: white;
+  border: 1px solid white;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.buttonKreirajNalog {
+  /*   display: flex;
+  align-items: center;
+  justify-content: center; */
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-radius: 6px;
+  /*   width: 20%;
+  height: 50%; */
+  font-size: 12px;
+  color: white;
+  border: 1px solid white;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.buttons {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  width: 80%;
+  height: 100%;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 0px;
+}
+
+.tdButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+}
+
+.inactiveButton {
+  background-color: #cacccf;
+  /*   width: 20%;
+  height: 50%; */
+}
+
+.disbledButton {
+  cursor: not-allowed;
+  pointer-events: none;
 }
