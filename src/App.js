@@ -19,6 +19,7 @@ import PatientPreview from "./pages/Doctor/PatientPreviewPage/PatientPreviewPage
 import EditPatientPage from "./pages/Doctor/EditPatientPage/EditPatientPage";
 import CreateRefferalPage from "./pages/Doctor/CreateRefferalPage/CreateRefferalPage";
 import PatientExamination from "./pages/Doctor/PatientExaminationPage/PatientExaminationPage";
+import DoctorCalendarPage from "./pages/Doctor/DoctorCalendarPage/DoctorCalendarPage";
 
 // NURSE
 import NurseHomepage from "./pages/Nurse/NurseHomepage/NurseHomepage";
@@ -57,6 +58,7 @@ const App = () => {
         <Route path="/examination/:id" exact element={<PatientExamination />} />
         <Route path="/patient-preview" exact element={<PatientPreview />} />
         <Route path="/create-refferal" exact element={<CreateRefferalPage />} />
+        <Route path="/appointments" exact element={<DoctorCalendarPage />} />
         {/* NURSE ROUTES */}
         <Route path="/nurse" exact element={<NurseHomepage />} />
         <Route
