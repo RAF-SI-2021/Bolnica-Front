@@ -24,8 +24,9 @@ li {
   margin-top: 15px;
 }
 
-.link-item {
+.nav-item {
   margin: 15px 0px;
+  width: 100% !important;
 }
 
 .link-text {

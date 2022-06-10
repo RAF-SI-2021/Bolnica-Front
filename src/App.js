@@ -17,6 +17,7 @@ import RegistrationPage from "./pages/Admin/RegistrationPage/RegistrationPage";
 import DoctorHomepage from "./pages/Doctor/DoctorHomepage/DoctorHomepage";
 import PatientPreview from "./pages/Doctor/PatientPreviewPage/PatientPreviewPage";
 import EditPatientPage from "./pages/Doctor/EditPatientPage/EditPatientPage";
+import CreateRefferalPage from "./pages/Doctor/CreateRefferalPage/CreateRefferalPage";
 import PatientExamination from "./pages/Doctor/PatientExaminationPage/PatientExaminationPage";
 
 // NURSE
@@ -25,23 +26,37 @@ import PatientPreviewNurses from "./pages/Nurse/PatientPreviewPageNurses/Patient
 import RegistrationPatientPage from "./pages/Nurse/RegistrationPatientPage/RegistrationPatientPage";
 import ScheduleAppointmentPage from "./pages/Nurse/ScheduleAppointmentPage/ScheduleAppointmentPage";
 
+// BIOCHEMIST
+import BiochemistHomepage from "./pages/Biochemist/BiochemistHomepage/BiochemistHomepage";
+import DetailedResultPage from "./pages/Biochemist/DetailedResultPage/DetailedResultPage";
+
+//TECHNICIAN
+import TechnicianHomepage from "./pages/Tehcnician/TechnicianHomepage/TechnicianHomepage";
+import VisitsPage from "./pages/Tehcnician/VisitsPage/VisitsPage";
+import AdmissionPage from "./pages/Tehcnician/AdmissionPage/AdmissionPage";
+import IssuingResultsPage from "./pages/Tehcnician/IssuingResultsPage/IssuingResultsPage";
+import IssuingResultsDetailedPage from "./pages/Tehcnician/IssuingResultsDetailedPage/IssuingResultsDetailedPage";
+
+//RECEPCIONIST
+import RecepcionistHomepage from "./pages/Recepcionist/RecepcionistHomepage/RecepcionistHomepage";
+import RecepcionistAddPatientPage from "./pages/Recepcionist/RecepcionistAddPatientPage/RecepcionistAddPatientPage";
+import RecepcionistScheduleAppPage from "./pages/Recepcionist/RecepcionistScheduleAppPage/RecepcionistScheduleAppPage";
+
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
         {/* DEMO */}
         <Route path="/demo-page" exact element={<DemoPage />} />
-
         {/* GENERAL */}
         <Route path="/login" exact element={<LoginPage />} />
         <Route path="/profile" exact element={<ProfilePage />} />
         <Route path="/forgot-password" exact element={<ForgotPasswordPage />} />
-
         {/* DOCTOR ROUTES */}
         <Route path="/" exact element={<DoctorHomepage />} />
         <Route path="/examination/:id" exact element={<PatientExamination />} />
         <Route path="/patient-preview" exact element={<PatientPreview />} />
-
+        <Route path="/create-refferal" exact element={<CreateRefferalPage />} />
         {/* NURSE ROUTES */}
         <Route path="/nurse" exact element={<NurseHomepage />} />
         <Route
@@ -64,7 +79,6 @@ const App = () => {
           exact
           element={<EditPatientPage />}
         />
-
         {/* ADMIN ROUTES */}
         <Route path="/admin" exact element={<AdminHomepage />} />
         <Route
@@ -83,6 +97,46 @@ const App = () => {
           element={<EditEmployeePage />}
         />
         <Route path="/edit-patient/:lbp" exact element={<EditPatientPage />} />
+
+        {/* BIOCHEMIST ROUTES */}
+        <Route path="/biochemist" exact element={<BiochemistHomepage />} />
+        <Route
+          path="/biochemist/detailed-result/:labReportId"
+          exact
+          element={<DetailedResultPage />}
+        />
+
+        {/* TECHNICIAN ROUTES */}
+        <Route path="/technician" exact element={<TechnicianHomepage />} />
+        <Route
+          path="/technician/patient-admission"
+          exact
+          element={<AdmissionPage />}
+        />
+        <Route path="/technician/visits" exact element={<VisitsPage />} />
+        <Route
+          path="/technician/issuing-results"
+          exact
+          element={<IssuingResultsPage />}
+        />
+        <Route
+          path="/technician/issuing-results/:labReportId"
+          exact
+          element={<IssuingResultsDetailedPage />}
+        />
+
+        {/* RECEPCIONIST ROUTES */}
+        <Route path="/recepcionist" exact element={<RecepcionistHomepage />} />
+        <Route
+          path="/recepcionist/add-patient"
+          exact
+          element={<RecepcionistAddPatientPage />}
+        />
+        <Route
+            path="/recepcionist/add-appointment"
+            exact
+            element={<RecepcionistScheduleAppPage />}
+        />
       </Routes>
     </BrowserRouter>
   );

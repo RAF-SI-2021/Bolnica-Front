@@ -25,6 +25,15 @@ export const getEmployee = (lbz) => async (dispatch) => {
   }
 };
 
+export const getEmployeesDep = (id) => async (dispatch) => {
+  try {
+    const { data } = await api.fetchEmployeesDep(id);
+    dispatch({ type: GET_EMPLOYEES, data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const createEmployee = (formData) => async (dispatch) => {
   try {
     const { data } = await api.createEmployee(formData);
