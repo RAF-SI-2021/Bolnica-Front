@@ -19,6 +19,7 @@ import PatientPreview from "./pages/Doctor/PatientPreviewPage/PatientPreviewPage
 import EditPatientPage from "./pages/Doctor/EditPatientPage/EditPatientPage";
 import CreateRefferalPage from "./pages/Doctor/CreateRefferalPage/CreateRefferalPage";
 import PatientExamination from "./pages/Doctor/PatientExaminationPage/PatientExaminationPage";
+import DoctorCalendarPage from "./pages/Doctor/DoctorCalendarPage/DoctorCalendarPage";
 
 // NURSE
 import NurseHomepage from "./pages/Nurse/NurseHomepage/NurseHomepage";
@@ -28,6 +29,7 @@ import ScheduleAppointmentPage from "./pages/Nurse/ScheduleAppointmentPage/Sched
 
 //NURSE INFIRMARY
 import NurseInfirmaryPatientsOfTheDepartment from "./pages/Nurse/NurseInfirmaryPatientsOfTheDepartment/NurseInfirmaryPatientsOfTheDepartment";
+import NurseInfirmaryPatientsOfTheDepartmentHistory from "./pages/Nurse/NurseInfirmaryPatientsOfTheDepartment/NurseInfirmaryPatientsOfTheDepartmentHistory";
 
 // BIOCHEMIST
 import BiochemistHomepage from "./pages/Biochemist/BiochemistHomepage/BiochemistHomepage";
@@ -44,7 +46,6 @@ import IssuingResultsDetailedPage from "./pages/Tehcnician/IssuingResultsDetaile
 import RecepcionistHomepage from "./pages/Recepcionist/RecepcionistHomepage/RecepcionistHomepage";
 import RecepcionistAddPatientPage from "./pages/Recepcionist/RecepcionistAddPatientPage/RecepcionistAddPatientPage";
 import RecepcionistScheduleAppPage from "./pages/Recepcionist/RecepcionistScheduleAppPage/RecepcionistScheduleAppPage";
-import NurseInfirmaryPatientsOfTheDepartmentHistory from "./pages/Nurse/NurseInfirmaryPatientsOfTheDepartment/NurseInfirmaryPatientsOfTheDepartmentHistory";
 
 const App = () => {
   return (
@@ -61,6 +62,7 @@ const App = () => {
         <Route path="/examination/:id" exact element={<PatientExamination />} />
         <Route path="/patient-preview" exact element={<PatientPreview />} />
         <Route path="/create-refferal" exact element={<CreateRefferalPage />} />
+        <Route path="/appointments" exact element={<DoctorCalendarPage />} />
         {/* NURSE ROUTES */}
         <Route path="/nurse" exact element={<NurseHomepage />} />
         <Route
@@ -146,9 +148,9 @@ const App = () => {
           element={<RecepcionistAddPatientPage />}
         />
         <Route
-          path="/recepcionist/add-appointment"
-          exact
-          element={<RecepcionistScheduleAppPage />}
+            path="/recepcionist/add-appointment"
+            exact
+            element={<RecepcionistScheduleAppPage />}
         />
       </Routes>
     </BrowserRouter>
