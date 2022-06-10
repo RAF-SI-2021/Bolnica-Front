@@ -27,6 +27,10 @@ import PatientPreviewNurses from "./pages/Nurse/PatientPreviewPageNurses/Patient
 import RegistrationPatientPage from "./pages/Nurse/RegistrationPatientPage/RegistrationPatientPage";
 import ScheduleAppointmentPage from "./pages/Nurse/ScheduleAppointmentPage/ScheduleAppointmentPage";
 
+//NURSE INFIRMARY
+import NurseInfirmaryPatientsOfTheDepartment from "./pages/Nurse/NurseInfirmaryPatientsOfTheDepartment/NurseInfirmaryPatientsOfTheDepartment";
+import NurseInfirmaryPatientsOfTheDepartmentHistory from "./pages/Nurse/NurseInfirmaryPatientsOfTheDepartment/NurseInfirmaryPatientsOfTheDepartmentHistory";
+
 // BIOCHEMIST
 import BiochemistHomepage from "./pages/Biochemist/BiochemistHomepage/BiochemistHomepage";
 import DetailedResultPage from "./pages/Biochemist/DetailedResultPage/DetailedResultPage";
@@ -81,6 +85,18 @@ const App = () => {
           exact
           element={<EditPatientPage />}
         />
+        {/* NURSE INFIRMARY */}
+        <Route
+          path="/nurse/infirmary/patients-department"
+          exact
+          element={<NurseInfirmaryPatientsOfTheDepartment />}
+        />
+        <Route
+          path="/nurse/infirmary/patients-department/history/:lbp"
+          exact
+          element={<NurseInfirmaryPatientsOfTheDepartmentHistory />}
+        />
+
         {/* ADMIN ROUTES */}
         <Route path="/admin" exact element={<AdminHomepage />} />
         <Route
@@ -99,7 +115,6 @@ const App = () => {
           element={<EditEmployeePage />}
         />
         <Route path="/edit-patient/:lbp" exact element={<EditPatientPage />} />
-
         {/* BIOCHEMIST ROUTES */}
         <Route path="/biochemist" exact element={<BiochemistHomepage />} />
         <Route
@@ -107,7 +122,6 @@ const App = () => {
           exact
           element={<DetailedResultPage />}
         />
-
         {/* TECHNICIAN ROUTES */}
         <Route path="/technician" exact element={<TechnicianHomepage />} />
         <Route
@@ -126,7 +140,6 @@ const App = () => {
           exact
           element={<IssuingResultsDetailedPage />}
         />
-
         {/* RECEPCIONIST ROUTES */}
         <Route path="/recepcionist" exact element={<RecepcionistHomepage />} />
         <Route

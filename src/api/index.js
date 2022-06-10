@@ -90,9 +90,9 @@ export const fetchEmployees = () =>
     department: 1,
   });
 export const fetchEmployeesDep = (id) =>
-    API.post(`/bolnica-user-service/api/list-employees?page=1&size=5`,{
-        department: id,
-    });
+  API.post(`/bolnica-user-service/api/list-employees?page=1&size=5`, {
+    department: id,
+  });
 export const fetchEmployee = (lbz) =>
   API.get(`/bolnica-user-service/api/get-employee/${lbz}`);
 export const createEmployee = (formData) =>
@@ -142,3 +142,18 @@ export const searchLabVisits = (lbp, dateValue) =>
   API.post("/visits", lbp, dateValue);
 export const updateLabVisits = (id, status) => API.put("/visits", id, status);
 export const createVisit = (formData) => API.post("/visits", formData);
+
+//PATIENT HISTORY
+export const fetchPatientsHistory = (dateFrom, dateTo, lbp) =>
+  API.get(
+    `/nurse/infirmary/patients-department/history/${(dateFrom, dateTo, lbp)}`
+  );
+
+export const createPatientHistory = (lbp, formData) =>
+  API.post(`/nurse/infirmary/patients-department/history`, lbp, formData);
+
+export const fetchPatientsVisits = (lbp) =>
+  API.get(`/nurse/infirmary/patients-department/history/${lbp}`);
+
+export const createPatientVisits = (lbp, formData) =>
+  API.post(`/nurse/infirmary/patients-department/history`, lbp, formData);
