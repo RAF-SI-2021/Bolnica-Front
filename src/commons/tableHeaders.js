@@ -372,8 +372,39 @@ export const getTableHeaders = (contentType) => {
       {
         key: "doctorSurname",
         value: "Prezime lekara",
-      },
-  } else if (contentType === "patientsAdmissions") {
+      }];
+  } else if (contentType === "visitPreview") {
+    return [
+        {
+            key: "idOdeljenja",
+            value: "ID Odeljenja",
+        },
+        {
+            key: "nazivOdeljenja",
+            value: "Naziv odeljenja",
+        },
+        {
+            key: "idSobe",
+            value: "ID Sobe",
+        },
+        {
+            key: "lbp",
+            value: "LBP",
+        },
+        {
+            key: "ime",
+            value: "Ime",
+        },
+        {
+            key: "prezime",
+            value: "Prezime",
+        },
+        {
+            key: "jmbg",
+            value: "JMBG",
+        },
+    ];
+}else if (contentType === "patientsAdmissions") {
     return [
       {
         key: "id",

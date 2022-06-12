@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./styles.css";
 import { ImBin, ImPencil, ImFileText2, ImCheckmark } from "react-icons/im";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
-
+import {FiPlusSquare} from "react-icons/fi"
 const Table = (props) => {
   const {
     headers,
@@ -318,6 +318,21 @@ const Table = (props) => {
             </button>
           </td>
         </>
+      ): tableType === "visits" ? (
+          <>
+            <td style={{ width: "5%" }}>
+              <button
+                  className="buttonIconBlue"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleEditButton("lbp", entry);
+                  }}
+              >
+                <FiPlusSquare />
+              </button>
+            </td>
+
+          </>
       ) : tableType === "employees" ? (
         <>
           <td style={{ width: "5%" }}>

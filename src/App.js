@@ -47,6 +47,9 @@ import IssuingResultsDetailedPage from "./pages/Tehcnician/IssuingResultsDetaile
 import RecepcionistHomepage from "./pages/Recepcionist/RecepcionistHomepage/RecepcionistHomepage";
 import RecepcionistAddPatientPage from "./pages/Recepcionist/RecepcionistAddPatientPage/RecepcionistAddPatientPage";
 import RecepcionistScheduleAppPage from "./pages/Recepcionist/RecepcionistScheduleAppPage/RecepcionistScheduleAppPage";
+import RecepcionistVisitsPage from "./pages/Recepcionist/RecepcionistVisitsPage/RecepcionistVisitsPage";
+import RecepcionistRegistationVisitsPage from "./pages/Recepcionist/RecepcionistRegistationVisitsPage/RecepcionistRegistationVisitsPage";
+
 
 const App = () => {
   return (
@@ -157,6 +160,16 @@ const App = () => {
           path="/recepcionist/add-appointment"
           exact
           element={<RecepcionistScheduleAppPage />}
+        />
+        <Route
+            path="/recepcionist/visits"
+            exact
+            element={<RecepcionistVisitsPage />}
+        />
+        <Route
+            path="/recepcionist/registation-visits/:lbp"
+            exact
+            element={<RecepcionistRegistationVisitsPage />}
         />
       </Routes>
     </BrowserRouter>

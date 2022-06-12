@@ -115,6 +115,14 @@ export const fetchDepartments = () =>
 
 export const fetchPatients = () =>
   API.post(`/bolnica-management-service/api/filter-patients`, {});
+export const fetchPatientsVisits = (formData) =>
+    API.post(`/bolnica-management-service/api/filter-patients`, {
+        formData
+    });
+export const createPatientVisit = (lbp,formData) =>
+    API.post(`/bolnica-management-service/api/filter-patients`, {
+        lbp,formData
+    });
 export const fetchPatient = (lbp) =>
   API.get(`/bolnica-management-service/api/fetch-patient/${lbp}`);
 export const createPatient = (formData) =>
