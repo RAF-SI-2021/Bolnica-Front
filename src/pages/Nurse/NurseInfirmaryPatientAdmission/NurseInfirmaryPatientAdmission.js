@@ -402,7 +402,7 @@ const NurseInfirmaryPatientAdmission = () => {
   return (
     <div style={{ marginLeft: "15%" }}>
       <div className="sidebar-link-container">
-        <Sidebar links={getSidebarLinks("nurseinfirmary", 6)} />
+        <Sidebar links={getSidebarLinks("nurse", 6)} />
       </div>
       <ul className="nav nav-tabs nav-justified">
         <li className="nav-item">
