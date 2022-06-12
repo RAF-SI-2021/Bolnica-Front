@@ -15,6 +15,7 @@ import visits from "./visits";
 import numberOfAppointments from "./numberOfAppointments";
 import patientsAdmissions from "./patientsAdmissions";
 import hospitalRooms from "./hospitalRooms";
+import patientHistoryReducer from "./patientsOfTheDepartment";
 
 export const reducers = combineReducers({
   demo,
@@ -32,4 +33,5 @@ export const reducers = combineReducers({
   numberOfAppointments,
   patientsAdmissions,
   hospitalRooms,
+  patientHistoryReducer,
 });

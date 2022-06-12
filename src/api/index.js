@@ -155,3 +155,18 @@ export const createPatientAdmission = (id, status) =>
 
 //HOSPITAL ROOMS
 export const searchHospitalRooms = (pbo) => API.post("/hospitalRooms", pbo);
+
+//PATIENT HISTORY
+export const fetchPatientsHistory = (dateFrom, dateTo, lbp) =>
+  API.get(
+    `/nurse/infirmary/patients-department/history/${(dateFrom, dateTo, lbp)}`
+  );
+
+export const createPatientHistory = (lbp, formData) =>
+  API.post(`/nurse/infirmary/patients-department/history`, lbp, formData);
+
+export const fetchPatientsVisits = (lbp) =>
+  API.get(`/nurse/infirmary/patients-department/history/${lbp}`);
+
+export const createPatientVisits = (lbp, formData) =>
+  API.post(`/nurse/infirmary/patients-department/history`, lbp, formData);
