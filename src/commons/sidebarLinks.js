@@ -206,15 +206,22 @@ export const getSidebarLinks = (role, activeId) => {
         text: "Pretraga pacijenata",
         path: "/recepcionist/search-patient",
         icon: <FaClipboardList />,
-        dividerAfter: true,
         isActive: activeId === 4 ? true : false,
       },
       {
         id: 5,
+        text: "Poseta",
+        path: "/recepcionist/visits",
+        icon: <FaHome />,
+        dividerAfter: true,
+        isActive: activeId === 5 ? true : false,
+      },
+      {
+        id: 6,
         text: "Profil",
         path: "/profile",
         icon: <FaUser />,
-        isActive: activeId === 5 ? true : false,
+        isActive: activeId === 6 ? true : false,
       },
     ];
   } else {

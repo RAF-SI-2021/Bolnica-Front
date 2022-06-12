@@ -61,7 +61,39 @@ export const getTableHeaders = (contentType) => {
 				value: "LBP",
 			},
 		];
-	} else if (contentType === "examinationHistory") {
+	} else if (contentType === "visitPreview") {
+		return [
+			{
+				key: "idOdeljenja",
+				value: "ID Odeljenja",
+			},
+			{
+				key: "nazivOdeljenja",
+				value: "Naziv odeljenja",
+			},
+			{
+				key: "idSobe",
+				value: "ID Sobe",
+			},
+			{
+				key: "lbp",
+				value: "LBP",
+			},
+			{
+				key: "ime",
+				value: "Ime",
+			},
+			{
+				key: "prezime",
+				value: "Prezime",
+			},
+			{
+				key: "jmbg",
+				value: "JMBG",
+			},
+		];
+	}
+	else if (contentType === "examinationHistory") {
 		return [
 			{
 				key: "datumPregleda",
