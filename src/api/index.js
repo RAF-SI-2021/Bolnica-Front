@@ -49,6 +49,8 @@ export const createReferral = (data) =>
 export const deleteReferral = (id) => API.delete(`/demos/${id}`);
 export const updateReferral = (data) =>
   API.put(`/bolnica-management-service/api/update-referrals-status`, data);
+export const searchReferrals = (lbp, type, status) =>
+  API.post("/bolnica-management-service/api/", lbp, type, status);
 
 // LAB REPORTS
 
@@ -90,9 +92,9 @@ export const fetchEmployees = () =>
     department: 1,
   });
 export const fetchEmployeesDep = (id) =>
-    API.post(`/bolnica-user-service/api/list-employees?page=1&size=5`,{
-        department: id,
-    });
+  API.post(`/bolnica-user-service/api/list-employees?page=1&size=5`, {
+    department: id,
+  });
 export const fetchEmployee = (lbz) =>
   API.get(`/bolnica-user-service/api/get-employee/${lbz}`);
 export const createEmployee = (formData) =>
@@ -150,3 +152,29 @@ export const searchLabVisits = (lbp, dateValue) =>
   API.post("/visits", lbp, dateValue);
 export const updateLabVisits = (id, status) => API.put("/visits", id, status);
 export const createVisit = (formData) => API.post("/visits", formData);
+
+//PATIENTS ADMISSIONS
+export const searchPatientsAdmissions = (lbp, dateValue) =>
+  API.post("/patientsAdmissions", lbp, dateValue);
+export const updatePatientAdmission = (id, status) =>
+  API.put("/patientsAdmissions", id, status);
+export const createPatientAdmission = (id, status) =>
+  API.put("/patientsAdmissions", id, status);
+
+//HOSPITAL ROOMS
+export const searchHospitalRooms = (pbo) => API.post("/hospitalRooms", pbo);
+
+//PATIENT HISTORY
+export const fetchPatientsHistory = (dateFrom, dateTo, lbp) =>
+  API.get(
+    `/nurse/infirmary/patients-department/history/${(dateFrom, dateTo, lbp)}`
+  );
+
+export const createPatientHistory = (lbp, formData) =>
+  API.post(`/nurse/infirmary/patients-department/history`, lbp, formData);
+
+export const fetchPatientsVisits = (lbp) =>
+  API.get(`/nurse/infirmary/patients-department/history/${lbp}`);
+
+export const createPatientVisits = (lbp, formData) =>
+  API.post(`/nurse/infirmary/patients-department/history`, lbp, formData);

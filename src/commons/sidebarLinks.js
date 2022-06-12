@@ -5,9 +5,10 @@ import {
   FaPlusCircle,
   FaUserInjured,
   FaClipboardList,
+  FaBriefcaseMedical,
 } from "react-icons/fa";
 import { BiCalendarPlus } from "react-icons/bi";
-import { MdCalendarToday } from "react-icons/md";
+import { MdCalendarToday, MdPersonSearch } from "react-icons/md";
 import { GiNotebook } from "react-icons/gi";
 
 export const getSidebarLinks = (role, activeId) => {
@@ -80,6 +81,66 @@ export const getSidebarLinks = (role, activeId) => {
         path: "/profile",
         icon: <FaUser />,
         isActive: activeId === 5 ? true : false,
+      },
+    ];
+  } else if (role === "nurseinfirmary") {
+    return [
+      {
+        id: 1,
+        text: "Početna",
+        path: "/nurse",
+        icon: <FaHome />,
+        isActive: activeId === 1 ? true : false,
+      },
+      {
+        id: 2,
+        text: "Pacijenti",
+        path: "/nurse/patient-preview",
+        icon: <FaUserInjured />,
+        isActive: activeId === 2 ? true : false,
+      },
+      {
+        id: 3,
+        text: "Zakazivanje",
+        path: "/nurse/schedule-appointment",
+        icon: <BiCalendarPlus />,
+        isActive: activeId === 3 ? true : false,
+      },
+      {
+        id: 4,
+        text: "Nov pacijent",
+        path: "/nurse/register-patient",
+        icon: <FaPlusCircle />,
+        isActive: activeId === 4 ? true : false,
+      },
+      {
+        id: 5,
+        text: "Zakazivanje prijema",
+        path: "/nurse/infirmary/scheduling-appointment",
+        icon: <FaBriefcaseMedical />,
+        isActive: activeId === 5 ? true : false,
+      },
+      {
+        id: 6,
+        text: "Prijem pacijenata",
+        path: "/nurse/infirmary/admission-of-patient",
+        icon: <FaUserInjured />,
+        isActive: activeId === 6 ? true : false,
+      },
+      {
+        id: 7,
+        text: "Pacijenti odeljenja",
+        path: "/nurse/infirmary/patients-department",
+        icon: <MdPersonSearch />,
+        dividerAfter: true,
+        isActive: activeId === 7 ? true : false,
+      },
+      {
+        id: 8,
+        text: "Profil",
+        path: "/profile",
+        icon: <FaUser />,
+        isActive: activeId === 8 ? true : false,
       },
     ];
   } else if (role === "biochemist") {

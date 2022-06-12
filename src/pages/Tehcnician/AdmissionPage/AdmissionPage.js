@@ -16,12 +16,12 @@ import CustomModal from "../../../components/CustomModal/CustomModal";
 import ActionConfirmationModal from "../../../components/ActionConfirmationModal/ActionConfirmationModal";
 import { useEffect } from "react";
 
-const initialStateForm = {
-  lbp: "",
+const initialStateFormLbp2 = {
+  lbpForm2: "",
 };
 
-const initialStateFormLbp = {
-  lbpForm: "",
+const initialStateFormLbp1 = {
+  lbpForm1: "",
 };
 const AdmissionPage = () => {
   const handleRowClick = (entry) => {};
@@ -35,10 +35,10 @@ const AdmissionPage = () => {
   const [disable, setDisable] = useState(true);
 
   const dispatch = useDispatch();
-  const [form, setForm] = useState(initialStateForm);
-  const [formLbp, setFormLbp] = useState(initialStateFormLbp);
-  const [value, setValue] = useState();
-  const [valueLbp, setValueLbp] = useState();
+  const [formLbp2, setFormLbp2] = useState(initialStateFormLbp2);
+  const [formLbp1, setFormLbp1] = useState(initialStateFormLbp1);
+  const [valueLbp2, setValueLbp2] = useState();
+  const [valueLbp1, setValueLbp1] = useState();
 
   const [isClicked1, setClicked1] = useState(true);
   const [isClicked2, setClicked2] = useState(false);
@@ -48,42 +48,45 @@ const AdmissionPage = () => {
   }, []);
 
   const visits = useSelector((state) => state.visits);
-  
+
   const toggleClass1 = () => {
     if (!isClicked1) {
       setClicked2(!isClicked2);
       setClicked1(!isClicked1);
     }
-    setValueLbp("");
+    setValueLbp1("");
+    setDisable(true);
   };
 
   const toggleClass2 = () => {
+    setValueLbp2("");
     if (!isClicked2) {
       setClicked2(!isClicked2);
       setClicked1(!isClicked1);
     }
+    setDisable(true);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ ...form });
-    dispatch(getReferrals({ ...form }));
+    dispatch(getReferrals({ ...formLbp2 }));
   };
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setFormLbp2({ ...formLbp2, [e.target.name]: e.target.value });
+    setValueLbp2(e.target.value);
     setDisable(e.target.value === "");
   };
 
   const handleChangeLbp = (e) => {
-    console.log(formLbp);
-    setFormLbp({ ...formLbp, [e.target.name]: e.target.value });
+    setFormLbp1({ ...formLbp1, [e.target.name]: e.target.value });
     setDisable(e.target.value === "");
-    dispatch(searchLabVisits({ ...formLbp }, dateValue));
+    dispatch(searchLabVisits({ ...formLbp1 }, dateValue));
+    setValueLbp1(e.target.value);
+    setValueLbp2("");
   };
 
   const handlecreateLabReport = (key, entry) => {
-    console.log(entry[0][1]);
     dispatch(createLabReport(entry[0][1]));
   };
 
@@ -92,11 +95,11 @@ const AdmissionPage = () => {
   };
 
   const handleCreateLabReportTab1 = (key, entry) => {
-    console.log(entry[0][1]);
     dispatch(updateLabVisits(entry[0][1], "Zavrseno"));
     setClicked2(true);
     setClicked1(false);
-    setValue(entry[1][1]);
+    setValueLbp2(entry[1][1]);
+    setDisable(false);
   };
 
   const demoUnrealizedLabReferrals = [
@@ -104,39 +107,31 @@ const AdmissionPage = () => {
       id: 1,
       ime: "Marko",
       prezime: "Markovic",
-      datumPregleda: new Date("December 30, 2018 17:30:00").getTime(),
+      datum: new Date("December 30, 2018 17:30:00").getTime(),
       odeljenje: "XX",
       spisakAnaliza: "spisak",
       komentar: "komentar",
       kreiraj: "a",
-      /*       status: "obradjeno",
-       */
     },
     {
       id: 2,
       ime: "Petar",
       prezime: "Markovic",
-      datumPregleda: new Date("December 30, 2018 17:30:00").getTime(),
+      datum: new Date("May 10, 2022 17:30:00").getTime(),
       odeljenje: "YY",
       spisakAnaliza: "spisakAnaliza",
       komentar: "koment",
       kreiraj: "a",
-
-      /*       status: "obradjeno",
-       */
     },
     {
       id: 3,
       ime: "Mile",
       prezime: "Miletic",
-      datumPregleda: new Date("May 05, 2022 10:30:00").getTime(),
+      datum: new Date("May 25, 2022 10:30:00").getTime(),
       odeljenje: "ZZ",
       spisakAnaliza: "spisakAnaliza",
       komentar: "koment",
       kreiraj: "a",
-
-      /*       status: "neobradjeno",
-       */
     },
   ];
 
@@ -147,7 +142,7 @@ const AdmissionPage = () => {
       lbzTehnicara: 321,
       napomena: "napomena",
       datumPregleda: new Date("December 30, 2019 17:30:00").getTime(),
-      statusPregledaZakazaniPacijenti: "XX",
+      statusPregledaZakazaniPacijenti: "Zakazano",
     },
     {
       id: 2,
@@ -191,9 +186,9 @@ const AdmissionPage = () => {
               className="margin-right"
               placeholder="LBP"
               onChange={handleChangeLbp}
-              name="lbpForm"
+              name="lbpForm1"
               type="text"
-              value={valueLbp}
+              value={valueLbp1}
             />
           </div>
         </form>
@@ -218,9 +213,9 @@ const AdmissionPage = () => {
               className="margin-right"
               placeholder="LBP"
               onChange={handleChange}
-              name="lbp"
+              name="lbpForm2"
               type="text"
-              value={value}
+              value={valueLbp2}
             />
             <button
               disabled={disable}
