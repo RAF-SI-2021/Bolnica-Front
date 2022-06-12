@@ -16,6 +16,10 @@ const Table = (props) => {
     handlecreateLabReport,
     handleCancelVisit,
     handleCreateLabReportTab1,
+    handleAcceptAdmission,
+    handleCancelAdmission,
+    handleChooseReferral,
+    handleChooseRoom,
   } = props;
 
   const listHeaders = headers.map((header) => {
@@ -60,10 +64,19 @@ const Table = (props) => {
     <tr key={entry} onClick={() => handleRowClick(entry)}>
       {entry.map((element) => {
         if (element[0] === "lbp" || element[0] === "lbz") return <></>;
-        if (element[0] === "datumPregleda") {
+        if (element[0] === "datumPregleda" || element[0] === "datum") {
           return (
             <td key={element} style={{ padding: "25px 0px" }}>
               {new Date(element[1]).toLocaleDateString()}
+            </td>
+          );
+        }
+        if (element[0] === "datumVreme") {
+          return (
+            <td key={element} style={{ padding: "25px 0px" }}>
+              {new Date(element[1]).toLocaleDateString() +
+                " " +
+                new Date(element[1]).toLocaleTimeString()}
             </td>
           );
         }
@@ -126,7 +139,7 @@ const Table = (props) => {
           }
         }
         if (element[0] === "kreiraj") {
-          if (entry[3][1] < new Date().getTime() - 2592000000) {
+          if (entry[3][1] > new Date().getTime() - 2592000000) {
             return (
               <td style={{ width: "5%" }}>
                 <button
@@ -145,9 +158,89 @@ const Table = (props) => {
           }
         }
 
+        if (element[0] === "odabir") {
+          if (entry[2][1] > new Date().getTime() - 2592000000) {
+            return (
+              <td style={{ width: "5%" }}>
+                <button
+                  className="buttonBlue"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleChooseReferral("lbz", entry);
+                  }}
+                >
+                  Odaberi uput
+                </button>
+              </td>
+            );
+          } else {
+            return <></>;
+          }
+        }
+
+        if (element[0] === "odaberiSobu") {
+          if (entry[5][1] < entry[4][1]) {
+            return (
+              <td style={{ width: "5%" }}>
+                <button
+                  className="buttonBlue"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleChooseRoom("lbz", entry);
+                  }}
+                >
+                  Odaberi sobu
+                </button>
+              </td>
+            );
+          } else {
+            return <></>;
+          }
+        }
+
+        if (element[0] === "komentarStacionar") {
+          let zakazaniPacijent = false;
+          if (entry[5][1] === "Zakazan") {
+            zakazaniPacijent = true;
+          }
+
+          return (
+            <td style={{ width: "5%" }}>
+              {/*               <div className="d-flex flex-row justify-content-center buttons">
+               */}{" "}
+              <div className="d-flex">
+                <button
+                  className={` ${
+                    zakazaniPacijent
+                      ? "buttonPrihvati"
+                      : "inactiveButtonPrihvati"
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleAcceptAdmission("lbz", entry);
+                  }}
+                >
+                  Prihvati
+                </button>
+                <button
+                  className={` ${
+                    zakazaniPacijent ? "buttonOtkazi" : "inactiveButtonOtkazi"
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCancelAdmission("lbz", entry);
+                  }}
+                >
+                  Otkazi
+                </button>
+              </div>
+            </td>
+          );
+        }
+
         if (element[0] === "statusPregledaZakazaniPacijenti") {
           let zakazano = false;
-          if (entry[5][1] === "YY") {
+          if (entry[5][1] === "Zakazano") {
             zakazano = true;
           }
           return (

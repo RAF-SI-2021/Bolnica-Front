@@ -243,3 +243,113 @@ table.table-bordered > tbody > tr {
   cursor: not-allowed;
   pointer-events: none;
 }
+
+.buttonPrihvati {
+  /*   display: flex;
+  align-items: center;
+  justify-content: center; */
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-radius: 6px;
+  /*   width: 20%;
+  height: 50%; */
+  font-size: 12px;
+  background-color: #10b981;
+  color: white;
+  border: 1px solid white;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-top: 17px;
+  padding-bottom: 17px;
+}
+
+.buttonOtkazi {
+  /*   display: flex;
+  align-items: center;
+  justify-content: center; */
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-radius: 6px;
+  /*   width: 20%;
+  height: 50%; */
+  font-size: 12px;
+  background-color: #e74f48;
+  color: white;
+  border: 1px solid white;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-right: 25px;
+  padding-left: 25px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.inactiveButtonOtkazi {
+  /*   display: flex;
+  align-items: center;
+  justify-content: center; */
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-radius: 6px;
+  /*   width: 20%;
+  height: 50%; */
+  font-size: 12px;
+  background-color: #cacccf;
+  color: white;
+  border: 1px solid white;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-right: 25px;
+  padding-left: 25px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.inactiveButtonPrihvati {
+  /*   display: flex;
+  align-items: center;
+  justify-content: center; */
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-radius: 6px;
+  /*   width: 20%;
+  height: 50%; */
+  font-size: 12px;
+  background-color: #cacccf;
+  color: white;
+  border: 1px solid white;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-top: 17px;
+  padding-bottom: 17px;
+}
+
+.buttonBlue {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-radius: 6px;
+  font-size: 12px;
+  border: 0px;
+  background-color: #336cfb;
+  color: white;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-top: 17px;
+  padding-bottom: 17px;
+}

@@ -27,7 +27,8 @@ import PatientPreviewNurses from "./pages/Nurse/PatientPreviewPageNurses/Patient
 import RegistrationPatientPage from "./pages/Nurse/RegistrationPatientPage/RegistrationPatientPage";
 import ScheduleAppointmentPage from "./pages/Nurse/ScheduleAppointmentPage/ScheduleAppointmentPage";
 
-//NURSE INFIRMARY
+// NURSE INFIRMARY
+import NurseInfirmaryPatientAdmission from "./pages/Nurse/NurseInfirmaryPatientAdmission/NurseInfirmaryPatientAdmission";
 import NurseInfirmaryPatientsOfTheDepartment from "./pages/Nurse/NurseInfirmaryPatientsOfTheDepartment/NurseInfirmaryPatientsOfTheDepartment";
 import NurseInfirmaryPatientsOfTheDepartmentHistory from "./pages/Nurse/NurseInfirmaryPatientsOfTheDepartment/NurseInfirmaryPatientsOfTheDepartmentHistory";
 
@@ -84,8 +85,13 @@ const App = () => {
           path="/nurse/edit-patient/:lbp"
           exact
           element={<EditPatientPage />}
+        
+        {/* NURSE INFIRMARY ROUTES */}
+        <Route
+          path="/nurse/infirmary/admission-of-patient"
+          exact
+          element={<NurseInfirmaryPatientAdmission />}
         />
-        {/* NURSE INFIRMARY */}
         <Route
           path="/nurse/infirmary/patients-department"
           exact
@@ -148,9 +154,9 @@ const App = () => {
           element={<RecepcionistAddPatientPage />}
         />
         <Route
-            path="/recepcionist/add-appointment"
-            exact
-            element={<RecepcionistScheduleAppPage />}
+          path="/recepcionist/add-appointment"
+          exact
+          element={<RecepcionistScheduleAppPage />}
         />
       </Routes>
     </BrowserRouter>
