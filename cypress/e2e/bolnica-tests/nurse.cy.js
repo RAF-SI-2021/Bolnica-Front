@@ -10,7 +10,7 @@ describe('Nurse', () => {
 
     beforeEach(() => {
         cy.loginAdmin();//cy.loginNurse();
-        cy.visit('http://localhost:3000/nurse');
+        cy.visit('http://localhost:3001/nurse');
     })
 
     it('should be able to choose a doctor and see his/hers patients for the day', () => {
@@ -72,7 +72,7 @@ describe('Nurse', () => {
         cy.get('.Kalend__CalendarViewDropdown__wrapper > .Kalend__button').click();
         cy.get('.Kalend__header_calendar_buttons__container-mobile > .Kalend__button:nth-child(3) > .Kalend__text').click();
 
-        cy.visit('http://localhost:3000/nurse',{ timeout: 10000 });
+        cy.visit('http://localhost:3001/nurse',{ timeout: 10000 });
 
         cy.get('.dropdown').click(); 
         cy.get('.dropdown-item').contains('Dr. Test').click();
