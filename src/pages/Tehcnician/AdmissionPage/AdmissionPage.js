@@ -21,16 +21,14 @@ import { useEffect } from "react";
 import { getPatients } from "../../../redux/actions/patients";
 import { getEmployees } from "../../../redux/actions/employee";
 
-const initialStateFormLbp2 = {
-  lbpForm2: "",
+const initialStateForm = {
+  lbp: "",
 };
-
-const initialStateFormLbp1 = {
-  lbpForm1: "",
+const initialStateFormLbp = {
+  lbpForm: "",
 };
 const AdmissionPage = () => {
   const handleRowClick = (entry) => {};
-
   let tab;
   let labRep;
   let dateValue = new Date();
@@ -40,7 +38,6 @@ const AdmissionPage = () => {
   const patients = useSelector((state) => state.patients);
 
   const [disable, setDisable] = useState(true);
-
   const dispatch = useDispatch();
   const [form, setForm] = useState(initialStateForm);
   const [formLbp, setFormLbp] = useState(initialStateFormLbp);
@@ -82,67 +79,54 @@ const AdmissionPage = () => {
       setClicked2(!isClicked2);
       setClicked1(!isClicked1);
     }
-    setValueLbp1("");
-    setDisable(true);
+    setValueLbp("");
   };
-
   const toggleClass2 = () => {
-    setValueLbp2("");
     if (!isClicked2) {
       setClicked2(!isClicked2);
       setClicked1(!isClicked1);
     }
-    setDisable(true);
   };
-
+  const handleClick = (entry) => {
+    console.log(entry);
+    dispatch(createLabReport(entry[0][1]));
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(getReferrals({ ...formLbp2 }));
+    console.log({ ...form });
+    dispatch(getReferrals({ ...form }));
   };
-
   const handleSubmitValue = (e) => {
     e.preventDefault();
     dispatch(getUnprocessedReferrals(value));
   };
-
   const handleChange = (e) => {
-    setFormLbp2({ ...formLbp2, [e.target.name]: e.target.value });
-    setValueLbp2(e.target.value);
+    setForm({ ...form, [e.target.name]: e.target.value });
     setDisable(e.target.value === "");
   };
-
   const handleChangeValue = (e) => {
     setValue(e.target.value);
     setDisable(e.target.value === "");
     // dispatch(getUnprocessedReferrals(e.target.value));
   };
-
   const handlePatientChange = (event) => {
     setForm({ ...form, lbp: event.target.value });
     console.log(event.target.value);
     // dispatch(getUnprocessedReferrals(event.target.value));
     dispatch(searchLabVisits({ date: dateValue, lbp: event.target.value }));
   };
-
   const handleChangeLbp = (e) => {
-    setFormLbp1({ ...formLbp1, [e.target.name]: e.target.value });
+    console.log(formLbp);
+    setFormLbp({ ...formLbp, [e.target.name]: e.target.value });
     setDisable(e.target.value === "");
-    dispatch(searchLabVisits({ ...formLbp1 }, dateValue));
-    setValueLbp1(e.target.value);
-    setValueLbp2("");
+    dispatch(searchLabVisits({ ...formLbp }, dateValue));
   };
-
   const handlecreateLabReport = (key, entry) => {
+    console.log(entry[0][1]);
     dispatch(createLabReport(entry[0][1]));
   };
-
   const handleCancelVisit = (key, entry) => {
     dispatch(updateLabVisits(entry[0][1], "Otkazano"));
-  };
-
-  const handleClick = (entry) => {
-    console.log(entry);
-    dispatch(createLabReport(entry[0][1]));
   };
 
   const handleCreateLabReportTab1 = (entry) => {
@@ -159,34 +143,39 @@ const AdmissionPage = () => {
       id: 1,
       ime: "Marko",
       prezime: "Markovic",
-      datum: new Date("December 30, 2018 17:30:00").getTime(),
+      datumPregleda: new Date("December 30, 2018 17:30:00").getTime(),
       odeljenje: "XX",
       spisakAnaliza: "spisak",
       komentar: "komentar",
       kreiraj: "a",
+      /*       status: "obradjeno",
+       */
     },
     {
       id: 2,
       ime: "Petar",
       prezime: "Markovic",
-      datum: new Date("May 10, 2022 17:30:00").getTime(),
+      datumPregleda: new Date("December 30, 2018 17:30:00").getTime(),
       odeljenje: "YY",
       spisakAnaliza: "spisakAnaliza",
       komentar: "koment",
       kreiraj: "a",
+      /*       status: "obradjeno",
+       */
     },
     {
       id: 3,
       ime: "Mile",
       prezime: "Miletic",
-      datum: new Date("May 25, 2022 10:30:00").getTime(),
+      datumPregleda: new Date("May 05, 2022 10:30:00").getTime(),
       odeljenje: "ZZ",
       spisakAnaliza: "spisakAnaliza",
       komentar: "koment",
       kreiraj: "a",
+      /*       status: "neobradjeno",
+       */
     },
   ];
-
   const demoLabVisits = [
     {
       id: 1,
@@ -194,7 +183,7 @@ const AdmissionPage = () => {
       lbzTehnicara: 321,
       napomena: "napomena",
       datumPregleda: new Date("December 30, 2019 17:30:00").getTime(),
-      statusPregledaZakazaniPacijenti: "Zakazano",
+      statusPregledaZakazaniPacijenti: "XX",
     },
     {
       id: 2,
@@ -205,7 +194,6 @@ const AdmissionPage = () => {
       statusPregledaZakazaniPacijenti: "YY",
     },
   ];
-
   /*   if (true) {
     labRep = (
       <Table
@@ -227,7 +215,6 @@ const AdmissionPage = () => {
       </div>
     );
   } */
-
   if (isClicked1) {
     tab = (
       <div>
@@ -289,7 +276,7 @@ const AdmissionPage = () => {
               onChange={handleChangeValue}
               name="lbp"
               type="text"
-              value={valueLbp2}
+              value={value}
             />
             <button
               disabled={disable}
@@ -301,9 +288,7 @@ const AdmissionPage = () => {
             </button>
           </div>
         </form>
-
         {/*  {labRep} */}
-
         {/*         {referrals.length > 0 && ( */}
         {referrals.length > 0 && (
           <Table
@@ -317,7 +302,6 @@ const AdmissionPage = () => {
             handleClick={handleClick}
           />
         )}
-
         {/*         {referrals.length === 0 && ( */}
         {demoUnrealizedLabReferrals.length === 0 && (
           <div>
@@ -335,7 +319,6 @@ const AdmissionPage = () => {
   return (
     <div>
       <Sidebar links={getSidebarLinks("technician", 2)} />
-
       <div style={{ marginLeft: "15%" }}>
         <ul className="nav nav-tabs nav-justified">
           <li className="nav-item">
