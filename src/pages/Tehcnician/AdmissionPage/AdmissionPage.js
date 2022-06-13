@@ -21,12 +21,12 @@ import { useEffect } from "react";
 import { getPatients } from "../../../redux/actions/patients";
 import { getEmployees } from "../../../redux/actions/employee";
 
-const initialStateForm = {
-  lbp: "",
+const initialStateFormLbp2 = {
+  lbpForm2: "",
 };
 
-const initialStateFormLbp = {
-  lbpForm: "",
+const initialStateFormLbp1 = {
+  lbpForm1: "",
 };
 const AdmissionPage = () => {
   const handleRowClick = (entry) => {};
@@ -82,20 +82,22 @@ const AdmissionPage = () => {
       setClicked2(!isClicked2);
       setClicked1(!isClicked1);
     }
-    setValueLbp("");
+    setValueLbp1("");
+    setDisable(true);
   };
 
   const toggleClass2 = () => {
+    setValueLbp2("");
     if (!isClicked2) {
       setClicked2(!isClicked2);
       setClicked1(!isClicked1);
     }
+    setDisable(true);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ ...form });
-    dispatch(getReferrals({ ...form }));
+    dispatch(getReferrals({ ...formLbp2 }));
   };
 
   const handleSubmitValue = (e) => {
@@ -104,7 +106,8 @@ const AdmissionPage = () => {
   };
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setFormLbp2({ ...formLbp2, [e.target.name]: e.target.value });
+    setValueLbp2(e.target.value);
     setDisable(e.target.value === "");
   };
 
@@ -122,14 +125,14 @@ const AdmissionPage = () => {
   };
 
   const handleChangeLbp = (e) => {
-    console.log(formLbp);
-    setFormLbp({ ...formLbp, [e.target.name]: e.target.value });
+    setFormLbp1({ ...formLbp1, [e.target.name]: e.target.value });
     setDisable(e.target.value === "");
-    dispatch(searchLabVisits({ ...formLbp }, dateValue));
+    dispatch(searchLabVisits({ ...formLbp1 }, dateValue));
+    setValueLbp1(e.target.value);
+    setValueLbp2("");
   };
 
   const handlecreateLabReport = (key, entry) => {
-    console.log(entry[0][1]);
     dispatch(createLabReport(entry[0][1]));
   };
 
@@ -156,39 +159,31 @@ const AdmissionPage = () => {
       id: 1,
       ime: "Marko",
       prezime: "Markovic",
-      datumPregleda: new Date("December 30, 2018 17:30:00").getTime(),
+      datum: new Date("December 30, 2018 17:30:00").getTime(),
       odeljenje: "XX",
       spisakAnaliza: "spisak",
       komentar: "komentar",
       kreiraj: "a",
-      /*       status: "obradjeno",
-       */
     },
     {
       id: 2,
       ime: "Petar",
       prezime: "Markovic",
-      datumPregleda: new Date("December 30, 2018 17:30:00").getTime(),
+      datum: new Date("May 10, 2022 17:30:00").getTime(),
       odeljenje: "YY",
       spisakAnaliza: "spisakAnaliza",
       komentar: "koment",
       kreiraj: "a",
-
-      /*       status: "obradjeno",
-       */
     },
     {
       id: 3,
       ime: "Mile",
       prezime: "Miletic",
-      datumPregleda: new Date("May 05, 2022 10:30:00").getTime(),
+      datum: new Date("May 25, 2022 10:30:00").getTime(),
       odeljenje: "ZZ",
       spisakAnaliza: "spisakAnaliza",
       komentar: "koment",
       kreiraj: "a",
-
-      /*       status: "neobradjeno",
-       */
     },
   ];
 
@@ -199,7 +194,7 @@ const AdmissionPage = () => {
       lbzTehnicara: 321,
       napomena: "napomena",
       datumPregleda: new Date("December 30, 2019 17:30:00").getTime(),
-      statusPregledaZakazaniPacijenti: "XX",
+      statusPregledaZakazaniPacijenti: "Zakazano",
     },
     {
       id: 2,
@@ -294,7 +289,7 @@ const AdmissionPage = () => {
               onChange={handleChangeValue}
               name="lbp"
               type="text"
-              value={value}
+              value={valueLbp2}
             />
             <button
               disabled={disable}

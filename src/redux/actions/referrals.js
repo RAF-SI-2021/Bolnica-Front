@@ -54,3 +54,12 @@ export const deleteReferral = (formData) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const searchReferrals = (lbp, type, status) => async (dispatch) => {
+  try {
+    const { data } = await api.searchReferrals(lbp, type, status);
+    dispatch({ type: GET_REFERRALS, data });
+  } catch (error) {
+    console.log(error);
+  }
+};
