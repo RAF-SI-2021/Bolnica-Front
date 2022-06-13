@@ -28,6 +28,7 @@ const DoctorHomepage = () => {
     dispatch(getLabReports());
     dispatch(getPatients());
   }, []);
+  console.log(labReports);
 
   function handleOnChange(event) {
     setForm({ ...form, lbp: event.target.value });
@@ -35,8 +36,8 @@ const DoctorHomepage = () => {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(form);
-    dispatch(searchLabReports(form));
+    console.log({ ...form, status: "NEOBRADJEN" });
+    dispatch(searchLabReports({ ...form, status: "NEOBRADJEN" }));
   }
 
   const handleRowClick = (entry) => {

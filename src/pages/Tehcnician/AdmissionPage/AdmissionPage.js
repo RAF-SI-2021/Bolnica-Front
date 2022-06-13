@@ -75,6 +75,7 @@ const AdmissionPage = () => {
   console.log(visits);
   console.log(employees);
   console.log(referrals);
+  console.log(referralTableContent);
 
   const toggleClass1 = () => {
     if (!isClicked1) {
@@ -134,6 +135,11 @@ const AdmissionPage = () => {
 
   const handleCancelVisit = (key, entry) => {
     dispatch(updateLabVisits(entry[0][1], "Otkazano"));
+  };
+
+  const handleClick = (entry) => {
+    console.log(entry);
+    dispatch(createLabReport(entry[0][1]));
   };
 
   const handleCreateLabReportTab1 = (entry) => {
@@ -304,14 +310,16 @@ const AdmissionPage = () => {
         {/*  {labRep} */}
 
         {/*         {referrals.length > 0 && ( */}
-        {demoUnrealizedLabReferrals.length > 0 && (
+        {referrals.length > 0 && (
           <Table
             headers={getTableHeaders("unrealizedLabReferrals")}
-            tableContent={demoUnrealizedLabReferrals}
+            tableContent={referralTableContent}
             /*              tableContent={referrals}
              */
             handlecreateLabReport={handlecreateLabReport}
             handleRowClick={handleRowClick}
+            tableType="unrealizedLabReferrals"
+            handleClick={handleClick}
           />
         )}
 

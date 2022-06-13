@@ -35,6 +35,7 @@ export const searchLabReports = (searchInfo) => async (dispatch) => {
 
 export const createLabReport = (formData) => async (dispatch) => {
   try {
+    console.log(formData);
     const { data } = await api.createLabReport(formData);
     dispatch({ type: CREATE_LAB_REPORT, data });
   } catch (error) {

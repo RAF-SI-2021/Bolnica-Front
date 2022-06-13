@@ -34,7 +34,7 @@ const Table = (props) => {
     listHeaders.push(<th scope="col"></th>);
     listHeaders.push(<th scope="col"></th>);
   }
-  if (tableType === "searchVisits") {
+  if (tableType === "searchVisits" || tableType === "unrealizedLabReferrals") {
     listHeaders.push(<th scope="col"></th>);
   }
 
@@ -67,7 +67,11 @@ const Table = (props) => {
     <tr key={entry} onClick={() => handleRowClick(entry)}>
       {entry.map((element) => {
         if (element[0] === "lbp" || element[0] === "lbz") return <></>;
-        if (element[0] === "datumPregleda" || element[0] === "zakazanDatum") {
+        if (
+          element[0] === "datumPregleda" ||
+          element[0] === "zakazanDatum" ||
+          element[0] === "datumVremeKreiranja"
+        ) {
           return (
             <td key={element} style={{ padding: "25px 0px" }}>
               {new Date(element[1]).toLocaleDateString()}
@@ -231,6 +235,19 @@ const Table = (props) => {
               }}
             >
               <ImCheckmark />
+            </button>
+          </td>
+        </>
+      ) : tableType === "unrealizedLabReferrals" ? (
+        <>
+          <td style={{ width: "5%" }}>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleClick(entry);
+              }}
+            >
+              Kreiraj
             </button>
           </td>
         </>

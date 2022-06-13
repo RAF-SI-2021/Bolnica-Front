@@ -160,32 +160,32 @@ export const getTableHeaders = (contentType) => {
   } else if (contentType === "unrealizedLabReferrals") {
     return [
       {
-        key: "id",
+        key: "uputId",
         value: "ID izvestaja",
       },
       {
-        key: "ime",
-        value: "Ime",
+        key: "tip",
+        value: "Tip",
       },
       {
-        key: "prezime",
-        value: "Prezime",
-      },
-      {
-        key: "datumRodjenja",
+        key: "datumVremeKreiranja",
         value: "Datum",
       },
       {
-        key: "odeljenje",
-        value: "Odeljenje",
-      },
-      {
-        key: "spisakAnaliza",
-        value: "spisakAnaliza",
+        key: "zahtevaneAnalize",
+        value: "Zahtevane analize",
       },
       {
         key: "komentar",
         value: "Komentar",
+      },
+      {
+        key: "name",
+        value: "Ime",
+      },
+      {
+        key: "surname",
+        value: "Prezime",
       },
     ];
   } else if (contentType === "labVisits") {

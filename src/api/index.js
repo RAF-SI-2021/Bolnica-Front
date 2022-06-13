@@ -68,7 +68,9 @@ export const fetchLabReports = (data) =>
 export const fetchLabReport = (data) =>
   API.post(`/bolnica-management-service/api/get-lab-report`, data);
 export const createLabReport = (data) =>
-  API.post("/bolnica-management-service/api/set-lab-report", data);
+  API.post(
+    `/bolnica-laboratory-service/api/create-laboratory-work-order?uputId=${data}`
+  );
 export const deleteLabReport = (id) => API.delete(`/demos/${id}`);
 export const updateLabReport = (data) =>
   API.put(`/bolnica-management-service/api/update-lab-report-status`, data);
