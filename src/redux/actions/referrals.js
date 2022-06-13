@@ -6,9 +6,18 @@ import {
 } from "../actionTypes";
 import * as api from "../../api/index.js";
 
-export const getReferrals = (lbz) => async (dispatch) => {
+export const getReferrals = (lbp) => async (dispatch) => {
   try {
-    const { data } = await api.fetchReferrals({ lbz });
+    const { data } = await api.fetchReferrals({ lbp });
+    dispatch({ type: GET_REFERRALS, data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getUnprocessedReferrals = (lbp) => async (dispatch) => {
+  try {
+    const { data } = await api.fetchUnprocessedReferrals(lbp);
     dispatch({ type: GET_REFERRALS, data });
   } catch (error) {
     console.log(error);

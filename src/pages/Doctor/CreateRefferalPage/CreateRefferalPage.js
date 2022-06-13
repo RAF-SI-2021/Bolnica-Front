@@ -10,7 +10,7 @@ import "./styles.css";
 import { createReferral } from "../../../redux/actions/referrals";
 
 function RegistrationPatientPage() {
-  const [form, setForm] = useState({ comment: "", reason: "" });
+  const [form, setForm] = useState({ komentar: "", razlogUpucivanja: "" });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const patients = useSelector((state) => state.patients);
@@ -22,8 +22,8 @@ function RegistrationPatientPage() {
   const handleAnalysisChange = (e) => {
     setForm({
       ...form,
-      labAnalysis: form.labAnalysis
-        ? [...form.labAnalysis, e.target.value]
+      zahtevaneAnalize: form.zahtevaneAnalize
+        ? [...form.zahtevaneAnalize, e.target.value]
         : [e.target.value],
     });
   };
@@ -35,8 +35,17 @@ function RegistrationPatientPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const user = JSON.parse(localStorage.getItem("loggedUser"));
-    dispatch(createReferral({ ...form, lbz: user.LBZ }));
-    console.log({ ...form, lbz: user.LBZ });
+    dispatch(
+      createReferral({
+        ...form,
+        lbz: user.LBZ,
+        izOdeljenjaId: 1,
+        zahtevaneAnalize: "GLU",
+        datumVremeKreiranja: new Date(),
+        zaOdeljenjeId: 1,
+      })
+    );
+    console.log({ ...form, lbz: user.LBZ, izOdeljenjaId: 1 });
     // navigate("/");
   };
 
@@ -76,8 +85,8 @@ function RegistrationPatientPage() {
           <select
             className="form-select-custom small-select margin-left"
             onChange={handleChange}
-            name="referralType"
-            value={form.referralType}
+            name="tip"
+            value={form.tip}
             defaultValue=""
           >
             <option value="" disabled>
@@ -88,7 +97,7 @@ function RegistrationPatientPage() {
             <option value="STACIONAR">Stacionar</option>
           </select>
         </div>
-        {form.referralType === "LABORATORIJA" ? (
+        {form.tip === "LABORATORIJA" ? (
           <>
             <div className="form-group-custom">
               <select
@@ -109,8 +118,8 @@ function RegistrationPatientPage() {
                 className="margin-left"
                 placeholder="Komentar"
                 onChange={handleChange}
-                name="comment"
-                value={form.comment}
+                name="komentar"
+                value={form.komentar}
               />
             </div>
             <div className="form-group-custom margin-top margin-bottom">
@@ -330,7 +339,7 @@ function RegistrationPatientPage() {
               </Switch>
             </div>
           </>
-        ) : form.referralType === "DIJAGNOSTIKA" ? (
+        ) : form.tip === "DIJAGNOSTIKA" ? (
           <>
             <div className="form-group-custom">
               <select
@@ -351,8 +360,8 @@ function RegistrationPatientPage() {
                 className="margin-left"
                 placeholder="Komentar"
                 onChange={handleChange}
-                name="comment"
-                value={form.comment}
+                name="komentar"
+                value={form.komentar}
               />
             </div>
             <div className="form-group-custom">
@@ -388,12 +397,12 @@ function RegistrationPatientPage() {
                 className="margin-left"
                 placeholder="Razlog upucivanja"
                 onChange={handleChange}
-                name="reason"
-                value={form.reason}
+                name="razlogUpucivanja"
+                value={form.razlogUpucivanja}
               />
             </div>
           </>
-        ) : form.referralType === "STACIONAR" ? (
+        ) : form.tip === "STACIONAR" ? (
           <>
             <div className="form-group-custom">
               <select
@@ -414,8 +423,8 @@ function RegistrationPatientPage() {
                 className="margin-left"
                 placeholder="Komentar"
                 onChange={handleChange}
-                name="comment"
-                value={form.comment}
+                name="komentar"
+                value={form.komentar}
               />
             </div>
             <div className="form-group-custom">
@@ -452,7 +461,7 @@ function RegistrationPatientPage() {
           <></>
         )}
         <button onClick={handleSubmit} style={{ marginTop: "10px" }}>
-          Izmeni
+          Kreiraj uput
         </button>
       </form>
     </div>

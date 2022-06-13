@@ -12,29 +12,53 @@ import { getSidebarLinks } from "../../../commons/sidebarLinks";
 import { BiSearchAlt } from "react-icons/bi";
 import "./styles.css";
 import { getTableHeaders } from "../../../commons/tableHeaders";
+import { getPatients } from "../../../redux/actions/patients";
+import Header from "../../../components/Header/Header";
+import { format } from "date-fns";
 
 const DoctorHomepage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [value, setValue] = useState("");
+  const [form, setForm] = useState({});
   const labReports = useSelector((state) => state.labReports);
+  const patients = useSelector((state) => state.patients);
 
   useEffect(() => {
     dispatch(getLabReports());
+    dispatch(getPatients());
   }, []);
+  console.log(labReports);
 
   function handleOnChange(event) {
-    setValue(event.target.value);
+    setForm({ ...form, lbp: event.target.value });
   }
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(value);
-    dispatch(searchLabReports(value));
+    console.log({ ...form, status: "NEOBRADJEN" });
+    dispatch(searchLabReports({ ...form, status: "NEOBRADJEN" }));
   }
 
   const handleRowClick = (entry) => {
     navigate(`/biochemist/detailed-result/${entry[0][1]}`);
+  };
+
+  const onChangeDateHandler = (e, targetName) => {
+    let formatted;
+    const date = new Date(e.target.value);
+    const years = date.toLocaleDateString("en-US", { year: "numeric" });
+    const month = date.toLocaleDateString("en-US", { month: "numeric" });
+    const day = date.toLocaleDateString("en-US", { day: "numeric" });
+    formatted = years;
+    formatted += month.length === 1 ? `-0${month}` : `-${month}`;
+    formatted += day.length === 1 ? `-0${day}` : `-${day}`;
+    setForm({
+      ...form,
+      [targetName]: formatted,
+    });
+
+    console.log({ ...form });
   };
 
   const demoLabReports = [
@@ -58,32 +82,75 @@ const DoctorHomepage = () => {
     },
   ];
 
+  const headerProps = {
+    userName: "Dr. Paun",
+    userTitle: "Lab Tehnicar",
+  };
+
   return (
     <>
       <div className="sidebar-link-container">
         <Sidebar links={getSidebarLinks("biochemist", 1)} />
       </div>
       <div style={{ marginLeft: "15%" }}>
-        <div className="flexRow padding-y-30">
+        <Header
+          avatarUrl={headerProps.avatarUrl}
+          welcomeMsg={headerProps.welcomeMsg}
+          userName={headerProps.userName}
+          userTitle={headerProps.userTitle}
+          day={format(new Date(), "d")}
+          date={format(new Date(), "d MMMM, yyyy")}
+        />
+        <div style={{ width: "60%", margin: "auto" }}>
           <form>
-            <div className="flexRow">
-              <input
-                type="text"
-                placeholder="Search.."
-                name="search"
+            <div className="form-group-custom">
+              <select
+                className="form-select-custom small-select"
                 onChange={handleOnChange}
-                className="fullWidth radius-left"
-              />
-              <button
-                type="submit"
-                className="radius-right buttonFix"
-                onClick={handleSubmit}
+                name="lbp"
+                value={form.lbp}
+                defaultValue=""
               >
-                <BiSearchAlt />
-              </button>
+                <option value="" disabled>
+                  Izaberite pacijenta
+                </option>
+                {patients.length > 0 ? (
+                  <>
+                    {patients.map((patient) => {
+                      return (
+                        <option key={patient.lbp} value={patient.lbp}>
+                          {patient.ime}
+                        </option>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <></>
+                )}
+              </select>
             </div>
+            <div className="form-group-custom">
+              <input
+                type="date"
+                data-date=""
+                data-date-format="ddmmyyyy"
+                name="odDatuma"
+                onChange={(e) => onChangeDateHandler(e, "odDatuma")}
+                className="margin-right"
+              />
+              <input
+                type="date"
+                data-date=""
+                data-date-format="ddmmyyyy"
+                name="doDatuma"
+                onChange={(e) => onChangeDateHandler(e, "doDatuma")}
+                className="margin-left"
+              />
+            </div>
+            <button onClick={handleSubmit} style={{ marginTop: "10px" }}>
+              Pretrazi
+            </button>
           </form>
-          <HeaderRight userName="Jasda" userTitle="Alskcna" />
         </div>
         {/* {labReports.length > 0 && ( */}
         <Table

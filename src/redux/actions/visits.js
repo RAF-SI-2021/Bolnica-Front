@@ -5,18 +5,21 @@ import {
 } from "../actionTypes";
 import * as api from "../../api/index.js";
 
-export const searchLabVisits = (lbp, dateValue) => async (dispatch) => {
+export const searchLabVisits = (formData) => async (dispatch) => {
   try {
-    const { data } = await api.searchLabVisits(lbp, dateValue);
+    console.log(formData);
+    const { data } = await api.searchLabVisits(formData);
     dispatch({ type: GET_LAB_VISITS, data });
   } catch (error) {
     console.log(error);
   }
 };
 
-export const updateLabVisits = (id, status) => async (dispatch) => {
+export const updateLabVisits = (formData) => async (dispatch) => {
   try {
-    const { data } = await api.updateLabVisits(id, status);
+    console.log(formData);
+    const { data } = await api.updateLabVisits(formData);
+    console.log(data);
     dispatch({ type: UPDATE_LAB_VISITS, data });
   } catch (error) {
     console.log(error);

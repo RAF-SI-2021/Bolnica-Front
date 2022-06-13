@@ -3,10 +3,17 @@ import Table from "../Table/Table";
 import { Button } from "reactstrap";
 import { getTableHeaders } from "../../commons/tableHeaders";
 
-const MedicalRecord = ({ record, diseases, examinations }) => {
+const MedicalRecord = ({
+  record,
+  diseases,
+  examinations,
+  referrals,
+  labReports,
+}) => {
   const dob = new Date(record.pacijent.datumRodjenja);
   const stringDate = dob.toLocaleDateString();
   const [isExamination, setIsExamination] = useState(true);
+  const [isRefferal, setIsRefferal] = useState(true);
 
   const alergies = ["polen", "macja dlaka", "mleko"];
   const vaccines = ["covid19", "tetanus"];
@@ -17,6 +24,9 @@ const MedicalRecord = ({ record, diseases, examinations }) => {
 
   const swapTabs = () => {
     setIsExamination(!isExamination);
+  };
+  const swapTabsRefferal = () => {
+    setIsRefferal(!isRefferal);
   };
 
   return (
@@ -92,6 +102,55 @@ const MedicalRecord = ({ record, diseases, examinations }) => {
       ) : (
         <p className="form-section-heading">
           Trenutno ne postoji istorija pregleda i bolesti
+        </p>
+      )}
+      {isRefferal && referrals.length > 0 ? (
+        <>
+          <p className="form-section-heading" style={{ marginTop: "40px" }}>
+            Istorija uputa{" "}
+            {labReports.length > 0 && (
+              <Button
+                color="primary"
+                outline={!isRefferal}
+                onClick={swapTabsRefferal}
+                style={{ marginLeft: "30px" }}
+              >
+                Istorija bolesti
+              </Button>
+            )}
+          </p>
+          <Table
+            headers={getTableHeaders("examinationHistory")}
+            tableContent={referrals}
+            handleClick={handleClick}
+            tableType="referrals"
+          />
+        </>
+      ) : labReports.length > 0 ? (
+        <>
+          <p className="form-section-heading">
+            Istorija laboratorijskih izvestaja{" "}
+            {referrals.length > 0 && (
+              <Button
+                color="primary"
+                outline={isRefferal}
+                onClick={swapTabsRefferal}
+                style={{ marginLeft: "30px" }}
+              >
+                Istorija pregleda
+              </Button>
+            )}
+          </p>
+          <Table
+            headers={getTableHeaders("diseaseHistory")}
+            tableContent={labReports}
+            handleClick={handleClick}
+            tableType="labReports"
+          />
+        </>
+      ) : (
+        <p className="form-section-heading">
+          Trenutno ne postoji istorija uputa i laboratorijskih izvestaja
         </p>
       )}
     </>
