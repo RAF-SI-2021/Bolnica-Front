@@ -35,8 +35,6 @@ function RegistrationPage() {
 
   //   const departments = useSelector((state) => state.departments);
 
-  
-
   const departmentsDemo = [
     {
       id: 0,
@@ -90,7 +88,7 @@ function RegistrationPage() {
     navigate("/admin/employee-preview");
   };
   return (
-    <div style={{ marginLeft: "15%" }}>
+    <div style={{ marginLeft: "20%" }}>
       <div className="sidebar-link-container">
         <Sidebar links={getSidebarLinks("admin", 3)} />
       </div>

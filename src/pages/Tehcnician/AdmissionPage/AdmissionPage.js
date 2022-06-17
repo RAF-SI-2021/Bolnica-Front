@@ -319,7 +319,7 @@ const AdmissionPage = () => {
   return (
     <div>
       <Sidebar links={getSidebarLinks("technician", 2)} />
-      <div style={{ marginLeft: "15%" }}>
+      <div style={{ marginLeft: "20%" }}>
         <ul className="nav nav-tabs nav-justified">
           <li className="nav-item">
             <button

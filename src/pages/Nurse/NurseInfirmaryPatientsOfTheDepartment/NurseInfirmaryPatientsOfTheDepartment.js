@@ -69,7 +69,7 @@ const NurseInfirmaryPatientsOfTheDepartment = () => {
       <div className="sidebar-link-container">
         <Sidebar links={getSidebarLinks("nurse", 7)} />
       </div>
-      <div style={{ marginLeft: "15%" }}>
+      <div style={{ marginLeft: "20%" }}>
         <form onSubmit={handleSubmit} className="form-custom familyFix">
           <h1 className="form-heading">Rad sa pacijentima</h1>
           <br></br>

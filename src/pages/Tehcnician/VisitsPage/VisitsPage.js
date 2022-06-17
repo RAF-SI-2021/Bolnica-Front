@@ -389,7 +389,7 @@ const VisitsPage = () => {
       <div className="sidebar-link-container">
         <Sidebar links={getSidebarLinks("technician", 3)} />
       </div>
-      <div style={{ marginLeft: "15%" }}>
+      <div style={{ marginLeft: "20%" }}>
         <ul className="nav nav-tabs nav-justified">
           <li className="nav-item">
             <button
