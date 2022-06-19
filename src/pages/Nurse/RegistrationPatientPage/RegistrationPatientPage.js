@@ -58,7 +58,7 @@ function RegistrationPatientPage() {
     navigate("/nurse/patient-preview");
   };
   return (
-    <div style={{ marginLeft: "15%" }}>
+    <div style={{ marginLeft: "20%" }}>
       <div className="sidebar-link-container">
         <Sidebar links={getSidebarLinks("nurse", 4)} />
       </div>

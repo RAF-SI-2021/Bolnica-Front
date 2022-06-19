@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
 import "./styles.css";
@@ -13,17 +13,30 @@ import {
 } from "../../../redux/actions/visits";
 import { createVisit } from "../../../redux/actions/visits";
 import { BiSearchAlt } from "react-icons/bi";
+import { getLabReports } from "../../../redux/actions/labReports";
+import { getPatients } from "../../../redux/actions/patients";
+import { set } from "date-fns";
+import { getUnprocessedReferrals } from "../../../redux/actions/referrals";
 
 const VisitsPage = () => {
   const [isClicked1, setClicked1] = useState(true);
   const [isClicked2, setClicked2] = useState(false);
   const [isReport, setReport] = useState(false);
-  const [form, setForm] = useState();
-  const [form2, setForm2] = useState();
+  const [form, setForm] = useState({});
+  const [form2, setForm2] = useState({});
   const dispatch = useDispatch();
   const [isModal, setModal] = useState();
   const [isSearch, setSearch] = useState(false);
   const [value, setValue] = useState("");
+  const patients = useSelector((state) => state.patients);
+  const number = useSelector((state) => state.number);
+  const referrals = useSelector((state) => state.referrals);
+  const visits = useSelector((state) => state.visits);
+
+  useEffect(() => {
+    // dispatch(getLabReports());
+    dispatch(getPatients());
+  }, []);
 
   const toggleClass1 = () => {
     if (!isClicked1) {
@@ -44,6 +57,8 @@ const VisitsPage = () => {
   };
 
   const toggleSeach = () => {
+    console.log(form2);
+    dispatch(searchLabVisits(form2));
     if (isClicked2) setSearch(!isSearch);
   };
 
@@ -74,7 +89,7 @@ const VisitsPage = () => {
     formatted += day.length === 1 ? `-0${day}` : `-${day}`;
     setForm({
       ...form,
-      dob: formatted,
+      date: formatted,
     });
 
     console.log({ ...form });
@@ -90,13 +105,23 @@ const VisitsPage = () => {
     formatted += day.length === 1 ? `-0${day}` : `-${day}`;
     setForm2({
       ...form2,
-      dob: formatted,
+      date: formatted,
     });
 
     console.log({ ...form2 });
   };
 
-  function hadleScheduling(event) {
+  const handlePatientChange = (event) => {
+    setForm({ ...form, lbp: event.target.value });
+    dispatch(getUnprocessedReferrals(event.target.value));
+  };
+
+  const handlePatientChange2 = (event) => {
+    setForm2({ ...form2, lbp: event.target.value });
+    // dispatch(getUnprocessedReferrals(event.target.value));
+  };
+
+  function handleScheduling(event) {
     event.preventDefault();
     console.log({ ...form });
     dispatch(createVisit({ ...form }));
@@ -110,9 +135,7 @@ const VisitsPage = () => {
 
   let status;
   function handleButtonCanceled(entry) {
-    console.log("kliknuto");
-    status = "Otkazano";
-    dispatch(updateLabVisits(entry[0][1], { status }));
+    dispatch(updateLabVisits({ id: entry[0][1], status: "OTKAZANO" }));
   }
 
   function handleButtonFinished(entry) {
@@ -123,8 +146,8 @@ const VisitsPage = () => {
 
   function handleNumberOfReports(event) {
     event.preventDefault();
-    console.log(form.dob);
-    dispatch(getNumberofAppointments(form.dob));
+    console.log(form.date);
+    dispatch(getNumberofAppointments(form.date));
   }
 
   let currDate = new Date();
@@ -133,10 +156,6 @@ const VisitsPage = () => {
     if (form2.length > 0) dispatch(searchLabVisits({ ...form2 }));
     else dispatch(searchLabVisits({ currDate }));
   }
-
-  const number = useSelector((state) => state.number);
-  const referrals = useSelector((state) => state.referrals);
-  const visits = useSelector((state) => state.visits);
 
   const demoSearchVisits = [
     {
@@ -217,15 +236,16 @@ const VisitsPage = () => {
   } else {
     table = <div></div>;
   }
-
+  console.log(visits);
   let table2;
-  if (isSearch) {
+  // if (isSearch) {
+  if (visits.length > 0) {
     table2 = (
       // {visits.length === 0 && (
       <Table
         headers={getTableHeaders("scheduledVisits")}
         // tableContent={visits}
-        tableContent={demoSearchVisits}
+        tableContent={visits}
         tableType="searchVisits"
         handleButtonCanceled={handleButtonCanceled}
         handleButtonFinished={handleButtonFinished}
@@ -242,62 +262,50 @@ const VisitsPage = () => {
       <div>
         <form action="#" className="form-custom familyFix visits">
           <div className="form-group-custom">
-            <input
-              className="margin-right"
-              placeholder="LBP"
+            <select
+              className="form-select-custom small-select margin-right"
+              onChange={handlePatientChange}
               name="lbp"
-              type="text"
-              onChange={handleChangeInput}
-              value={value}
-              required
-            />
-
-            <button
-              className={` ${!value ? "buttonFormDisabled" : "buttonForm"}`}
-              type="button"
-              disabled={!value}
-              onClick={toggleReport}
+              value={form.lbp}
+              defaultValue=""
             >
-              {/* <button
-              className="buttonForm"
-              type="button"
-              disabled={!value}
-              onClick={handleReports}
-            > */}
-              Dohvati
-            </button>
-          </div>
-          <br></br>
-          <div className="form-group-custom">
+              <option value="" disabled>
+                Izaberite pacijenta
+              </option>
+              {patients.length > 0 ? (
+                <>
+                  {patients.map((patient) => {
+                    return (
+                      <option key={patient.lbp} value={patient.lbp}>
+                        {patient.ime}
+                      </option>
+                    );
+                  })}
+                </>
+              ) : (
+                <></>
+              )}
+            </select>
             <input
               type="date"
               data-date=""
               data-date-format="ddmmyyyy"
-              name="dob"
+              name="date"
               onChange={onChangeDateHandler}
-              className="margin-right"
+              className="margin-right margin-left"
             />
             <input
               type="text"
               placeholder="Broj zakazanih pacijenata"
               name="number"
-              className="margin-left margin-right"
+              className="margin-left"
               value={number}
               disabled="disabled"
             />
-            <button
-              className="buttonForm"
-              type="button"
-              onClick={handleNumberOfReports}
-            >
-              Dohvati
-            </button>
           </div>
-          <br></br>
           <div className="form-group-custom">
             <textarea
-              name="description"
-              rows="4"
+              name="napomena"
               cols="50"
               onChange={handleChangeArea}
               placeholder="Napomena..."
@@ -311,7 +319,7 @@ const VisitsPage = () => {
               type="button"
               // data-bs-toggle="modal"
               // data-bs-target="#myModal"
-              onClick={hadleScheduling}
+              onClick={handleScheduling}
             >
               Zakaži
             </button>
@@ -328,19 +336,36 @@ const VisitsPage = () => {
       <div>
         <form className="form-custom familyFix visits">
           <div className="form-group-custom">
-            <input
-              className="margin-right"
-              placeholder="LBP"
+            <select
+              className="form-select-custom small-select margin-right"
+              onChange={handlePatientChange2}
               name="lbp"
-              type="text"
-              onChange={handleChange}
-            />
+              value={form2.lbp}
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Izaberite pacijenta
+              </option>
+              {patients.length > 0 ? (
+                <>
+                  {patients.map((patient) => {
+                    return (
+                      <option key={patient.lbp} value={patient.lbp}>
+                        {patient.ime}
+                      </option>
+                    );
+                  })}
+                </>
+              ) : (
+                <></>
+              )}
+            </select>
             <div className="form-group-custom">
               <input
                 type="date"
                 data-date=""
                 data-date-format="ddmmyyyy"
-                name="dob"
+                name="date"
                 onChange={onChangeDateHandler2}
                 className="margin-right"
               />
@@ -349,11 +374,6 @@ const VisitsPage = () => {
                 type="button"
                 onClick={toggleSeach}
               >
-                {/* <button
-                className="buttonForm"
-                type="button"
-                onClick={handleLabVisits}
-              > */}
                 <BiSearchAlt />
               </button>
             </div>
@@ -369,7 +389,7 @@ const VisitsPage = () => {
       <div className="sidebar-link-container">
         <Sidebar links={getSidebarLinks("technician", 3)} />
       </div>
-      <div style={{ marginLeft: "15%" }}>
+      <div style={{ marginLeft: "20%" }}>
         <ul className="nav nav-tabs nav-justified">
           <li className="nav-item">
             <button

@@ -4,7 +4,10 @@ import { getSidebarLinks } from "../../../commons/sidebarLinks";
 import "./styles.css";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getReferrals } from "../../../redux/actions/referrals";
+import {
+  getReferrals,
+  getUnprocessedReferrals,
+} from "../../../redux/actions/referrals";
 import { createLabReport } from "../../../redux/actions/labReports";
 import {
   searchLabVisits,
@@ -15,40 +18,62 @@ import { getTableHeaders } from "../../../commons/tableHeaders";
 import CustomModal from "../../../components/CustomModal/CustomModal";
 import ActionConfirmationModal from "../../../components/ActionConfirmationModal/ActionConfirmationModal";
 import { useEffect } from "react";
+import { getPatients } from "../../../redux/actions/patients";
+import { getEmployees } from "../../../redux/actions/employee";
 
 const initialStateForm = {
   lbp: "",
 };
-
 const initialStateFormLbp = {
   lbpForm: "",
 };
 const AdmissionPage = () => {
   const handleRowClick = (entry) => {};
-
   let tab;
   let labRep;
   let dateValue = new Date();
 
   const referrals = useSelector((state) => state.referrals);
+  const employees = useSelector((state) => state.employees);
+  const patients = useSelector((state) => state.patients);
 
   const [disable, setDisable] = useState(true);
-
   const dispatch = useDispatch();
   const [form, setForm] = useState(initialStateForm);
   const [formLbp, setFormLbp] = useState(initialStateFormLbp);
   const [value, setValue] = useState();
   const [valueLbp, setValueLbp] = useState();
+  const [referralTableContent, setReferralTableContent] = useState([]);
 
   const [isClicked1, setClicked1] = useState(true);
   const [isClicked2, setClicked2] = useState(false);
 
   useEffect(() => {
-    dispatch(searchLabVisits(dateValue));
+    // dispatch(searchLabVisits(dateValue));
+    dispatch(getPatients());
+    dispatch(getEmployees());
   }, []);
 
+  useEffect(() => {
+    setReferralTableContent(
+      referrals.map((referral) => {
+        const employee = employees.find(
+          (employee) => employee.lbz === referral.lbz
+        );
+        return {
+          ...referral,
+          ...employee,
+        };
+      })
+    );
+  }, [referrals]);
+
   const visits = useSelector((state) => state.visits);
-  
+  console.log(visits);
+  console.log(employees);
+  console.log(referrals);
+  console.log(referralTableContent);
+
   const toggleClass1 = () => {
     if (!isClicked1) {
       setClicked2(!isClicked2);
@@ -56,47 +81,61 @@ const AdmissionPage = () => {
     }
     setValueLbp("");
   };
-
   const toggleClass2 = () => {
     if (!isClicked2) {
       setClicked2(!isClicked2);
       setClicked1(!isClicked1);
     }
   };
-
+  const handleClick = (entry) => {
+    console.log(entry);
+    dispatch(createLabReport(entry[0][1]));
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log({ ...form });
     dispatch(getReferrals({ ...form }));
   };
-
+  const handleSubmitValue = (e) => {
+    e.preventDefault();
+    dispatch(getUnprocessedReferrals(value));
+  };
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setDisable(e.target.value === "");
   };
-
+  const handleChangeValue = (e) => {
+    setValue(e.target.value);
+    setDisable(e.target.value === "");
+    // dispatch(getUnprocessedReferrals(e.target.value));
+  };
+  const handlePatientChange = (event) => {
+    setForm({ ...form, lbp: event.target.value });
+    console.log(event.target.value);
+    // dispatch(getUnprocessedReferrals(event.target.value));
+    dispatch(searchLabVisits({ date: dateValue, lbp: event.target.value }));
+  };
   const handleChangeLbp = (e) => {
     console.log(formLbp);
     setFormLbp({ ...formLbp, [e.target.name]: e.target.value });
     setDisable(e.target.value === "");
     dispatch(searchLabVisits({ ...formLbp }, dateValue));
   };
-
   const handlecreateLabReport = (key, entry) => {
     console.log(entry[0][1]);
     dispatch(createLabReport(entry[0][1]));
   };
-
   const handleCancelVisit = (key, entry) => {
     dispatch(updateLabVisits(entry[0][1], "Otkazano"));
   };
 
-  const handleCreateLabReportTab1 = (key, entry) => {
-    console.log(entry[0][1]);
-    dispatch(updateLabVisits(entry[0][1], "Zavrseno"));
+  const handleCreateLabReportTab1 = (entry) => {
+    console.log(entry);
+    dispatch(updateLabVisits({ id: entry[0][1], status: "ZAVRSENO" }));
     setClicked2(true);
     setClicked1(false);
-    setValue(entry[1][1]);
+    setDisable(false);
+    setValue(entry[2][1]);
   };
 
   const demoUnrealizedLabReferrals = [
@@ -121,7 +160,6 @@ const AdmissionPage = () => {
       spisakAnaliza: "spisakAnaliza",
       komentar: "koment",
       kreiraj: "a",
-
       /*       status: "obradjeno",
        */
     },
@@ -134,12 +172,10 @@ const AdmissionPage = () => {
       spisakAnaliza: "spisakAnaliza",
       komentar: "koment",
       kreiraj: "a",
-
       /*       status: "neobradjeno",
        */
     },
   ];
-
   const demoLabVisits = [
     {
       id: 1,
@@ -158,7 +194,6 @@ const AdmissionPage = () => {
       statusPregledaZakazaniPacijenti: "YY",
     },
   ];
-
   /*   if (true) {
     labRep = (
       <Table
@@ -180,32 +215,53 @@ const AdmissionPage = () => {
       </div>
     );
   } */
-
   if (isClicked1) {
     tab = (
       <div>
         <form className="form-custom familyFix">
           <br></br>
           <div className="form-group-custom">
-            <input
-              className="margin-right"
-              placeholder="LBP"
-              onChange={handleChangeLbp}
-              name="lbpForm"
-              type="text"
-              value={valueLbp}
-            />
+            <select
+              className="form-select-custom small-select margin-right"
+              onChange={handlePatientChange}
+              name="lbp"
+              value={form.lbp}
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Izaberite pacijenta
+              </option>
+              {patients.length > 0 ? (
+                <>
+                  {patients.map((patient) => {
+                    return (
+                      <option key={patient.lbp} value={patient.lbp}>
+                        {patient.ime}
+                      </option>
+                    );
+                  })}
+                </>
+              ) : (
+                <></>
+              )}
+            </select>
           </div>
         </form>
-        <Table
-          headers={getTableHeaders("labVisits")}
-          tableContent={demoLabVisits}
-          /*              tableContent={visits}
-           */
-          handleRowClick={handleRowClick}
-          handleCancelVisit={handleCancelVisit}
-          handleCreateLabReportTab1={handleCreateLabReportTab1}
-        />
+        {visits.length > 0 ? (
+          <Table
+            /*              tableContent={visits}
+             */
+            headers={getTableHeaders("scheduledVisits")}
+            // tableContent={visits}
+            tableContent={visits}
+            tableType="admissionVisits"
+            handleRowClick={handleRowClick}
+            handleCancelVisit={handleCancelVisit}
+            handleCreateLabReportTab1={handleCreateLabReportTab1}
+          />
+        ) : (
+          <></>
+        )}
       </div>
     );
   } else {
@@ -217,14 +273,14 @@ const AdmissionPage = () => {
             <input
               className="margin-right"
               placeholder="LBP"
-              onChange={handleChange}
+              onChange={handleChangeValue}
               name="lbp"
               type="text"
               value={value}
             />
             <button
               disabled={disable}
-              onClick={handleSubmit}
+              onClick={handleSubmitValue}
               className={` ${disable ? "disabled" : ""}`}
               type="button"
             >
@@ -232,21 +288,20 @@ const AdmissionPage = () => {
             </button>
           </div>
         </form>
-
         {/*  {labRep} */}
-
         {/*         {referrals.length > 0 && ( */}
-        {demoUnrealizedLabReferrals.length > 0 && (
+        {referrals.length > 0 && (
           <Table
             headers={getTableHeaders("unrealizedLabReferrals")}
-            tableContent={demoUnrealizedLabReferrals}
+            tableContent={referralTableContent}
             /*              tableContent={referrals}
              */
             handlecreateLabReport={handlecreateLabReport}
             handleRowClick={handleRowClick}
+            tableType="unrealizedLabReferrals"
+            handleClick={handleClick}
           />
         )}
-
         {/*         {referrals.length === 0 && ( */}
         {demoUnrealizedLabReferrals.length === 0 && (
           <div>
@@ -264,8 +319,7 @@ const AdmissionPage = () => {
   return (
     <div>
       <Sidebar links={getSidebarLinks("technician", 2)} />
-
-      <div style={{ marginLeft: "15%" }}>
+      <div style={{ marginLeft: "20%" }}>
         <ul className="nav nav-tabs nav-justified">
           <li className="nav-item">
             <button

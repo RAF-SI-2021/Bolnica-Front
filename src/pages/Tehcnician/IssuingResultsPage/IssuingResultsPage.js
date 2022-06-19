@@ -91,7 +91,7 @@ const DoctorHomepage = () => {
       <div className="sidebar-link-container">
         <Sidebar links={getSidebarLinks("technician", 4)} />
       </div>
-      <div style={{ marginLeft: "15%" }}>
+      <div style={{ marginLeft: "20%" }}>
         <Header
           avatarUrl={headerProps.avatarUrl}
           welcomeMsg={headerProps.welcomeMsg}

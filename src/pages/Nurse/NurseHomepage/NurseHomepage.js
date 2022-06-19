@@ -47,7 +47,7 @@ const NurseHomepage = () => {
       <div className="sidebar-link-container">
         <Sidebar links={getSidebarLinks("nurse", 1)} />
       </div>
-      <div style={{ marginLeft: "15%" }}>
+      <div style={{ marginLeft: "20%" }}>
         {employees && selectedDoctor && (
           <HeaderNurse
             employees={employees}

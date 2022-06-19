@@ -12,6 +12,8 @@ import { createRecord, getRecord } from "../../../redux/actions/records";
 import { getExaminations } from "../../../redux/actions/examinations";
 import { getDiseases } from "../../../redux/actions/diseases";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
+import { getReferrals } from "../../../redux/actions/referrals";
+import { getLabReports } from "../../../redux/actions/labReports";
 
 const PatientExamination = () => {
   const location = useLocation();
@@ -23,6 +25,8 @@ const PatientExamination = () => {
   const examinations = useSelector((state) => state.examinations);
   const record = useSelector((state) => state.records);
   const diseases = useSelector((state) => state.diseases);
+  const referrals = useSelector((state) => state.referrals);
+  const labReports = useSelector((state) => state.labReports);
 
   useEffect(() => {
     const doctorLocal = JSON.parse(localStorage.getItem("loggedUser"));
@@ -36,6 +40,8 @@ const PatientExamination = () => {
       getDiseases(pathParts[pathParts.length - 1], { dijagnoza: "string" })
     );
     dispatch(getExaminations(pathParts[pathParts.length - 1]));
+    dispatch(getReferrals(pathParts[pathParts.length - 1]));
+    dispatch(getLabReports(pathParts[pathParts.length - 1]));
   }, []);
   const saveExamination = (formData) => {
     dispatch(
@@ -59,7 +65,7 @@ const PatientExamination = () => {
       <div className="sidebar-link-container">
         <Sidebar links={getSidebarLinks("doctor", 0)} />
       </div>
-      <div style={{ marginLeft: "15%" }}>
+      <div style={{ marginLeft: "20%" }}>
         <Header
           avatarUrl={"nikolaSlika 1.jpg"}
           welcomeMsg={"Dobro jutro"}
@@ -88,6 +94,8 @@ const PatientExamination = () => {
                 record={record}
                 diseases={diseases}
                 examinations={examinations}
+                referrals={referrals}
+                labReports={labReports}
               />
             )
           ) : (

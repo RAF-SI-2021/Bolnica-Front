@@ -39,7 +39,7 @@ const DemoPage = () => {
       <div className="sidebar-link-container">
         <Sidebar links={links} />
       </div>
-      <div style={{ marginLeft: "15%" }}>
+      <div style={{ marginLeft: "20%" }}>
         <Header
           avatarUrl={"nikolaSlika 1.jpg"}
           welcomeMsg={"Dobro jutro"}
