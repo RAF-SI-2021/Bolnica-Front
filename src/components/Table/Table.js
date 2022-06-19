@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./styles.css";
 import { ImBin, ImPencil, ImFileText2, ImCheckmark } from "react-icons/im";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
-
+import { FiPlusSquare } from "react-icons/fi";
 const Table = (props) => {
   const {
     headers,
@@ -16,6 +16,10 @@ const Table = (props) => {
     handlecreateLabReport,
     handleCancelVisit,
     handleCreateLabReportTab1,
+    handleAcceptAdmission,
+    handleCancelAdmission,
+    handleChooseReferral,
+    handleChooseRoom,
   } = props;
 
   const listHeaders = headers.map((header) => {
@@ -26,8 +30,15 @@ const Table = (props) => {
       </th>
     );
   });
-  if (tableType === "employees" || tableType === "detailedResultPreview") {
+  if (
+    tableType === "employees" ||
+    tableType === "detailedResultPreview" ||
+    tableType === "admissionVisits"
+  ) {
     listHeaders.push(<th scope="col"></th>);
+    listHeaders.push(<th scope="col"></th>);
+  }
+  if (tableType === "searchVisits" || tableType === "unrealizedLabReferrals") {
     listHeaders.push(<th scope="col"></th>);
   }
 
@@ -60,48 +71,23 @@ const Table = (props) => {
     <tr key={entry} onClick={() => handleRowClick(entry)}>
       {entry.map((element) => {
         if (element[0] === "lbp" || element[0] === "lbz") return <></>;
-        if (element[0] === "datumPregleda") {
+        if (
+          element[0] === "datumPregleda" ||
+          element[0] === "zakazanDatum" ||
+          element[0] === "datumVremeKreiranja"
+        ) {
           return (
             <td key={element} style={{ padding: "25px 0px" }}>
               {new Date(element[1]).toLocaleDateString()}
             </td>
           );
         }
-
-        if (element[0] === "statusPregleda") {
-          let reserved = false;
-          let canceled = false;
-          let finished = false;
-          if (entry[5][1] === "Zakazano") {
-            reserved = true;
-          } else if (entry[5][1] === "Otkazano") {
-            canceled = true;
-          } else if (entry[5][1] === "Zavrseno") {
-            finished = true;
-          }
+        if (element[0] === "datumVreme") {
           return (
-            <td style={{ width: "5%" }}>
-              <div className="d-flex">
-                <button
-                  className={` ${canceled ? "searchCanceled" : "searchButton"}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleButtonCanceled("lbz", entry);
-                  }}
-                >
-                  Otkazano
-                </button>
-
-                <button
-                  className={` ${finished ? "searchFinished" : "searchButton"}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleButtonFinished("lbz", entry);
-                  }}
-                >
-                  Završeno
-                </button>
-              </div>
+            <td key={element} style={{ padding: "25px 0px" }}>
+              {new Date(element[1]).toLocaleDateString() +
+                " " +
+                new Date(element[1]).toLocaleTimeString()}
             </td>
           );
         }
@@ -125,18 +111,19 @@ const Table = (props) => {
             return <></>;
           }
         }
-        if (element[0] === "kreiraj") {
-          if (entry[3][1] < new Date().getTime() - 2592000000) {
+
+        if (element[0] === "odabir") {
+          if (entry[2][1] > new Date().getTime() - 2592000000) {
             return (
               <td style={{ width: "5%" }}>
                 <button
-                  className="buttonIconBlue"
+                  className="buttonBlue"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handlecreateLabReport("lbz", entry);
+                    handleChooseReferral("lbz", entry);
                   }}
                 >
-                  <ImFileText2 />
+                  Odaberi uput
                 </button>
               </td>
             );
@@ -145,9 +132,69 @@ const Table = (props) => {
           }
         }
 
+        if (element[0] === "odaberiSobu") {
+          if (entry[5][1] < entry[4][1]) {
+            return (
+              <td style={{ width: "5%" }}>
+                <button
+                  className="buttonBlue"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleChooseRoom("lbz", entry);
+                  }}
+                >
+                  Odaberi sobu
+                </button>
+              </td>
+            );
+          } else {
+            return <></>;
+          }
+        }
+
+        if (element[0] === "komentarStacionar") {
+          let zakazaniPacijent = false;
+          if (entry[5][1] === "Zakazan") {
+            zakazaniPacijent = true;
+          }
+
+          return (
+            <td style={{ width: "5%" }}>
+              {/*               <div className="d-flex flex-row justify-content-center buttons">
+               */}{" "}
+              <div className="d-flex">
+                <button
+                  className={` ${
+                    zakazaniPacijent
+                      ? "buttonPrihvati"
+                      : "inactiveButtonPrihvati"
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleAcceptAdmission("lbz", entry);
+                  }}
+                >
+                  Prihvati
+                </button>
+                <button
+                  className={` ${
+                    zakazaniPacijent ? "buttonOtkazi" : "inactiveButtonOtkazi"
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCancelAdmission("lbz", entry);
+                  }}
+                >
+                  Otkazi
+                </button>
+              </div>
+            </td>
+          );
+        }
+
         if (element[0] === "statusPregledaZakazaniPacijenti") {
           let zakazano = false;
-          if (entry[5][1] === "YY") {
+          if (entry[5][1] === "Zakazano") {
             zakazano = true;
           }
           return (
@@ -225,6 +272,20 @@ const Table = (props) => {
             </button>
           </td>
         </>
+      ) : tableType === "visits" ? (
+        <>
+          <td style={{ width: "5%" }}>
+            <button
+              className="buttonIconBlue"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleEditButton("lbp", entry);
+              }}
+            >
+              <FiPlusSquare />
+            </button>
+          </td>
+        </>
       ) : tableType === "employees" ? (
         <>
           <td style={{ width: "5%" }}>
@@ -262,6 +323,75 @@ const Table = (props) => {
               }}
             >
               <ImCheckmark />
+            </button>
+          </td>
+        </>
+      ) : tableType === "unrealizedLabReferrals" ? (
+        <>
+          <td style={{ width: "5%" }}>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleClick(entry);
+              }}
+            >
+              Kreiraj
+            </button>
+          </td>
+        </>
+      ) : tableType === "searchVisits" ? (
+        <td style={{ width: "5%" }}>
+          <>
+            <button
+              className={"searchCanceled"}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleButtonCanceled(entry);
+              }}
+              disabled={
+                entry[4][1] === "OTKAZANO" || entry[4][1] === "ZAVRSENO"
+              }
+              style={
+                entry[4][1] === "OTKAZANO" || entry[4][1] === "ZAVRSENO"
+                  ? { backgroundColor: "#cacccf", borderColor: "#cacccf" }
+                  : {}
+              }
+            >
+              Otkazi
+            </button>
+          </>
+        </td>
+      ) : tableType === "admissionVisits" ? (
+        <>
+          {" "}
+          <td style={{ width: "5%" }}>
+            <button
+              className={"searchCanceled"}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleButtonCanceled(entry);
+              }}
+              disabled={
+                entry[4][1] === "OTKAZANO" || entry[4][1] === "ZAVRSENO"
+              }
+              style={
+                entry[4][1] === "OTKAZANO" || entry[4][1] === "ZAVRSENO"
+                  ? { backgroundColor: "#cacccf", borderColor: "#cacccf" }
+                  : {}
+              }
+            >
+              Otkazi
+            </button>
+          </td>{" "}
+          <td style={{ width: "5%" }}>
+            <button
+              className={""}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleCreateLabReportTab1(entry);
+              }}
+            >
+              Nalog
             </button>
           </td>
         </>

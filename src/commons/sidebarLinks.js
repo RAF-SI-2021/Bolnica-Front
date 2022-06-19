@@ -5,9 +5,10 @@ import {
   FaPlusCircle,
   FaUserInjured,
   FaClipboardList,
+  FaBriefcaseMedical,
 } from "react-icons/fa";
 import { BiCalendarPlus } from "react-icons/bi";
-import { MdCalendarToday } from "react-icons/md";
+import { MdCalendarToday, MdPersonSearch } from "react-icons/md";
 import { GiNotebook } from "react-icons/gi";
 
 export const getSidebarLinks = (role, activeId) => {
@@ -71,15 +72,36 @@ export const getSidebarLinks = (role, activeId) => {
         text: "Nov pacijent",
         path: "/nurse/register-patient",
         icon: <FaPlusCircle />,
-        dividerAfter: true,
         isActive: activeId === 4 ? true : false,
       },
       {
         id: 5,
+        text: "Zakazivanje prijema",
+        path: "/nurse/infirmary/scheduling-appointment",
+        icon: <FaBriefcaseMedical />,
+        isActive: activeId === 5 ? true : false,
+      },
+      {
+        id: 6,
+        text: "Prijem pacijenata",
+        path: "/nurse/infirmary/admission-of-patient",
+        icon: <FaUserInjured />,
+        isActive: activeId === 6 ? true : false,
+      },
+      {
+        id: 7,
+        text: "Pacijenti odeljenja",
+        path: "/nurse/infirmary/patients-department",
+        icon: <MdPersonSearch />,
+        dividerAfter: true,
+        isActive: activeId === 7 ? true : false,
+      },
+      {
+        id: 8,
         text: "Profil",
         path: "/profile",
         icon: <FaUser />,
-        isActive: activeId === 5 ? true : false,
+        isActive: activeId === 8 ? true : false,
       },
     ];
   } else if (role === "biochemist") {
@@ -202,19 +224,19 @@ export const getSidebarLinks = (role, activeId) => {
         isActive: activeId === 3 ? true : false,
       },
       {
-        id: 4,
-        text: "Pretraga pacijenata",
-        path: "/recepcionist/search-patient",
-        icon: <FaClipboardList />,
+        id: 5,
+        text: "Poseta",
+        path: "/recepcionist/visits",
+        icon: <FaHome />,
         dividerAfter: true,
-        isActive: activeId === 4 ? true : false,
+        isActive: activeId === 5 ? true : false,
       },
       {
-        id: 5,
+        id: 6,
         text: "Profil",
         path: "/profile",
         icon: <FaUser />,
-        isActive: activeId === 5 ? true : false,
+        isActive: activeId === 6 ? true : false,
       },
     ];
   } else {
@@ -239,14 +261,22 @@ export const getSidebarLinks = (role, activeId) => {
         path: "/appointments",
         icon: <MdCalendarToday />,
         isActive: activeId === 3 ? true : false,
+        dividerAfter: true,
       },
       {
         id: 5,
         text: "Kreiraj uput",
         path: "/create-refferal",
         icon: <GiNotebook />,
-        dividerAfter: true,
         isActive: activeId === 5 ? true : false,
+      },
+      {
+        id: 2,
+        text: "Pacijenti (stacionar)",
+        path: "/patient-preview",
+        icon: <FaUserInjured />,
+        isActive: activeId === 2 ? true : false,
+        dividerAfter: true,
       },
       {
         id: 4,

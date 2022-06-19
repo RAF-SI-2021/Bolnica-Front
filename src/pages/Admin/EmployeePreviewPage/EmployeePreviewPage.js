@@ -59,7 +59,7 @@ const EmployeePreview = () => {
         <Sidebar links={getSidebarLinks("admin", 2)} />
       </div>
 
-      <div style={{ marginLeft: "15%" }}>
+      <div style={{ marginLeft: "20%" }}>
         <Header
           avatarUrl={headerProps.avatarUrl}
           welcomeMsg={headerProps.welcomeMsg}

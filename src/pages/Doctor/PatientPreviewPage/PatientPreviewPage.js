@@ -54,7 +54,7 @@ const PatientPreview = () => {
       <div className="sidebar-link-container">
         <Sidebar links={getSidebarLinks("doctor", 2)} />
       </div>
-      <div style={{ marginLeft: "15%" }}>
+      <div style={{ marginLeft: "20%" }}>
         <Header
           avatarUrl={linksHeader.avatarUrl}
           welcomeMsg={linksHeader.welcomeMsg}
