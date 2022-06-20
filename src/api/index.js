@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://" });
+const API = axios.create({ baseURL: "http://bolnica.k8s.elab.rs" });
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("token")) {
