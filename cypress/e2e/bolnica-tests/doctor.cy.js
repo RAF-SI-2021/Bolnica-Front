@@ -104,7 +104,7 @@ describe("Doctor", () => {
   //     .click({ multiple: true });
   //   cy.url({ timeout: 10000 }).should("contain", "/create-refferal");
   //   cy.get("h1").should("be.visible").should("contain", "Kreiranje uputa");
-  //   cy.get('select[name="lbp"]').should("be.visible").select(1);
+  //   cy.get('select[name="lbp"]').should("be.visible").select(1);//select test patient
   //   cy.get('select[name="referralType"]').should("be.visible").select(1);
   //   cy.get('select[name="institution"]').should("be.visible").select(1);
   //   cy.get('input[name="comment"]')
@@ -125,7 +125,7 @@ describe("Doctor", () => {
   //     .click({ multiple: true });
   //   cy.url({ timeout: 10000 }).should("contain", "/create-refferal");
   //   cy.get("h1").should("be.visible").should("contain", "Kreiranje uputa");
-  //   cy.get('select[name="lbp"]').should("be.visible").select(1);
+  //   cy.get('select[name="lbp"]').should("be.visible").select(1);//select test patient
   //   cy.get('select[name="referralType"]').should("be.visible").select(2);
   //   cy.get('select[name="stepenStrucneSpreme"]').should("be.visible").select(2);
   //   cy.get('input[name="comment"]')
@@ -148,7 +148,7 @@ describe("Doctor", () => {
   //     .click({ multiple: true });
   //   cy.url({ timeout: 10000 }).should("contain", "/create-refferal");
   //   cy.get("h1").should("be.visible").should("contain", "Kreiranje uputa");
-  //   cy.get('select[name="lbp"]').should("be.visible").select(1);
+  //   cy.get('select[name="lbp"]').should("be.visible").select(1);//select test patient
   //   cy.get('select[name="referralType"]').should("be.visible").select(3);
   //   cy.get('select[name="stepenStrucneSpreme"]').should("be.visible").select(2);
   //   cy.get('input[name="comment"]')
@@ -159,10 +159,26 @@ describe("Doctor", () => {
   //   cy.get("button").should("be.visible").last().click({ multiple: true });
   // });
 
+  it("should be able to see/find patients in infirmary and change pages", () => {
+    cy.get("ul").should("be.visible");
+    //cy.wait(3001);
+    cy.get("ul > li:nth-child(5)")
+      .should("be.visible")
+      .should("contain", "Pacijenti (stacionar)")
+      .click({ multiple: true });
+    cy.url({ timeout: 10000 }).should("contain", "/patient-preview");
+    cy.get("h1").should("be.visible").should("contain", "Pacijenti");
+    cy.get('input[name="search"]').should("be.visible").type("Test");
+    cy.get("form").should("be.visible").submit();
+    cy.get('input[name="search"]').clear();
+    cy.get("form").should("be.visible").submit();
+    cy.get(".page-item:nth-child(3)").click();
+  });
+
   it("should be able to see user profile and update its data", () => {
     //vraca na admina
     cy.get("ul").should("be.visible");
-    cy.get("ul > li:nth-child(5)")
+    cy.get("ul > li:nth-child(6)")
       .should("be.visible")
       .should("contain", "Profil")
       .click({ multiple: true });
