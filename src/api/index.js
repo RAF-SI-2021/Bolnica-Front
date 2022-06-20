@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://master.k8s.elab.rs/" });
+const API = axios.create({ baseURL: "http://" });
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("token")) {
