@@ -6,6 +6,7 @@ import { createEmployee } from "../../../redux/actions/employee";
 import { getDepartments } from "../../../redux/actions/departments";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
 import "./styles.css";
+import CustomModal from "../../../components/CustomModal/CustomModal";
 
 const initialState = {
   name: "",
@@ -28,6 +29,8 @@ function RegistrationPage() {
   const dispatch = useDispatch();
   const [form, setForm] = useState(initialState);
   const navigate = useNavigate();
+  const [modalSuccess, setModalSuccess] = useState(false);
+  const [modalError, setModalError] = useState(false);
 
   //   useEffect(() => {
   //     dispatch(getDepartments());
@@ -68,6 +71,10 @@ function RegistrationPage() {
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
+  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
+  const toggleModalError = () => setModalError(!modalError);
+  const navigateToHomepage = () => navigate("/admin/employee-preview");
+
   const onChangeDateHandler = (e) => {
     const date = new Date(e.target.value);
     const years = date.toLocaleDateString("en-US", { year: "numeric" });
@@ -84,8 +91,13 @@ function RegistrationPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createEmployee({ ...form, department: 1 }));
-    navigate("/admin/employee-preview");
+    dispatch(
+      createEmployee(
+        { ...form, department: 1 },
+        toggleModalSuccess,
+        toggleModalError
+      )
+    );
   };
   return (
     <div style={{ marginLeft: "20%" }}>
@@ -292,6 +304,19 @@ function RegistrationPage() {
         <br></br>
         <button onClick={handleSubmit}>Registruj zaposlenog</button>
       </form>
+      <CustomModal
+        title="Uspeh"
+        content="Uspesno registrovan zaposleni."
+        toggleModal={toggleModalSuccess}
+        isOpen={modalSuccess}
+        handleClick={navigateToHomepage}
+      />
+      <CustomModal
+        title="Greska"
+        content="Doslo je do greske prilikom kreiranja zaposlenog."
+        toggleModal={toggleModalError}
+        isOpen={modalError}
+      />
     </div>
   );
 }

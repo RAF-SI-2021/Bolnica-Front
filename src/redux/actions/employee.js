@@ -19,7 +19,7 @@ export const getEmployees = () => async (dispatch) => {
 export const getEmployee = (lbz) => async (dispatch) => {
   try {
     const { data } = await api.fetchEmployee(lbz);
-    dispatch({ type: GET_EMPLOYEES, data });
+    dispatch({ type: GET_EMPLOYEE, data });
   } catch (error) {
     console.log(error);
   }
@@ -34,23 +34,29 @@ export const getEmployeesDep = (id) => async (dispatch) => {
   }
 };
 
-export const createEmployee = (formData) => async (dispatch) => {
-  try {
-    const { data } = await api.createEmployee(formData);
-    dispatch({ type: CREATE_EMPLOYEE, data });
-  } catch (error) {
-    console.log(error);
-  }
-};
+export const createEmployee =
+  (formData, toggleModalSuccess, toggleModalError) => async (dispatch) => {
+    try {
+      const { data } = await api.createEmployee(formData);
+      dispatch({ type: CREATE_EMPLOYEE, data });
+      toggleModalSuccess();
+    } catch (error) {
+      toggleModalError();
+      console.log(error);
+    }
+  };
 
-export const updateEmployee = (formData) => async (dispatch) => {
-  try {
-    const { data } = await api.updateEmployee(formData);
-    dispatch({ type: UPDATE_EMPLOYEE, data });
-  } catch (error) {
-    console.log(error);
-  }
-};
+export const updateEmployee =
+  (formData, toggleModalSuccess, toggleModalError) => async (dispatch) => {
+    try {
+      const { data } = await api.updateEmployee(formData);
+      dispatch({ type: UPDATE_EMPLOYEE, data });
+      toggleModalSuccess();
+    } catch (error) {
+      toggleModalError();
+      console.log(error);
+    }
+  };
 
 export const searchEmployees = (searchValue) => async (dispatch) => {
   try {

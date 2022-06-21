@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import { updateEmployee, getEmployee } from "../../../redux/actions/employee";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
+import CustomModal from "../../../components/CustomModal/CustomModal";
 
 const initialState = {
   name: "",
@@ -29,8 +30,10 @@ function EditEmployeePage() {
   const dispatch = useDispatch();
   const [lbz, setLbz] = useState();
   const navigate = useNavigate();
-  const employee = useSelector((state) => state.employees);
+  const employee = useSelector((state) => state.employees)[0];
   const [form, setForm] = useState(initialState);
+  const [modalSuccess, setModalSuccess] = useState(false);
+  const [modalError, setModalError] = useState(false);
 
   useEffect(() => {
     const pathParts = location.pathname.split("/");
@@ -97,6 +100,10 @@ function EditEmployeePage() {
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
+  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
+  const toggleModalError = () => setModalError(!modalError);
+  const navigateToHomepage = () => navigate("/admin/employee-preview");
+
   const onChangeDateHandler = (e) => {
     const date = new Date(e.target.value);
     const years = date.toLocaleDateString("en-US", { year: "numeric" });
@@ -114,18 +121,34 @@ function EditEmployeePage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(
-      updateEmployee({
-        ...form,
-        department: 1,
-        newPassword: "",
-        oldPassword: "",
-        lbz,
-      })
+      updateEmployee(
+        {
+          ...form,
+          department: 1,
+          newPassword: "",
+          oldPassword: "",
+          lbz,
+        },
+        toggleModalSuccess,
+        toggleModalError
+      )
     );
-    navigate("/admin/employee-preview");
   };
   return (
     <div style={{ marginLeft: "20%" }}>
+      <CustomModal
+        title="Uspeh"
+        content="Uspesno registrovan zaposleni."
+        toggleModal={toggleModalSuccess}
+        isOpen={modalSuccess}
+        handleClick={navigateToHomepage}
+      />
+      <CustomModal
+        title="Greska"
+        content="Doslo je do greske prilikom kreiranja zaposlenog."
+        toggleModal={toggleModalError}
+        isOpen={modalError}
+      />
       <div className="sidebar-link-container">
         <Sidebar links={getSidebarLinks("admin", 0)} />
       </div>
