@@ -24,7 +24,7 @@ export const deleteDemo = (id) => API.delete(`/demos/${id}`);
 // GENERAL
 
 export const login = (formData) =>
-  API.post("/bolnica-user/api/login", formData);
+  API.post("/api/login", formData);
 export const resetPassword = (email) =>
   API.post("/bolnica-user/api/forgot-password", email);
 
