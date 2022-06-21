@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://bolnica.k8s.elab.rs" });
+const API = axios.create({ baseURL: "http://bolnica.k8s.elab.rs:32264" });
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("token")) {
@@ -24,7 +24,7 @@ export const deleteDemo = (id) => API.delete(`/demos/${id}`);
 // GENERAL
 
 export const login = (formData) =>
-  API.post("/api/login", formData);
+  API.post("/bolnica-user/api/login", formData);
 export const resetPassword = (email) =>
   API.post("/bolnica-user/api/forgot-password", email);
 
