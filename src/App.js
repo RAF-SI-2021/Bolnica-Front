@@ -27,11 +27,10 @@ import NurseHomepage from "./pages/Nurse/NurseHomepage/NurseHomepage";
 import PatientPreviewNurses from "./pages/Nurse/PatientPreviewPageNurses/PatientPreviewPageNurses";
 import RegistrationPatientPage from "./pages/Nurse/RegistrationPatientPage/RegistrationPatientPage";
 import ScheduleAppointmentPage from "./pages/Nurse/ScheduleAppointmentPage/ScheduleAppointmentPage";
-
-// NURSE INFIRMARY
 import NurseInfirmaryPatientAdmission from "./pages/Nurse/NurseInfirmaryPatientAdmission/NurseInfirmaryPatientAdmission";
 import NurseInfirmaryPatientsOfTheDepartment from "./pages/Nurse/NurseInfirmaryPatientsOfTheDepartment/NurseInfirmaryPatientsOfTheDepartment";
 import NurseInfirmaryPatientsOfTheDepartmentHistory from "./pages/Nurse/NurseInfirmaryPatientsOfTheDepartment/NurseInfirmaryPatientsOfTheDepartmentHistory";
+import ScheduleAdmissionPage from "./pages/Nurse/ScheduleAdmissionPage/ScheduleAdmissionPage";
 
 // BIOCHEMIST
 import BiochemistHomepage from "./pages/Biochemist/BiochemistHomepage/BiochemistHomepage";
@@ -92,7 +91,11 @@ const App = () => {
           exact
           element={<EditPatientPage />}
         />
-        {/* NURSE INFIRMARY ROUTES */}
+        <Route
+          path="/nurse/infirmary/schedule-admission"
+          exact
+          element={<ScheduleAdmissionPage />}
+        />
         <Route
           path="/nurse/infirmary/admission-of-patient"
           exact

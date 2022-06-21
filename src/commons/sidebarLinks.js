@@ -77,7 +77,7 @@ export const getSidebarLinks = (role, activeId) => {
       {
         id: 5,
         text: "Zakazivanje prijema",
-        path: "/nurse/infirmary/scheduling-appointment",
+        path: "/nurse/infirmary/schedule-admission",
         icon: <FaBriefcaseMedical />,
         isActive: activeId === 5 ? true : false,
       },
