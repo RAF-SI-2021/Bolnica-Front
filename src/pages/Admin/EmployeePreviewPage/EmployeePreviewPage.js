@@ -16,7 +16,7 @@ import { getSidebarLinks } from "../../../commons/sidebarLinks";
 import { getTableHeaders } from "../../../commons/tableHeaders";
 import CustomModal from "../../../components/CustomModal/CustomModal";
 import { getHospitals } from "../../../redux/actions/hospitals";
-import { Checkbox, Switch, useCheckboxState } from "pretty-checkbox-react";
+import { Checkbox, useCheckboxState } from "pretty-checkbox-react";
 
 const EmployeePreview = () => {
   const dispatch = useDispatch();
@@ -115,7 +115,7 @@ const EmployeePreview = () => {
               className="form-select-custom small-select margin-right"
               onChange={handleChange}
               name="department"
-              value={form.departemnt}
+              value={form.department}
               defaultValue=""
             >
               <option value="" disabled>

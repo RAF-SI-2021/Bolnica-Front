@@ -14,6 +14,10 @@ export const getTableHeaders = (contentType) => {
         value: "LBZ",
       },
       {
+        key: "dob",
+        value: "Datum rodjenja",
+      },
+      {
         key: "contact",
         value: "Kontakt",
       },
@@ -28,10 +32,6 @@ export const getTableHeaders = (contentType) => {
       {
         key: "profession",
         value: "Zanimanje",
-      },
-      {
-        key: "department",
-        value: "Odeljenje",
       },
     ];
   } else if (contentType === "patientPreview") {

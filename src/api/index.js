@@ -101,9 +101,7 @@ export const fetchRecord = (lbp) =>
 
 // EMPLOYEES
 export const fetchEmployees = () =>
-  API.post(`/bolnica-user-service/api/list-employees?page=1&size=5`, {
-    department: 1,
-  });
+  API.post(`/bolnica-user-service/api/list-employees?page=1&size=5`, {});
 export const fetchEmployeesDep = (id) =>
   API.post(`/bolnica-user-service/api/list-employees?page=1&size=5`, {
     department: id,

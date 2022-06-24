@@ -5,6 +5,7 @@ import Sidebar from "../../../components/Sidebar/Sidebar";
 import { updateEmployee, getEmployee } from "../../../redux/actions/employee";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
 import CustomModal from "../../../components/CustomModal/CustomModal";
+import { getDepartments } from "../../../redux/actions/departments";
 
 const initialState = {
   name: "",
@@ -31,6 +32,7 @@ function EditEmployeePage() {
   const [lbz, setLbz] = useState();
   const navigate = useNavigate();
   const employee = useSelector((state) => state.employees)[0];
+  const departments = useSelector((state) => state.departments);
   const [form, setForm] = useState(initialState);
   const [modalSuccess, setModalSuccess] = useState(false);
   const [modalError, setModalError] = useState(false);
@@ -39,6 +41,7 @@ function EditEmployeePage() {
     const pathParts = location.pathname.split("/");
     setLbz(pathParts[pathParts.length - 1]);
     dispatch(getEmployee(pathParts[pathParts.length - 1]));
+    dispatch(getDepartments());
   }, []);
 
   useEffect(() => {
@@ -269,22 +272,31 @@ function EditEmployeePage() {
               <option value="Spec. hirurg">Spec. hirurg</option>
             </select>
             <select
-              onChange={handleChange}
               className="form-select-custom small-select margin-left"
-              aria-label="Default select example"
+              onChange={handleChange}
               name="department"
               value={form.department}
+              defaultValue=""
             >
               <option value="" disabled>
-                Odeljenje
+                Izaberite odeljenje
               </option>
-              {departmentsDemo.map((department) => {
-                return (
-                  <option key={department.id} value="0">
-                    {department.name}
-                  </option>
-                );
-              })}
+              {departments.length > 0 ? (
+                <>
+                  {departments.map((department) => {
+                    return (
+                      <option
+                        key={department.odeljenjeId}
+                        value={department.odeljenjeId}
+                      >
+                        {department.naziv} - {department.bolnica.skracenNaziv}
+                      </option>
+                    );
+                  })}
+                </>
+              ) : (
+                <></>
+              )}
             </select>
           </div>
           <div className="form-group-custom">

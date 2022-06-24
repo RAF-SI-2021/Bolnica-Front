@@ -31,12 +31,11 @@ function RegistrationPage() {
   const navigate = useNavigate();
   const [modalSuccess, setModalSuccess] = useState(false);
   const [modalError, setModalError] = useState(false);
+  const departments = useSelector((state) => state.departments);
 
   useEffect(() => {
     dispatch(getDepartments());
   }, []);
-
-  const departments = useSelector((state) => state.departments);
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -187,7 +186,7 @@ function RegistrationPage() {
             className="form-select-custom small-select margin-left"
             onChange={handleChange}
             name="department"
-            value={form.departemnt}
+            value={form.department}
             defaultValue=""
           >
             <option value="" disabled>
@@ -201,7 +200,7 @@ function RegistrationPage() {
                       key={department.odeljenjeId}
                       value={department.odeljenjeId}
                     >
-                      {department.naziv}
+                      {department.naziv} - {department.bolnica.skracenNaziv}
                     </option>
                   );
                 })}

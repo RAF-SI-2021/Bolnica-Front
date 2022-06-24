@@ -84,7 +84,8 @@ const Table = (props) => {
         if (
           element[0] === "datumPregleda" ||
           element[0] === "zakazanDatum" ||
-          element[0] === "datumVremeKreiranja"
+          element[0] === "datumVremeKreiranja" ||
+          element[0] === "dob"
         ) {
           return (
             <td key={element} style={{ padding: "25px 0px" }}>
