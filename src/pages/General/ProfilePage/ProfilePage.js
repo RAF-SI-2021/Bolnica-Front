@@ -23,6 +23,7 @@ const initialState = {
   department: "",
   newPassword: "",
   oldPassword: "",
+  confirmPassword: "",
 };
 
 function EditEmployeePage() {
@@ -39,6 +40,7 @@ function EditEmployeePage() {
   const departments = useSelector((state) => state.departments);
   const [modalSuccess, setModalSuccess] = useState(false);
   const [modalError, setModalError] = useState(false);
+  const [modalMessage, setModalMessage] = useState();
 
   useEffect(() => {
     const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
@@ -79,6 +81,7 @@ function EditEmployeePage() {
         department: employees[0].department,
         newPassword: "",
         oldPassword: "",
+        confirmPassword: "",
       });
     }
   }, [employees]);
@@ -88,7 +91,12 @@ function EditEmployeePage() {
   };
 
   const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
-  const toggleModalError = () => setModalError(!modalError);
+
+  const toggleModalError = (message) => {
+    setModalMessage(message);
+    setModalError(!modalError);
+  };
+
   const navigateToHomepage = () => {
     if (roles.includes("ROLE_ADMIN")) navigate("/admin");
     else if (roles.includes("ROLE_DR_SPEC_POV")) navigate("/");
@@ -126,6 +134,10 @@ function EditEmployeePage() {
       lbz: employee.lbz,
       gender: "male",
     });
+    if (form.newPassword !== form.confirmPassword) {
+      toggleModalError("Nova lozinka i potrvda lozinke se moraju podudarati.");
+      return;
+    }
     dispatch(
       updateEmployee(
         {
@@ -150,7 +162,7 @@ function EditEmployeePage() {
       />
       <CustomModal
         title="Greska"
-        content="Doslo je do greske prilikom imene profila."
+        content={modalMessage}
         toggleModal={toggleModalError}
         isOpen={modalError}
       />

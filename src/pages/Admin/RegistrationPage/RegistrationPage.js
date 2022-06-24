@@ -7,6 +7,7 @@ import { getDepartments } from "../../../redux/actions/departments";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
 import "./styles.css";
 import CustomModal from "../../../components/CustomModal/CustomModal";
+import { Switch } from "pretty-checkbox-react";
 
 const initialState = {
   name: "",
@@ -22,7 +23,6 @@ const initialState = {
   dob: "",
   department: "",
   username: "",
-  //   privilege: "",
 };
 
 function RegistrationPage() {
@@ -39,6 +39,13 @@ function RegistrationPage() {
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handlePrivilageChange = (e) => {
+    setForm({
+      ...form,
+      roles: form.roles ? [...form.roles, e.target.value] : [e.target.value],
+    });
+  };
 
   const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
   const toggleModalError = () => setModalError(!modalError);
@@ -60,8 +67,10 @@ function RegistrationPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(form.roles);
     dispatch(createEmployee({ ...form }, toggleModalSuccess, toggleModalError));
   };
+
   return (
     <div style={{ marginLeft: "20%" }}>
       <div className="sidebar-link-container">
@@ -210,6 +219,126 @@ function RegistrationPage() {
             )}
           </select>
         </div>
+        <div className="form-group-custom margin-top margin-bottom">
+          <Switch
+            className="margin-right"
+            shape="slim"
+            color="primary"
+            name="ROLE_ADMIN"
+            value="ROLE_ADMIN"
+            onChange={handlePrivilageChange}
+          >
+            Admin
+          </Switch>
+          <Switch
+            className="margin-right margin-left"
+            shape="slim"
+            color="primary"
+            name="ROLE_DR_SPEC_ODELJENJA"
+            value="ROLE_DR_SPEC_ODELJENJA"
+            onChange={handlePrivilageChange}
+          >
+            Nacelnik odeljenja
+          </Switch>
+          <Switch
+            className="margin-left"
+            shape="slim"
+            color="primary"
+            name="ROLE_RECEPCIONER"
+            value="ROLE_RECEPCIONER"
+            onChange={handlePrivilageChange}
+          >
+            Recepcioner
+          </Switch>
+        </div>
+        <div className="form-group-custom margin-top margin-bottom">
+          <Switch
+            className="margin-right margin-left"
+            shape="slim"
+            color="primary"
+            name="ROLE_DR_SPEC"
+            value="ROLE_DR_SPEC"
+            onChange={handlePrivilageChange}
+          >
+            Doktor specijalista
+          </Switch>
+          <Switch
+            className="margin-right margin-left"
+            shape="slim"
+            color="primary"
+            name="ROLE_DR_SPEC_POV"
+            value="ROLE_DR_SPEC_POV"
+            onChange={handlePrivilageChange}
+          >
+            Doktor specijalista sa poverljivim pristupom
+          </Switch>
+        </div>
+        <div className="form-group-custom margin-top margin-bottom">
+          <Switch
+            className="margin-right margin-left"
+            shape="slim"
+            color="primary"
+            name="ROLE_VISA_MED_SESTRA"
+            value="ROLE_VISA_MED_SESTRA"
+            onChange={handlePrivilageChange}
+          >
+            Visa medicinska sestra
+          </Switch>
+          <Switch
+            className="margin-left"
+            shape="slim"
+            color="primary"
+            name="ROLE_MED_SESTRA"
+            value="ROLE_MED_SESTRA"
+            onChange={handlePrivilageChange}
+          >
+            Medicinska sestra
+          </Switch>
+        </div>
+        <div className="form-group-custom margin-top margin-bottom">
+          <Switch
+            className="margin-right"
+            shape="slim"
+            color="primary"
+            name="ROLE_VISI_LABORATORIJSKI_TEHNICAR"
+            value="ROLE_VISI_LABORATORIJSKI_TEHNICAR"
+            onChange={handlePrivilageChange}
+          >
+            Visi laboratorijski tehnicar
+          </Switch>
+          <Switch
+            className="margin-right margin-left"
+            shape="slim"
+            color="primary"
+            name="ROLE_LABORATORIJSKI_TEHNICAR"
+            value="ROLE_LABORATORIJSKI_TEHNICAR"
+            onChange={handlePrivilageChange}
+          >
+            Laboratorijski tehnicar
+          </Switch>
+        </div>
+        <div className="form-group-custom margin-top margin-bottom">
+          <Switch
+            className="margin-right margin-left"
+            shape="slim"
+            color="primary"
+            name="ROLE_MEDICINSKI_BIOHEMICAR"
+            value="ROLE_MEDICINSKI_BIOHEMICAR"
+            onChange={handlePrivilageChange}
+          >
+            Medicinski biohemicar
+          </Switch>
+          <Switch
+            className="margin-right margin-left"
+            shape="slim"
+            color="primary"
+            name="ROLE_SPECIJALISTA_MEDICINSKE_BIOHEMIJE"
+            value="ROLE_SPECIJALISTA_MEDICINSKE_BIOHEMIJE"
+            onChange={handlePrivilageChange}
+          >
+            Specijalista medicinske biohemije
+          </Switch>
+        </div>
         <div className="form-group-custom">
           <div className="wrapper">
             <input
@@ -237,7 +366,6 @@ function RegistrationPage() {
             </label>
           </div>
         </div>
-        <br></br>
         <button onClick={handleSubmit}>Registruj zaposlenog</button>
       </form>
       <CustomModal
