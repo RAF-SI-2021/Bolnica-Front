@@ -115,14 +115,22 @@ export const createEmployee = (formData) =>
 export const updateEmployee = (formData) =>
   API.put(`/bolnica-user-service/api/update-employee`, formData);
 export const deleteEmployee = (lbz) =>
-  API.delete(`/bolnica-user-service/api/remove-employee/${lbz}`);
+  API.delete(`/bolnica-user-service/api/remove-employee?lbz=${lbz}`);
 export const searchEmployees = (searchValues) =>
-  API.post("/employees", searchValues);
+  API.post(
+    "/bolnica-user-service/api/list-employees?page=1&size=5",
+    searchValues
+  );
 
 // DEPARTMENTS
 
 export const fetchDepartments = () =>
-  API.get(`/bolnica-management-service/api/fetch-departments`);
+  API.get(`/bolnica-user-service/api/departments`);
+
+// HOSPITALS
+
+export const fetchHospitals = () =>
+  API.get(`/bolnica-user-service/api/hospitals`);
 
 // PATIENTS
 

@@ -12,12 +12,10 @@ const employeeReducer = (state = [], action) => {
         employee.lbz !== action.data.lbz ? employee : action.data
       );
     case actionType.DELETE_EMPLOYEE:
-      return [
-        ...state,
-        state.filter((employee) =>
-          employee.id !== action.id ? employee : false
-        ),
-      ];
+      return state.filter((employee) =>
+        employee.lbz !== action.lbz ? employee : false
+      );
+
     default:
       return state;
   }

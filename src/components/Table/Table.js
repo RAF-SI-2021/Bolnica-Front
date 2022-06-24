@@ -23,7 +23,12 @@ const Table = (props) => {
   } = props;
 
   const listHeaders = headers.map((header) => {
-    if (header.key === "lbp" || header.key === "lbz") return <></>;
+    if (
+      header.key === "lbp" ||
+      header.key === "lbz" ||
+      header.key === "obrisan"
+    )
+      return <></>;
     return (
       <th scope="col" key={header.key}>
         {header.value}
@@ -70,7 +75,12 @@ const Table = (props) => {
   const listTable = info.map((entry) => (
     <tr key={entry} onClick={() => handleRowClick(entry)}>
       {entry.map((element) => {
-        if (element[0] === "lbp" || element[0] === "lbz") return <></>;
+        if (
+          element[0] === "lbp" ||
+          element[0] === "lbz" ||
+          element[0] === "obrisan"
+        )
+          return <></>;
         if (
           element[0] === "datumPregleda" ||
           element[0] === "zakazanDatum" ||
@@ -291,7 +301,10 @@ const Table = (props) => {
           <td style={{ width: "5%" }}>
             <button
               className="buttonIconBlue"
-              onClick={() => handleEditButton("lbz", entry)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleEditButton("lbz", entry);
+              }}
             >
               <ImPencil />
             </button>
@@ -428,15 +441,7 @@ const Table = (props) => {
       <div className="responsivnes">
         <table className=" myTable table table-hover table-bordered">
           <thead className="header">
-            <tr>
-              {listHeaders}
-              {(tableType === "patients" || tableType === "employees") && (
-                <>
-                  <th></th>
-                  <th></th>
-                </>
-              )}
-            </tr>
+            <tr>{listHeaders}</tr>
           </thead>
           <tbody className="familyFix">
             {listTable.slice(trimStart, trimEnd)}

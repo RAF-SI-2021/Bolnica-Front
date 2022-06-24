@@ -32,41 +32,11 @@ function RegistrationPage() {
   const [modalSuccess, setModalSuccess] = useState(false);
   const [modalError, setModalError] = useState(false);
 
-  //   useEffect(() => {
-  //     dispatch(getDepartments());
-  //   }, []);
+  useEffect(() => {
+    dispatch(getDepartments());
+  }, []);
 
-  //   const departments = useSelector((state) => state.departments);
-
-  const departmentsDemo = [
-    {
-      id: 0,
-      name: "Prvo odeljenje",
-    },
-    {
-      id: 1,
-      name: "Drugo odeljenje",
-    },
-    {
-      id: 2,
-      name: "Trece odeljenje",
-    },
-  ];
-
-  const privilegesDemo = [
-    {
-      id: 0,
-      name: "Admin",
-    },
-    {
-      id: 1,
-      name: "Doktor",
-    },
-    {
-      id: 2,
-      name: "Sestra",
-    },
-  ];
+  const departments = useSelector((state) => state.departments);
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -91,13 +61,7 @@ function RegistrationPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(
-      createEmployee(
-        { ...form, department: 1 },
-        toggleModalSuccess,
-        toggleModalError
-      )
-    );
+    dispatch(createEmployee({ ...form }, toggleModalSuccess, toggleModalError));
   };
   return (
     <div style={{ marginLeft: "20%" }}>
@@ -179,43 +143,7 @@ function RegistrationPage() {
             name="jmbg"
           />
         </div>
-        {/* <div className="form-group-custom"> */}
-        {/* <select
-            onChange={handleChange}
-            className="form-select-custom small-select margin-right"
-            aria-label="Default select example"
-            defaultValue=""
-            name="privilege"
-          >
-            <option value="" disabled>
-              Privilegija
-            </option>
-            {privilegesDemo.map((privilege) => {
-              return (
-                <option key={privilege.id} value={privilege.id}>
-                  {privilege.name}
-                </option>
-              );
-            })}
-          </select> */}
-        {/* </div> */}
         <div className="form-group-custom">
-          {/* <select
-            onChange={handleChange}
-            className="form-select-custom small-select margin-right"
-            aria-label="Default select example"
-            defaultValue="0"
-            name="title"
-          >
-            <option value="">Titula</option>
-            <option value="dr_spec_odeljenja">Nacelnik odeljenja</option>
-            <option value="dr_spec">Doktor specijalista</option>
-            <option value="dr_spec_pov">
-              Doktor specijalista sa poverljivim pristupom
-            </option>
-            <option value="med_sestra">Medicinska sestra</option>
-            <option value="visa_med_sestra">Visa medicinska sestra</option>
-          </select> */}
           <select
             onChange={handleChange}
             className="form-select-custom small-select margin-right"
@@ -256,22 +184,31 @@ function RegistrationPage() {
             <option value="Spec. hirurg">Spec. hirurg</option>
           </select>
           <select
-            onChange={handleChange}
             className="form-select-custom small-select margin-left"
-            aria-label="Default select example"
-            defaultValue=""
+            onChange={handleChange}
             name="department"
+            value={form.departemnt}
+            defaultValue=""
           >
             <option value="" disabled>
-              Odeljenje
+              Izaberite odeljenje
             </option>
-            {departmentsDemo.map((department) => {
-              return (
-                <option key={department.id} value="0">
-                  {department.name}
-                </option>
-              );
-            })}
+            {departments.length > 0 ? (
+              <>
+                {departments.map((department) => {
+                  return (
+                    <option
+                      key={department.odeljenjeId}
+                      value={department.odeljenjeId}
+                    >
+                      {department.naziv}
+                    </option>
+                  );
+                })}
+              </>
+            ) : (
+              <></>
+            )}
           </select>
         </div>
         <div className="form-group-custom">

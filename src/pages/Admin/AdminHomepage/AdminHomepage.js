@@ -4,6 +4,8 @@ import Sidebar from "../../../components/Sidebar/Sidebar";
 import Header from "../../../components/Header/Header";
 import { format } from "date-fns";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
+import GeneralStatsLink from "../../../components/GeneralStatsLink/GeneralStatsLink";
+import { FaPlusCircle, FaUserNurse } from "react-icons/fa";
 
 const AdminHomepage = () => {
   const handleSubmit = (event) => {
@@ -24,6 +26,18 @@ const AdminHomepage = () => {
           day={format(new Date(), "d")}
           date={format(new Date(), "d MMMM, yyyy")}
         />
+        <div className="components">
+          <GeneralStatsLink
+            image={<FaUserNurse size="45px" />}
+            text={"Zaposleni"}
+            path="/admin/employee-preview"
+          />
+          <GeneralStatsLink
+            image={<FaPlusCircle size="45px" />}
+            text={"Nov zaposleni"}
+            path="/admin/register-employee"
+          />
+        </div>
       </div>
     </>
   );

@@ -138,14 +138,14 @@ function EditEmployeePage() {
     <div style={{ marginLeft: "20%" }}>
       <CustomModal
         title="Uspeh"
-        content="Uspesno registrovan zaposleni."
+        content="Uspesno izmenjen zaposleni."
         toggleModal={toggleModalSuccess}
         isOpen={modalSuccess}
         handleClick={navigateToHomepage}
       />
       <CustomModal
         title="Greska"
-        content="Doslo je do greske prilikom kreiranja zaposlenog."
+        content="Doslo je do greske prilikom imene zaposlenog."
         toggleModal={toggleModalError}
         isOpen={modalError}
       />
@@ -238,7 +238,7 @@ function EditEmployeePage() {
             >
               <option value="">Titula</option>
               <option value="Prof. dr. med.">Prof. dr. med.</option>
-              <option value="Dr med. spec.">Dr med. spec.</option>
+              <option value="Dr med.spec.">Dr med.spec.</option>
               <option value="Dr. sci. med">Dr sci. med.</option>
               <option value="Dipl. farm.">Dipl. farm.</option>
               <option value="Mag. farm.">Mag. farm.</option>

@@ -67,11 +67,14 @@ export const searchEmployees = (searchValue) => async (dispatch) => {
   }
 };
 
-export const deleteEmployee = (lbz) => async (dispatch) => {
-  try {
-    await api.deleteEmployee(lbz);
-    dispatch({ type: DELETE_EMPLOYEE, lbz });
-  } catch (error) {
-    console.log(error);
-  }
-};
+export const deleteEmployee =
+  (lbz, toggleModalSuccess, toggleModalError) => async (dispatch) => {
+    try {
+      await api.deleteEmployee(lbz);
+      dispatch({ type: DELETE_EMPLOYEE, lbz });
+      toggleModalSuccess();
+    } catch (error) {
+      toggleModalError();
+      console.log(error);
+    }
+  };
