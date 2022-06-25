@@ -38,7 +38,8 @@ const Table = (props) => {
   if (
     tableType === "employees" ||
     tableType === "detailedResultPreview" ||
-    tableType === "admissionVisits"
+    tableType === "admissionVisits" ||
+    tableType === "patients"
   ) {
     listHeaders.push(<th scope="col"></th>);
     listHeaders.push(<th scope="col"></th>);
@@ -254,7 +255,7 @@ const Table = (props) => {
         }
         return (
           <td key={element} style={{ padding: "25px 0px" }}>
-            {element[1]}
+            {element[1] !== "" ? element[1] : "Nije unet podatak"}
           </td>
         );
       })}
@@ -415,7 +416,7 @@ const Table = (props) => {
     </tr>
   ));
   const numberOfItems = listTable.length;
-  const numberPerPage = 6;
+  const numberPerPage = 3;
   const pageLimit = 1;
   const numberOfPages = Math.ceil(numberOfItems / numberPerPage);
   const [currentPage, setCurrentPage] = useState(1);

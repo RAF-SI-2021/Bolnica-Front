@@ -161,7 +161,7 @@ function EditEmployeePage() {
         handleClick={navigateToHomepage}
       />
       <CustomModal
-        title="Greska"
+        title="Greška"
         content={modalMessage}
         toggleModal={toggleModalError}
         isOpen={modalError}

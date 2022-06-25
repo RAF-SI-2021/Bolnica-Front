@@ -70,36 +70,6 @@ function EditEmployeePage() {
     }
   }, [employee]);
 
-  const departmentsDemo = [
-    {
-      id: 0,
-      name: "Prvo odeljenje",
-    },
-    {
-      id: 1,
-      name: "Drugo odeljenje",
-    },
-    {
-      id: 2,
-      name: "Trece odeljenje",
-    },
-  ];
-
-  const privilegesDemo = [
-    {
-      id: 0,
-      name: "Admin",
-    },
-    {
-      id: 1,
-      name: "Doktor",
-    },
-    {
-      id: 2,
-      name: "Sestra",
-    },
-  ];
-
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -147,8 +117,8 @@ function EditEmployeePage() {
         handleClick={navigateToHomepage}
       />
       <CustomModal
-        title="Greska"
-        content="Doslo je do greske prilikom imene zaposlenog."
+        title="Greška"
+        content="Doslo je do greške prilikom imene zaposlenog."
         toggleModal={toggleModalError}
         isOpen={modalError}
       />

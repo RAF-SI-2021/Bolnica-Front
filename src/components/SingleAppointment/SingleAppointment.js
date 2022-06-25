@@ -3,10 +3,15 @@ import { format } from "date-fns";
 import { updateAppointment } from "../../redux/actions/appointments";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
+import CustomModal from "../CustomModal/CustomModal";
+import { useState } from "react";
+import CustomModalAnswer from "../CustomModalAnswer/CustomModalAnswer";
 
 const SingleAppointment = ({ appointment }) => {
   const dispatch = useDispatch();
   const { datumIVremePregleda, pacijent, zakazaniPregledId } = appointment;
+  const [modalSuccess, setModalSuccess] = useState(false);
+  const [modalError, setModalError] = useState(false);
 
   let age = format(new Date(), "yyyy") - format(pacijent.datumRodjenja, "yyyy");
   let appointTime = format(new Date(datumIVremePregleda), "HH:mm");
@@ -14,15 +19,18 @@ const SingleAppointment = ({ appointment }) => {
 
   const navigate = useNavigate();
 
-  function updateAppointmentStatus(lbp, data) {
+  function updateAppointmentStatus() {
     dispatch(
       updateAppointment({
         appointmentId: zakazaniPregledId,
-        appointmentStatus: data,
+        appointmentStatus: "U_TOKU",
       })
     );
-    navigate(`examination/${lbp}`);
+    navigate(`examination/${pacijent.lbp}`);
   }
+
+  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
+  const toggleModalError = () => setModalError(!modalError);
 
   return (
     <div
@@ -30,8 +38,21 @@ const SingleAppointment = ({ appointment }) => {
       className={` ${
         appointment.statusPregleda === "U_TOKU" ? "isCurrently" : null
       }`}
-      onClick={() => updateAppointmentStatus(pacijent.lbp, "U_TOKU")}
+      onClick={() => toggleModalSuccess()}
     >
+      <CustomModalAnswer
+        title="Potvrda akcije"
+        content="Da li želite da započnete pregled?"
+        toggleModal={toggleModalSuccess}
+        isOpen={modalSuccess}
+        handleClick={updateAppointmentStatus}
+      />
+      <CustomModal
+        title="Greška"
+        content="Doslo je do greške prilikom započinjanja pregleda."
+        toggleModal={toggleModalError}
+        isOpen={modalError}
+      />
       <div className="d-flex flex-row align-items-center ">
         <div className="appTime">
           {appointTime} {appointDate}

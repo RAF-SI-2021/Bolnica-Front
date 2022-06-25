@@ -77,8 +77,8 @@ const EmployeePreview = () => {
           isOpen={modalSuccess}
         />
         <CustomModal
-          title="Greska"
-          content="Doslo je do greske prilikom brisanja zaposlenog."
+          title="Greška"
+          content="Doslo je do greške prilikom brisanja zaposlenog."
           toggleModal={toggleModalError}
           isOpen={modalError}
         />

@@ -53,7 +53,7 @@ export const updateEmployee =
       dispatch({ type: UPDATE_EMPLOYEE, data });
       toggleModalSuccess();
     } catch (error) {
-      toggleModalError("Doslo je do greske prilikom imene profila.");
+      toggleModalError("Doslo je do greške prilikom imene profila.");
       console.log(error);
     }
   };

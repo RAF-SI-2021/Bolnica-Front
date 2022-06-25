@@ -98,6 +98,10 @@ export const createRecord = (formData) =>
 
 export const fetchRecord = (lbp) =>
   API.get(`/bolnica-management-service/api/fetch-zdravstveni-karton/${lbp}`);
+export const addVaccine = (formData) =>
+  API.post(`/bolnica-management-service/api/add-vaccine`, formData);
+export const addAlergen = (formData) =>
+  API.post(`/bolnica-management-service/api/add-allergen`, formData);
 
 // EMPLOYEES
 export const fetchEmployees = () =>

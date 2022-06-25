@@ -376,8 +376,8 @@ function RegistrationPage() {
         handleClick={navigateToHomepage}
       />
       <CustomModal
-        title="Greska"
-        content="Doslo je do greske prilikom kreiranja zaposlenog."
+        title="Greška"
+        content="Doslo je do greške prilikom kreiranja zaposlenog."
         toggleModal={toggleModalError}
         isOpen={modalError}
       />

@@ -7,18 +7,18 @@ const CustomCalendar = ({
   setDate,
   setNewAppointmentVisible,
   events,
-  setDeleteAppointmentVisible,
-  setAppointmentIdDelete,
+  setCancelAppointment,
 }) => {
   function onNewEventClick(data) {
     setNewAppointmentVisible(true);
     const date = new Date(data.startAt);
+    console.log(date);
     setDate(date);
   }
 
   function onEventClick(data) {
-    setDeleteAppointmentVisible(true);
-    setAppointmentIdDelete(data.id);
+    console.log(data.id);
+    setCancelAppointment(data.id);
   }
 
   return (

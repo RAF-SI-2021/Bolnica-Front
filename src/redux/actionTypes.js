@@ -51,6 +51,8 @@ export const GET_RECORD = "GET_RECORD";
 export const CREATE_RECORD = "CREATE_RECORD";
 export const UPDATE_RECORD = "UPDATE_RECORD";
 export const DELETE_RECORD = "DELETE_RECORD";
+export const UPDATE_VACCINE = "UPDATE_VACCINE";
+export const UPDATE_ALERGEN = "UPDATE_ALERGEN";
 
 // PATIENTS
 

@@ -13,7 +13,13 @@ import { getExaminations } from "../../../redux/actions/examinations";
 import { getDiseases } from "../../../redux/actions/diseases";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
 import { getReferrals } from "../../../redux/actions/referrals";
+import {
+  updateAppointment,
+  getAppointments,
+} from "../../../redux/actions/appointments";
 import { getLabReports } from "../../../redux/actions/labReports";
+import CustomModalAnswer from "../../../components/CustomModalAnswer/CustomModalAnswer";
+import CustomModal from "../../../components/CustomModal/CustomModal";
 
 const PatientExamination = () => {
   const location = useLocation();
@@ -23,10 +29,14 @@ const PatientExamination = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const examinations = useSelector((state) => state.examinations);
-  const record = useSelector((state) => state.records);
+  const appointments = useSelector((state) => state.appointments);
+  const record = useSelector((state) => state.records[0]);
   const diseases = useSelector((state) => state.diseases);
   const referrals = useSelector((state) => state.referrals);
   const labReports = useSelector((state) => state.labReports);
+  const [modalSuccess, setModalSuccess] = useState(false);
+  const [modalError, setModalError] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   useEffect(() => {
     const doctorLocal = JSON.parse(localStorage.getItem("loggedUser"));
@@ -42,8 +52,34 @@ const PatientExamination = () => {
     dispatch(getExaminations(pathParts[pathParts.length - 1]));
     dispatch(getReferrals(pathParts[pathParts.length - 1]));
     dispatch(getLabReports(pathParts[pathParts.length - 1]));
+    dispatch(getAppointments(doctorLocal.LBZ));
   }, []);
+
+  useEffect(() => {
+    if (appointments.length > 0) {
+      const currentAppointment = appointments.find(
+        (appointment) => appointment.statusPregleda === "U_TOKU"
+      );
+      if (!currentAppointment) swapTabsForver();
+      else {
+        setIsExamination(true);
+        setDisabled(false);
+      }
+    }
+  }, [appointments]);
+
   const saveExamination = (formData) => {
+    const currentAppointment = appointments.find(
+      (appointment) => appointment.statusPregleda === "U_TOKU"
+    );
+    console.log(currentAppointment);
+    console.log(appointments);
+    dispatch(
+      updateAppointment({
+        appointmentId: currentAppointment.zakazaniPregledId,
+        appointmentStatus: "ZAVRSENO",
+      })
+    );
     dispatch(
       createRecord({
         ...formData,
@@ -53,12 +89,18 @@ const PatientExamination = () => {
       })
     );
     dispatch(getExaminations(lbp));
-    swapTabs();
+    swapTabsForver();
   };
 
   const swapTabs = () => {
     setIsExamination(!isExamination);
   };
+  const swapTabsForver = () => {
+    setIsExamination(false);
+    setDisabled(true);
+  };
+  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
+  const toggleModalError = () => setModalError(!modalError);
 
   return (
     <>
@@ -66,6 +108,19 @@ const PatientExamination = () => {
         <Sidebar links={getSidebarLinks("doctor", 0)} />
       </div>
       <div style={{ marginLeft: "20%" }}>
+        <CustomModalAnswer
+          title="Uspeh"
+          content="Da li želite da završite pregled?"
+          toggleModal={toggleModalSuccess}
+          isOpen={modalSuccess}
+          handleClick={saveExamination}
+        />
+        <CustomModal
+          title="Greška"
+          content="Doslo je do greške prilikom završavanja pregleda."
+          toggleModal={toggleModalError}
+          isOpen={modalError}
+        />
         <Header
           avatarUrl={"nikolaSlika 1.jpg"}
           welcomeMsg={"Dobro jutro"}
@@ -74,34 +129,48 @@ const PatientExamination = () => {
           day={format(new Date(), "d")}
           date={format(new Date(), "d MMMM, yyyy")}
         />
-        <div className="tabButtons">
-          <Button color="primary" outline={!isExamination} onClick={swapTabs}>
-            Zdravstveni pregled
-          </Button>
-          <Button color="primary" outline={isExamination} onClick={swapTabs}>
-            Zdravstveni karton
-          </Button>
-        </div>
-        <div className="main">
-          {record.pacijent && examinations && diseases ? (
-            isExamination ? (
-              <ExaminationForm
-                saveExamination={saveExamination}
-                record={record}
-              />
-            ) : (
-              <MedicalRecord
-                record={record}
-                diseases={diseases}
-                examinations={examinations}
-                referrals={referrals}
-                labReports={labReports}
-              />
-            )
-          ) : (
-            <></>
-          )}
-        </div>
+        {record && appointments && (
+          <>
+            <div className="tabButtons">
+              <Button
+                color="primary"
+                outline={!isExamination}
+                onClick={swapTabs}
+                disabled={disabled}
+              >
+                Zdravstveni pregled
+              </Button>
+              <Button
+                color="primary"
+                outline={isExamination}
+                onClick={swapTabs}
+                disabled={disabled}
+              >
+                Zdravstveni karton
+              </Button>
+            </div>
+            <div className="main">
+              {record && record.pacijent && examinations && diseases ? (
+                isExamination ? (
+                  <ExaminationForm
+                    saveExamination={saveExamination}
+                    record={record}
+                  />
+                ) : (
+                  <MedicalRecord
+                    record={record}
+                    diseases={diseases}
+                    examinations={examinations}
+                    referrals={referrals}
+                    labReports={labReports}
+                  />
+                )
+              ) : (
+                <></>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </>
   );

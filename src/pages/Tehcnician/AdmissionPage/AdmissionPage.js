@@ -207,7 +207,7 @@ const AdmissionPage = () => {
     labRep = (
       <div>
         <CustomModal
-          title="Greska"
+          title="Greška"
           info="Lista neobradjenih uputa je prazna"
           isSuccess={false}
           id="false"
@@ -306,7 +306,7 @@ const AdmissionPage = () => {
         {demoUnrealizedLabReferrals.length === 0 && (
           <div>
             <CustomModal
-              title="Greska"
+              title="Greška"
               info="Lista neobradjenih uputa je prazna"
               isSuccess={false}
               id="false"

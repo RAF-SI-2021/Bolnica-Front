@@ -267,7 +267,7 @@ const NurseInfirmaryPatientAdmission = () => {
         {demoUnrealizedReferrals.length === 0 && (
           <div>
             <CustomModal
-              title="Greska"
+              title="Greška"
               info="Lista nerealizovanih uputa za stacionar je prazna"
               isSuccess={false}
               id="false"
