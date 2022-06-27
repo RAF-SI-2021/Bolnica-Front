@@ -26,6 +26,7 @@ const Table = (props) => {
     if (
       header.key === "lbp" ||
       header.key === "lbz" ||
+      header.key === "uputId" ||
       header.key === "obrisan"
     )
       return <></>;
@@ -44,11 +45,16 @@ const Table = (props) => {
     listHeaders.push(<th scope="col"></th>);
     listHeaders.push(<th scope="col"></th>);
   }
-  if (tableType === "searchVisits" || tableType === "unrealizedLabReferrals") {
+  if (
+    tableType === "searchVisits" ||
+    tableType === "unrealizedLabReferrals" ||
+    tableType === "referrals"
+  ) {
     listHeaders.push(<th scope="col"></th>);
   }
 
   const handleButton = (key, entry) => {
+    console.log(entry);
     const value = entry.filter((element) => element[0] === key);
     handleClick(value[0][1]);
   };
@@ -79,6 +85,7 @@ const Table = (props) => {
         if (
           element[0] === "lbp" ||
           element[0] === "lbz" ||
+          element[0] === "uputId" ||
           element[0] === "obrisan"
         )
           return <></>;
@@ -318,6 +325,20 @@ const Table = (props) => {
               onClick={(e) => {
                 e.stopPropagation();
                 handleButton("lbz", entry);
+              }}
+            >
+              <ImBin />
+            </button>
+          </td>
+        </>
+      ) : tableType === "referrals" ? (
+        <>
+          <td style={{ width: "5%" }}>
+            <button
+              className="buttonIcon"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleButton("uputId", entry);
               }}
             >
               <ImBin />

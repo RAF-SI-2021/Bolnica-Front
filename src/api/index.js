@@ -54,7 +54,8 @@ export const fetchUnprocessedReferrals = (data) =>
   );
 export const createReferral = (data) =>
   API.post("/bolnica-laboratory-service/api/create-uput", data);
-export const deleteReferral = (id) => API.delete(`/demos/${id}`);
+export const deleteReferral = (id) =>
+  API.delete(`/bolnica-laboratory-service/api/delete-uput?uputId=${id}`);
 export const updateReferral = (data) =>
   API.put(`/bolnica-management-service/api/update-referrals-status`, data);
 export const searchReferrals = (lbp, type, status) =>

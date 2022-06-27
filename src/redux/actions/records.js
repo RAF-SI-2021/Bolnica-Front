@@ -30,7 +30,7 @@ export const updateRecord =
     try {
       const { data } = await api.updateRecord(formData);
       dispatch({ type: UPDATE_RECORD, data });
-      toggleModalSuccess();
+      toggleModalSuccess("Uspešno izmenjeni podaci");
     } catch (error) {
       console.log(error);
       toggleModalError();
@@ -46,7 +46,7 @@ export const addVaccine =
         type: UPDATE_VACCINE,
         data: { ...data, naziv: formData.naziv },
       });
-      toggleModalSuccess();
+      toggleModalSuccess("Uspešno dodata vakcina");
     } catch (error) {
       console.log(error);
       toggleModalError();
@@ -62,7 +62,7 @@ export const addAlergy =
         type: UPDATE_ALERGEN,
         data: { ...data, naziv: formData.naziv },
       });
-      toggleModalSuccess();
+      toggleModalSuccess("Uspešno dodata alergija");
     } catch (error) {
       console.log(error);
       toggleModalError();

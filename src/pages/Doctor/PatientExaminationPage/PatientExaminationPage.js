@@ -23,6 +23,7 @@ import CustomModal from "../../../components/CustomModal/CustomModal";
 import CreateRefferal from "../../../components/CreateRefferal/CreateRefferal";
 import { getHospitals } from "../../../redux/actions/hospitals";
 import { getDepartments } from "../../../redux/actions/departments";
+import { getEmployees } from "../../../redux/actions/employee";
 
 const PatientExamination = () => {
   const location = useLocation();
@@ -32,6 +33,7 @@ const PatientExamination = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const examinations = useSelector((state) => state.examinations);
+  const employees = useSelector((state) => state.employees);
   const appointments = useSelector((state) => state.appointments);
   const departments = useSelector((state) => state.departments);
   const record = useSelector((state) => state.records[0]);
@@ -42,6 +44,7 @@ const PatientExamination = () => {
   const [modalSuccess, setModalSuccess] = useState(false);
   const [modalError, setModalError] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [referralTableContent, setReferralTableContent] = useState([]);
 
   useEffect(() => {
     const doctorLocal = JSON.parse(localStorage.getItem("loggedUser"));
@@ -55,11 +58,12 @@ const PatientExamination = () => {
       getDiseases(pathParts[pathParts.length - 1], { dijagnoza: "string" })
     );
     dispatch(getExaminations(pathParts[pathParts.length - 1]));
-    dispatch(getReferrals(pathParts[pathParts.length - 1]));
     dispatch(getLabReports(pathParts[pathParts.length - 1]));
     dispatch(getAppointments(doctorLocal.LBZ));
     dispatch(getHospitals());
     dispatch(getDepartments());
+    dispatch(getEmployees());
+    dispatch(getReferrals(pathParts[pathParts.length - 1]));
   }, []);
 
   useEffect(() => {
@@ -76,6 +80,29 @@ const PatientExamination = () => {
       swapTabsForver();
     }
   }, [appointments]);
+
+  useEffect(() => {
+    if (referrals.length > 0 && employees.length > 0 && departments.length > 0)
+      setReferralTableContent(
+        referrals.map((referral) => {
+          const employee = employees.find(
+            (employee) => employee.lbz === referral.lbz
+          );
+          const izOdeljenja = departments.find(
+            (department) => department.odeljenjeId === referral.izOdeljenjaId
+          );
+          const zaOdeljenje = departments.find(
+            (department) => department.odeljenjeId === referral.zaOdeljenjeId
+          );
+          return {
+            ...referral,
+            ...employee,
+            izOdeljenjaNaziv: izOdeljenja ? izOdeljenja.naziv : "",
+            zaOdeljenjeNaziv: zaOdeljenje ? zaOdeljenje.naziv : "",
+          };
+        })
+      );
+  }, [referrals, employees, departments]);
 
   const saveExamination = (formData) => {
     const currentAppointment = appointments.find(
@@ -184,6 +211,7 @@ const PatientExamination = () => {
                     examinations={examinations}
                     referrals={referrals}
                     labReports={labReports}
+                    referralTableContent={referralTableContent}
                   />
                 )
               ) : (

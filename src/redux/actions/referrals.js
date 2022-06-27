@@ -51,14 +51,17 @@ export const updateReferral = (referralData) => async (dispatch) => {
   }
 };
 
-export const deleteReferral = (formData) => async (dispatch) => {
-  try {
-    const { data } = await api.deleteReferral(formData);
-    dispatch({ type: DELETE_REFERRAL, data });
-  } catch (error) {
-    console.log(error);
-  }
-};
+export const deleteReferral =
+  (formData, toggleModalSuccess, toggleModalError) => async (dispatch) => {
+    try {
+      await api.deleteReferral(formData);
+      dispatch({ type: DELETE_REFERRAL, uputId: formData });
+      toggleModalSuccess("Uspešno obrisan uput.");
+    } catch (error) {
+      console.log(error);
+      toggleModalError();
+    }
+  };
 
 export const searchReferrals = (lbp, type, status) => async (dispatch) => {
   try {

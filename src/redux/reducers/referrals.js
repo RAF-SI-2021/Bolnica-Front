@@ -10,6 +10,10 @@ const referralsReducer = (state = [], action) => {
       return state.map((referral) =>
         referral.zakazaniPregledId !== action.id ? referral : action.data
       );
+    case actionType.DELETE_REFERRAL:
+      return state.filter((referral) =>
+        referral.uputId !== action.uputId ? referral : false
+      );
     default:
       return state;
   }

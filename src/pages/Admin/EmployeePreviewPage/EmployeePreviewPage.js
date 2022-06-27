@@ -17,6 +17,7 @@ import { getTableHeaders } from "../../../commons/tableHeaders";
 import CustomModal from "../../../components/CustomModal/CustomModal";
 import { getHospitals } from "../../../redux/actions/hospitals";
 import { Checkbox, useCheckboxState } from "pretty-checkbox-react";
+import CustomModalAnswer from "../../../components/CustomModalAnswer/CustomModalAnswer";
 
 const EmployeePreview = () => {
   const dispatch = useDispatch();
@@ -28,6 +29,8 @@ const EmployeePreview = () => {
   const employees = useSelector((state) => state.employees);
   const departments = useSelector((state) => state.departments);
   const hospitals = useSelector((state) => state.hospitals);
+  const [modalDelete, setModalDelete] = useState(false);
+  const [deleteLbz, setDeleteLbz] = useState();
 
   useEffect(() => {
     dispatch(getEmployees());
@@ -47,8 +50,8 @@ const EmployeePreview = () => {
   const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
   const toggleModalError = () => setModalError(!modalError);
 
-  const handleClick = (lbz, entry) => {
-    // dispatch(deleteEmployee(lbz, toggleModalSuccess, toggleModalError));
+  const handleClick = () => {
+    dispatch(deleteEmployee(deleteLbz, toggleModalSuccess, toggleModalError));
   };
 
   const handleChange = (e) =>
@@ -62,6 +65,10 @@ const EmployeePreview = () => {
     event.preventDefault();
     dispatch(searchEmployees({ ...form, obrisan: checkbox.state }));
   }
+  const toggleModalDelete = (lbz) => {
+    setDeleteLbz(lbz);
+    setModalDelete(!modalDelete);
+  };
 
   return (
     <div>
@@ -70,6 +77,13 @@ const EmployeePreview = () => {
       </div>
 
       <div style={{ marginLeft: "20%" }}>
+        <CustomModalAnswer
+          title="Potvrda akcije"
+          content="Da li želite da obrišete zaposlenog?"
+          toggleModal={toggleModalDelete}
+          isOpen={modalDelete}
+          handleClick={handleClick}
+        />
         <CustomModal
           title="Uspeh"
           content="Uspesno obrisan zaposleni."
@@ -180,9 +194,9 @@ const EmployeePreview = () => {
             <Table
               headers={getTableHeaders("employeePreview")}
               tableContent={employees}
-              handleClick={handleClick}
               handleEdit={handleEdit}
               tableType="employees"
+              handleClick={toggleModalDelete}
             />
           </>
         ) : (

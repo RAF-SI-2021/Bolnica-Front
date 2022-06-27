@@ -11,6 +11,7 @@ import {
   addVaccine,
   updateRecord,
 } from "../../redux/actions/records";
+import { deleteReferral } from "../../redux/actions/referrals";
 
 const MedicalRecord = ({
   record,
@@ -18,6 +19,7 @@ const MedicalRecord = ({
   examinations,
   referrals,
   labReports,
+  referralTableContent,
 }) => {
   const dob = new Date(record.pacijent.datumRodjenja);
   const stringDate = dob.toLocaleDateString();
@@ -36,11 +38,14 @@ const MedicalRecord = ({
   const [modalError, setModalError] = useState(false);
   const [modalSuccess, setModalSuccess] = useState(false);
   const [modalInfo, setModalInfo] = useState(false);
+  const [modalDelete, setModalDelete] = useState(false);
+  const [deleteUput, setDeleteUput] = useState();
+  const [successMessage, setSuccessMessage] = useState();
 
-  console.log(record);
+  console.log(referralTableContent);
 
   const handleClick = () => {
-    console.log("Cao");
+    dispatch(deleteReferral(deleteUput, toggleModalSuccess, toggleModalError));
   };
 
   const handleChange = (e) =>
@@ -129,12 +134,26 @@ const MedicalRecord = ({
     setModalAlergen(!modalAlergen);
   };
   const toggleModalError = () => setModalError(!modalError);
-  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
+  const toggleModalSuccess = (message) => {
+    setSuccessMessage(message);
+    setModalSuccess(!modalSuccess);
+  };
+  const toggleModalDelete = (uputId) => {
+    setDeleteUput(uputId);
+    setModalDelete(!modalDelete);
+  };
 
   return (
     <>
       <p className="form-section-heading">Osnovni zdravsteni podaci</p>
       <div>
+        <CustomModalAnswer
+          title="Potvrda akcije"
+          content="Da li želite da obrišete uput?"
+          toggleModal={toggleModalDelete}
+          isOpen={modalDelete}
+          handleClick={handleClick}
+        />
         <CustomModalAnswer
           title="Potvrda akcije"
           content="Da li želite da dodate vakcinu?"
@@ -164,7 +183,7 @@ const MedicalRecord = ({
         />
         <CustomModal
           title="Uspeh"
-          content="Uspešno dodato"
+          content={successMessage}
           toggleModal={toggleModalSuccess}
           isOpen={modalSuccess}
         />
@@ -400,10 +419,10 @@ const MedicalRecord = ({
             )}
           </p>
           <Table
-            headers={getTableHeaders("examinationHistory")}
-            tableContent={referrals}
-            handleClick={handleClick}
+            headers={getTableHeaders("referrals")}
+            tableContent={referralTableContent}
             tableType="referrals"
+            handleClick={toggleModalDelete}
           />
         </>
       ) : labReports.length > 0 ? (

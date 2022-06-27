@@ -254,11 +254,11 @@ export const getTableHeaders = (contentType) => {
         value: "Napomena",
       },
     ];
-  } else if (contentType === "unrealizedLabReferrals") {
+  } else if (contentType === "referrals") {
     return [
       {
         key: "uputId",
-        value: "ID izvestaja",
+        value: "Id uputa",
       },
       {
         key: "tip",
@@ -267,10 +267,6 @@ export const getTableHeaders = (contentType) => {
       {
         key: "datumVremeKreiranja",
         value: "Datum",
-      },
-      {
-        key: "zahtevaneAnalize",
-        value: "Zahtevane analize",
       },
       {
         key: "komentar",
@@ -283,6 +279,45 @@ export const getTableHeaders = (contentType) => {
       {
         key: "surname",
         value: "Prezime",
+      },
+      {
+        key: "izOdeljenjaNaziv",
+        value: "Iz odeljenja",
+      },
+      {
+        key: "zaOdeljenjeNaziv",
+        value: "Za odeljenje",
+      },
+    ];
+  } else if (contentType === "unrealizedLabReferrals") {
+    return [
+      {
+        key: "tip",
+        value: "Tip",
+      },
+      {
+        key: "datumVremeKreiranja",
+        value: "Datum",
+      },
+      {
+        key: "komentar",
+        value: "Komentar",
+      },
+      {
+        key: "name",
+        value: "Ime",
+      },
+      {
+        key: "surname",
+        value: "Prezime",
+      },
+      {
+        key: "izOdeljenjaNaziv",
+        value: "Iz odeljenja",
+      },
+      {
+        key: "zaOdeljenjeNaziv",
+        value: "Za odeljenje",
       },
       {
         key: "kreiraj",
