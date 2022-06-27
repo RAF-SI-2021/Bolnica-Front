@@ -10,12 +10,13 @@ import {
   createAppointment,
   deleteAppointment,
   getAppointments,
+  updateAppointment,
 } from "../../../redux/actions/appointments";
 import DeleteAppointment from "../../../components/DeleteAppointment/DeleteAppointment";
 import { getEmployees } from "../../../redux/actions/employee";
 import { getPatients } from "../../../redux/actions/patients";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
-import { updateAppointment } from "../../../api";
+import CustomModal from "../../../components/CustomModal/CustomModal";
 
 const ScheduleAppointmentPage = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,8 @@ const ScheduleAppointmentPage = () => {
   const [appointmentIdDelete, setAppointmentIdDelete] = useState(1);
   const [events, setEvents] = useState([]);
   const [cancelAppointmentId, setCancelAppointmentId] = useState(-1);
+  const [modalSuccess, setModalSuccess] = useState(false);
+  const [modalError, setModalError] = useState(false);
 
   useEffect(() => {
     dispatch(getEmployees());
@@ -82,15 +85,25 @@ const ScheduleAppointmentPage = () => {
 
   const createNewAppointment = (patientId, date, examinationType, note) => {
     setNewAppointmentVisible(false);
-    console.log(date);
+    console.log({
+      lbz: selectedDoctor.lbz,
+      lbp: patientId,
+      dateAndTimeOfAppointment: date,
+      note,
+      // examinationType,
+    });
     dispatch(
-      createAppointment({
-        lbz: selectedDoctor.lbz,
-        lbp: patientId,
-        dateAndTimeOfAppointment: date,
-        note,
-        // examinationType,
-      })
+      createAppointment(
+        {
+          lbz: selectedDoctor.lbz,
+          lbp: patientId,
+          dateAndTimeOfAppointment: date,
+          note,
+          // examinationType,
+        },
+        toggleModalSuccess,
+        toggleModalError
+      )
     );
   };
 
@@ -108,11 +121,26 @@ const ScheduleAppointmentPage = () => {
     );
   };
 
+  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
+  const toggleModalError = () => setModalError(!modalError);
+
   return (
     <div className="page-container">
       <div>
         <Sidebar links={getSidebarLinks("nurse", 3)} />
       </div>
+      <CustomModal
+        title="Uspeh"
+        content="Uspesno zakazan pregled."
+        toggleModal={toggleModalSuccess}
+        isOpen={modalSuccess}
+      />
+      <CustomModal
+        title="Greška"
+        content="Doslo je do greške prilikom zakazivanja pregleda."
+        toggleModal={toggleModalError}
+        isOpen={modalError}
+      />
       {selectedDoctor && (
         <Dropdown className="dropdownButton">
           <Dropdown.Toggle variant="primary" id="dropdown-basic">

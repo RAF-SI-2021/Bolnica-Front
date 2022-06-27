@@ -157,33 +157,6 @@ const VisitsPage = () => {
     else dispatch(searchLabVisits({ currDate }));
   }
 
-  const demoSearchVisits = [
-    {
-      id: 1,
-      lbpPacijenta: 1234,
-      lbzTehnicara: "klm",
-      napomena: "nesto",
-      datumPregleda: new Date().getTime(),
-      statusPregleda: "Zakazano",
-    },
-    {
-      id: 2,
-      lbpPacijenta: 1234,
-      lbzTehnicara: "klm",
-      napomena: "nesto",
-      datumPregleda: new Date().getTime(),
-      statusPregleda: "Zavrseno",
-    },
-    {
-      id: 3,
-      lbpPacijenta: 1234,
-      lbzTehnicara: "klm",
-      napomena: "nesto",
-      datumPregleda: new Date().getTime(),
-      statusPregleda: "Otkazano",
-    },
-  ];
-
   const demoUnrealizedLabReports = [
     {
       id: 1,

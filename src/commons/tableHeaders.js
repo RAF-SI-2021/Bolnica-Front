@@ -45,6 +45,14 @@ export const getTableHeaders = (contentType) => {
         value: "Prezime",
       },
       {
+        key: "datumRodjenja",
+        value: "Datum",
+      },
+      {
+        key: "jmbg",
+        value: "Jmbg",
+      },
+      {
         key: "kontaktTelefon",
         value: "Kontakt",
       },
@@ -52,10 +60,6 @@ export const getTableHeaders = (contentType) => {
         key: "email",
         value: "Email",
       },
-      // {
-      //   key: "zanimanje",
-      //   value: "Zanimanje",
-      // },
       {
         key: "lbp",
         value: "LBP",

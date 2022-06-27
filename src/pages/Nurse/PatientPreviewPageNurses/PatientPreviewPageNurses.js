@@ -13,16 +13,23 @@ import {
 import { useNavigate } from "react-router";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
 import { getTableHeaders } from "../../../commons/tableHeaders";
+import CustomModalAnswer from "../../../components/CustomModalAnswer/CustomModalAnswer";
+import CustomModal from "../../../components/CustomModal/CustomModal";
 
 const PatientPreviewNurses = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [form, setForm] = useState({});
+  const patients = useSelector((state) => state.patients);
+  const filteredPatients = useSelector((state) => state.filteredPatients);
+  const [modalSuccess, setModalSuccess] = useState(false);
+  const [modalError, setModalError] = useState(false);
+  const [modalDelete, setModalDelete] = useState(false);
+  const [deleteLbp, setDeleteLbp] = useState();
+
   useEffect(() => {
     dispatch(getPatients());
   }, []);
-
-  const patients = useSelector((state) => state.patients);
-  const [value, setValue] = useState("");
 
   const linksHeader = {
     avatarUrl: "../nikolaSlika 1.jpg",
@@ -33,25 +40,59 @@ const PatientPreviewNurses = () => {
     date: format(new Date(), "d MMMM, yyyy"),
   };
 
-  const handleClick = (lbp) => {
-    dispatch(deletePatient(lbp));
+  const handleClick = () => {
+    dispatch(deletePatient(deleteLbp, toggleModalSuccess, toggleModalError));
   };
 
   const handleEdit = (lbp) => {
     navigate(`/nurse/edit-patient/${lbp}`);
   };
 
-  function handleOnChange(event) {
-    setValue(event.target.value);
-  }
-
   function handleSubmit(event) {
     event.preventDefault();
-    dispatch(searchPatients(value));
+    if (form.lbp === "-1") {
+      console.log(form.lbp);
+      dispatch(searchPatients({ ...form, lbp: null }));
+    } else dispatch(searchPatients(form));
   }
+
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
+
+  const handlePatientChange = (event) => {
+    setForm({ ...form, lbp: event.target.value });
+  };
+
+  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
+  const toggleModalError = () => setModalError(!modalError);
+  const toggleModalDelete = (lbp) => {
+    setDeleteLbp(lbp);
+    setModalDelete(!modalDelete);
+  };
+  const navigateToHomepage = () => navigate("/nurse/patient-preview");
 
   return (
     <div>
+      <CustomModalAnswer
+        title="Potvrda akcije"
+        content="Da li želite da obrišete pacijenta?"
+        toggleModal={toggleModalDelete}
+        isOpen={modalDelete}
+        handleClick={handleClick}
+      />
+      <CustomModal
+        title="Uspeh"
+        content="Uspesno izmenjem pacijent."
+        toggleModal={toggleModalSuccess}
+        isOpen={modalSuccess}
+        handleClick={navigateToHomepage}
+      />
+      <CustomModal
+        title="Greška"
+        content="Doslo je do greške prilikom izmene pacijenta."
+        toggleModal={toggleModalError}
+        isOpen={modalError}
+      />
       <div className="sidebar-link-container">
         <Sidebar links={getSidebarLinks("nurse", 2)} />
       </div>
@@ -64,28 +105,70 @@ const PatientPreviewNurses = () => {
           day={linksHeader.day}
           date={linksHeader.date}
         />
-        <form className="example myInline">
-          <input
-            type="text"
-            placeholder="Search.."
-            name="search"
-            onChange={handleOnChange}
-          />
-          <button type="submit" onClick={handleSubmit}>
-            <BiSearchAlt />
-          </button>
-        </form>
-        <br />
-        <br />
         <div>
           <h1 className="myTitle">Pacijenti</h1>
         </div>
+        <form className="form-custom familyFix">
+          <div className="form-group-custom">
+            <input
+              type="text"
+              className="margin-right"
+              placeholder="Ime"
+              onChange={handleChange}
+              name="ime"
+            />
+            <input
+              type="text"
+              className="margin-left"
+              placeholder="Prezime"
+              onChange={handleChange}
+              name="prezime"
+            />
+          </div>
+          <div className="form-group-custom">
+            <input
+              type="text"
+              className="margin-right"
+              placeholder="JMBG"
+              onChange={handleChange}
+              name="jmbg"
+            />
+            <select
+              className="form-select-custom small-select margin-left"
+              onChange={handlePatientChange}
+              name="lbp"
+              value={form.lbp}
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Izaberite pacijenta
+              </option>
+              <option value="-1">Svi pacijenti</option>
+              {patients.length > 0 ? (
+                <>
+                  {patients.map((patient) => {
+                    return (
+                      <option key={patient.lbp} value={patient.lbp}>
+                        {patient.ime}
+                      </option>
+                    );
+                  })}
+                </>
+              ) : (
+                <></>
+              )}
+            </select>
+          </div>
+          <button type="submit" onClick={handleSubmit}>
+            Pretraži
+          </button>
+        </form>
         {patients.length > 0 && (
           <Table
             handleEdit={handleEdit}
             headers={getTableHeaders("patientPreview")}
-            tableContent={patients}
-            handleClick={handleClick}
+            tableContent={filteredPatients}
+            handleClick={toggleModalDelete}
             tableType="patients"
           />
         )}

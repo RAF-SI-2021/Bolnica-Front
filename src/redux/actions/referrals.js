@@ -24,14 +24,19 @@ export const getUnprocessedReferrals = (lbp) => async (dispatch) => {
   }
 };
 
-export const createReferral = (formData) => async (dispatch) => {
-  try {
-    const { data } = await api.createReferral(formData);
-    dispatch({ type: CREATE_REFERRAL, data });
-  } catch (error) {
-    console.log(error);
-  }
-};
+export const createReferral =
+  (formData, toggleModalSuccess, toggleModalError) => async (dispatch) => {
+    try {
+      console.log(formData);
+      const { data } = await api.createReferral(formData);
+      console.log(data);
+      dispatch({ type: CREATE_REFERRAL, data });
+      toggleModalSuccess();
+    } catch (error) {
+      console.log(error);
+      toggleModalError();
+    }
+  };
 
 export const updateReferral = (referralData) => async (dispatch) => {
   try {

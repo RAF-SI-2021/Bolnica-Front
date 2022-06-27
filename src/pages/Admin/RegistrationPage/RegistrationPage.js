@@ -67,12 +67,24 @@ function RegistrationPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(form.roles);
     dispatch(createEmployee({ ...form }, toggleModalSuccess, toggleModalError));
   };
 
   return (
     <div style={{ marginLeft: "20%" }}>
+      <CustomModal
+        title="Uspeh"
+        content="Uspesno registrovan zaposleni."
+        toggleModal={toggleModalSuccess}
+        isOpen={modalSuccess}
+        handleClick={navigateToHomepage}
+      />
+      <CustomModal
+        title="Greška"
+        content="Doslo je do greške prilikom kreiranja zaposlenog."
+        toggleModal={toggleModalError}
+        isOpen={modalError}
+      />
       <div className="sidebar-link-container">
         <Sidebar links={getSidebarLinks("admin", 3)} />
       </div>
@@ -368,19 +380,6 @@ function RegistrationPage() {
         </div>
         <button onClick={handleSubmit}>Registruj zaposlenog</button>
       </form>
-      <CustomModal
-        title="Uspeh"
-        content="Uspesno registrovan zaposleni."
-        toggleModal={toggleModalSuccess}
-        isOpen={modalSuccess}
-        handleClick={navigateToHomepage}
-      />
-      <CustomModal
-        title="Greška"
-        content="Doslo je do greške prilikom kreiranja zaposlenog."
-        toggleModal={toggleModalError}
-        isOpen={modalError}
-      />
     </div>
   );
 }

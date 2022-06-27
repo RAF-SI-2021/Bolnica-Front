@@ -23,7 +23,10 @@ const NewAppointment = (props) => {
 
   const dateString = date.toLocaleString();
   return (
-    <div className="new-appointment-container">
+    <div
+      className="new-appointment-container"
+      style={{ borderLeft: "1px solid #9e9fa1" }}
+    >
       <div className="new-appointment-header">
         <p className="header-paragraph familyFix">Dodaj novi pregled</p>
         <hr className="break-line" />
@@ -52,7 +55,7 @@ const NewAppointment = (props) => {
           style={{ width: "60%" }}
           placeholder="Komentar"
           onChange={handleChange}
-          name="surname"
+          name="note"
           type="text"
         />
       )}

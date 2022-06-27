@@ -264,13 +264,6 @@ export const getSidebarLinks = (role, activeId) => {
         dividerAfter: true,
       },
       {
-        id: 5,
-        text: "Kreiraj uput",
-        path: "/create-refferal",
-        icon: <GiNotebook />,
-        isActive: activeId === 5 ? true : false,
-      },
-      {
         id: 6,
         text: "Pacijenti (stacionar)",
         path: "/stationary",

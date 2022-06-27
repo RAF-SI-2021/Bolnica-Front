@@ -6,7 +6,11 @@ import "./styles.css";
 import { useDispatch } from "react-redux";
 import CustomModalAnswer from "../CustomModalAnswer/CustomModalAnswer";
 import CustomModal from "../CustomModal/CustomModal";
-import { addAlergy, addVaccine } from "../../redux/actions/records";
+import {
+  addAlergy,
+  addVaccine,
+  updateRecord,
+} from "../../redux/actions/records";
 
 const MedicalRecord = ({
   record,
@@ -31,6 +35,7 @@ const MedicalRecord = ({
   const [modalAlergen, setModalAlergen] = useState(false);
   const [modalError, setModalError] = useState(false);
   const [modalSuccess, setModalSuccess] = useState(false);
+  const [modalInfo, setModalInfo] = useState(false);
 
   console.log(record);
 
@@ -46,9 +51,14 @@ const MedicalRecord = ({
 
   const handleChangeAlergen = (e) => setAlergen(e.target.value);
 
-  const submitForm = (e) => {
-    e.preventDefault();
-    // updateRecordIndo
+  const submitForm = () => {
+    dispatch(
+      updateRecord(
+        { ...form, lbp: record.pacijent.lbp },
+        toggleModalError,
+        toggleModalSuccess
+      )
+    );
   };
 
   const addNewAlergen = () => {
@@ -110,6 +120,10 @@ const MedicalRecord = ({
     if (e) e.preventDefault();
     setModalVaccine(!modalVaccine);
   };
+  const toggleModalInfo = (e) => {
+    if (e) e.preventDefault();
+    setModalInfo(!modalInfo);
+  };
   const toggleModalAlergen = (e) => {
     if (e) e.preventDefault();
     setModalAlergen(!modalAlergen);
@@ -134,6 +148,13 @@ const MedicalRecord = ({
           toggleModal={toggleModalAlergen}
           isOpen={modalAlergen}
           handleClick={addNewAlergen}
+        />
+        <CustomModalAnswer
+          title="Potvrda akcije"
+          content="Da li želite da izmenite podatke?"
+          toggleModal={toggleModalInfo}
+          isOpen={modalInfo}
+          handleClick={submitForm}
         />
         <CustomModal
           title="Greška"
@@ -200,8 +221,8 @@ const MedicalRecord = ({
                   <option value="" disabled>
                     RH Faktor
                   </option>
-                  <option value="+">Plus</option>
-                  <option value="-">Minus</option>
+                  <option value="PLUS">Plus</option>
+                  <option value="MINUS">Minus</option>
                 </select>
               </div>
             </form>
@@ -210,7 +231,7 @@ const MedicalRecord = ({
         {formChange && (
           <button
             className="small-button"
-            onClick={submitForm}
+            onClick={toggleModalInfo}
             style={{
               margin: "auto",
               marginLeft: "50%",

@@ -39,11 +39,14 @@ const DoctorCalendarPage = () => {
 
   useEffect(() => {
     if (appointments.length > 0) {
+      const newEvents = appointments.filter((appo) =>
+        appo.statusPregleda === "ZAKAZANO" ? appo : false
+      );
       setEvents(
-        appointments.map((appointment) => {
+        newEvents.map((appointment) => {
           const date = new Date(appointment.datumIVremePregleda);
           return {
-            id: 1,
+            id: appointment.zakazaniPregledId,
             startAt: date.toISOString(),
             endAt: date.addHours(1).toISOString(),
             summary: `Pacijent: ${appointment.pacijent.ime} ${appointment.pacijent.prezime}`,

@@ -6,6 +6,12 @@ const recordReducer = (state = [], action) => {
       return [...state, action.data];
     case actionType.GET_RECORD:
       return [...state, action.data];
+    case actionType.UPDATE_EMPLOYEE:
+      return state.map((employee) =>
+        employee.zdravstveniKartonId !== action.data.zdravstveniKartonId
+          ? employee
+          : action.data
+      );
     case actionType.UPDATE_ALERGEN:
       return state.map((record) => {
         if (record.zdravstveniKartonId !== action.data.zdravstveniKartonId) {

@@ -86,6 +86,7 @@ const Table = (props) => {
           element[0] === "datumPregleda" ||
           element[0] === "zakazanDatum" ||
           element[0] === "datumVremeKreiranja" ||
+          element[0] === "datumRodjenja" ||
           element[0] === "dob"
         ) {
           return (

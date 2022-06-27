@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import Header from "../../../components/Header/Header";
 import GeneralStats from "../../../components/GeneralStats/GeneralStats";
@@ -18,6 +18,7 @@ const DoctorHomepage = () => {
   const navigate = useNavigate();
   const appointments = useSelector((state) => state.appointments);
   const patients = useSelector((state) => state.patients);
+  const [appointmentNumber, setAppointmentNubmer] = useState();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -29,6 +30,15 @@ const DoctorHomepage = () => {
       dispatch(getPatients());
     } else navigate("/login");
   }, []);
+
+  useEffect(() => {
+    if (appointments.length > 0) {
+      const scheduledAppointments = appointments.filter((appointment) =>
+        appointment.statusPregleda === "ZAKAZANO" ? appointment : false
+      );
+      setAppointmentNubmer(scheduledAppointments.length);
+    } else setAppointmentNubmer(0);
+  }, [appointments]);
 
   const headerProps = {
     avatarUrl: "nikolaSlika 1.jpg",
@@ -56,7 +66,7 @@ const DoctorHomepage = () => {
           <GeneralStats
             image={<GiMedicalPack size="45px" />}
             text="Zakazani pregledi"
-            number={appointments.length}
+            number={appointmentNumber}
           />
           <GeneralStats
             image={<FaUserInjured size="45px" />}

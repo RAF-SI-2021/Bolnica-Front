@@ -4,6 +4,8 @@ import Sidebar from "../../../components/Sidebar/Sidebar";
 import { updatePatient, getPatient } from "../../../redux/actions/patients";
 import { useLocation, useNavigate } from "react-router";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
+import CustomModal from "../../../components/CustomModal/CustomModal";
+import CustomModalAnswer from "../../../components/CustomModalAnswer/CustomModalAnswer";
 
 const initialState = {
   jmbg: "",
@@ -29,14 +31,17 @@ const initialState = {
   datumVremeSmrti: "2022-03-03",
 };
 
-function RegistrationPatientPage() {
+function EditPatientPage() {
   const [form, setForm] = useState(initialState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const [lbp, setLbp] = useState();
   const [role, setRole] = useState("");
-  const patient = useSelector((state) => state.patients);
+  const patients = useSelector((state) => state.patients);
+  const [modalSuccess, setModalSuccess] = useState(false);
+  const [modalError, setModalError] = useState(false);
+  const [patient, setPatient] = useState({});
 
   useEffect(() => {
     const pathParts = location.pathname.split("/");
@@ -46,12 +51,16 @@ function RegistrationPatientPage() {
   }, []);
 
   useEffect(() => {
-    if (patient.length !== 0) {
+    if (patients.length > 0) setPatient(patients[0]);
+  }, [patients]);
+
+  useEffect(() => {
+    if (patient) {
       const dateOfBirth = new Date(patient.datumRodjenja);
       var day = ("0" + dateOfBirth.getDate()).slice(-2);
       var month = ("0" + (dateOfBirth.getMonth() + 1)).slice(-2);
       var today = dateOfBirth.getFullYear() + "-" + month + "-" + day;
-
+      console.log(patient);
       setForm({
         ime: patient.ime,
         prezime: patient.prezime,
@@ -63,7 +72,7 @@ function RegistrationPatientPage() {
         brojDece: patient.brojDece,
         bracniStatus: patient.bracniStatus,
         pol: "MUSKI",
-        dob: today,
+        datumRodjenja: today,
         imeRoditelja: patient.imeRoditelja,
         imeStaratelj: patient.imeStaratelj,
         jmbgStaratelj: patient.jmbgStaratelj,
@@ -97,14 +106,35 @@ function RegistrationPatientPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updatePatient({ ...form, pol: "MUSKI" }, lbp));
-    role === "nurse"
-      ? navigate("/nurse/patient-preview")
-      : navigate("/patient-preview");
+    dispatch(
+      updatePatient(
+        { ...form, pol: "MUSKI" },
+        lbp,
+        toggleModalSuccess,
+        toggleModalError
+      )
+    );
   };
+
+  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
+  const toggleModalError = () => setModalError(!modalError);
+  const navigateToHomepage = () => navigate("/nurse/patient-preview");
 
   return (
     <div style={{ marginLeft: "20%" }}>
+      <CustomModal
+        title="Uspeh"
+        content="Uspesno izmenjem pacijent."
+        toggleModal={toggleModalSuccess}
+        isOpen={modalSuccess}
+        handleClick={navigateToHomepage}
+      />
+      <CustomModal
+        title="Greška"
+        content="Doslo je do greške prilikom izmene pacijenta."
+        toggleModal={toggleModalError}
+        isOpen={modalError}
+      />
       <div className="sidebar-link-container">
         <Sidebar
           links={
@@ -320,4 +350,4 @@ function RegistrationPatientPage() {
     </div>
   );
 }
-export default RegistrationPatientPage;
+export default EditPatientPage;

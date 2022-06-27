@@ -20,19 +20,24 @@ import {
 import { getLabReports } from "../../../redux/actions/labReports";
 import CustomModalAnswer from "../../../components/CustomModalAnswer/CustomModalAnswer";
 import CustomModal from "../../../components/CustomModal/CustomModal";
+import CreateRefferal from "../../../components/CreateRefferal/CreateRefferal";
+import { getHospitals } from "../../../redux/actions/hospitals";
+import { getDepartments } from "../../../redux/actions/departments";
 
 const PatientExamination = () => {
   const location = useLocation();
   const [lbp, setLbp] = useState();
   const [doctor, setDoctor] = useState();
-  const [isExamination, setIsExamination] = useState(true);
+  const [tabNumber, setTabNumber] = useState(0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const examinations = useSelector((state) => state.examinations);
   const appointments = useSelector((state) => state.appointments);
+  const departments = useSelector((state) => state.departments);
   const record = useSelector((state) => state.records[0]);
   const diseases = useSelector((state) => state.diseases);
   const referrals = useSelector((state) => state.referrals);
+  const hospitals = useSelector((state) => state.hospitals);
   const labReports = useSelector((state) => state.labReports);
   const [modalSuccess, setModalSuccess] = useState(false);
   const [modalError, setModalError] = useState(false);
@@ -53,6 +58,8 @@ const PatientExamination = () => {
     dispatch(getReferrals(pathParts[pathParts.length - 1]));
     dispatch(getLabReports(pathParts[pathParts.length - 1]));
     dispatch(getAppointments(doctorLocal.LBZ));
+    dispatch(getHospitals());
+    dispatch(getDepartments());
   }, []);
 
   useEffect(() => {
@@ -62,9 +69,11 @@ const PatientExamination = () => {
       );
       if (!currentAppointment) swapTabsForver();
       else {
-        setIsExamination(true);
+        setTabNumber(0);
         setDisabled(false);
       }
+    } else {
+      swapTabsForver();
     }
   }, [appointments]);
 
@@ -72,8 +81,6 @@ const PatientExamination = () => {
     const currentAppointment = appointments.find(
       (appointment) => appointment.statusPregleda === "U_TOKU"
     );
-    console.log(currentAppointment);
-    console.log(appointments);
     dispatch(
       updateAppointment({
         appointmentId: currentAppointment.zakazaniPregledId,
@@ -92,11 +99,11 @@ const PatientExamination = () => {
     swapTabsForver();
   };
 
-  const swapTabs = () => {
-    setIsExamination(!isExamination);
+  const swapTabs = (number) => {
+    setTabNumber(number);
   };
   const swapTabsForver = () => {
-    setIsExamination(false);
+    setTabNumber(2);
     setDisabled(true);
   };
   const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
@@ -134,27 +141,41 @@ const PatientExamination = () => {
             <div className="tabButtons">
               <Button
                 color="primary"
-                outline={!isExamination}
-                onClick={swapTabs}
+                outline={tabNumber !== 0}
+                onClick={() => swapTabs(0)}
                 disabled={disabled}
+                className="negateClass"
               >
                 Zdravstveni pregled
               </Button>
               <Button
                 color="primary"
-                outline={isExamination}
-                onClick={swapTabs}
-                disabled={disabled}
+                outline={tabNumber !== 1}
+                onClick={() => swapTabs(1)}
+              >
+                Kreiraj uput
+              </Button>
+              <Button
+                color="primary"
+                outline={tabNumber !== 2}
+                onClick={() => swapTabs(2)}
               >
                 Zdravstveni karton
               </Button>
             </div>
             <div className="main">
               {record && record.pacijent && examinations && diseases ? (
-                isExamination ? (
+                tabNumber === 0 ? (
                   <ExaminationForm
                     saveExamination={saveExamination}
                     record={record}
+                  />
+                ) : tabNumber === 1 ? (
+                  <CreateRefferal
+                    record={record}
+                    setTabNumber={setTabNumber}
+                    hospitals={hospitals}
+                    departments={departments}
                   />
                 ) : (
                   <MedicalRecord

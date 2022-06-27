@@ -5,7 +5,13 @@ import "./styles.css";
 const ScheduledAppointments = ({ appointments }) => {
   return (
     <div>
-      <div className="title">Današnji pacijenti</div>
+      {appointments.length > 0 ? (
+        <div className="title">Današnji pacijenti</div>
+      ) : (
+        <p style={{ marginLeft: "20px" }}>
+          Trenutno ne postoji nijedan zakazani pregled.
+        </p>
+      )}
       {appointments.map((appointment) => {
         return (
           <SingleAppointment

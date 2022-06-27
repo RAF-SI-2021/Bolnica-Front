@@ -16,7 +16,6 @@ import RegistrationPage from "./pages/Admin/RegistrationPage/RegistrationPage";
 // DOCTOR
 import DoctorHomepage from "./pages/Doctor/DoctorHomepage/DoctorHomepage";
 import PatientPreview from "./pages/Doctor/PatientPreviewPage/PatientPreviewPage";
-import EditPatientPage from "./pages/Doctor/EditPatientPage/EditPatientPage";
 import CreateRefferalPage from "./pages/Doctor/CreateRefferalPage/CreateRefferalPage";
 import PatientExamination from "./pages/Doctor/PatientExaminationPage/PatientExaminationPage";
 import DoctorCalendarPage from "./pages/Doctor/DoctorCalendarPage/DoctorCalendarPage";
@@ -25,6 +24,7 @@ import PatientStationaryPage from "./pages/Doctor/PatientStationaryPage/PatientS
 // NURSE
 import NurseHomepage from "./pages/Nurse/NurseHomepage/NurseHomepage";
 import PatientPreviewNurses from "./pages/Nurse/PatientPreviewPageNurses/PatientPreviewPageNurses";
+import EditPatientPage from "./pages/Nurse/EditPatientPage/EditPatientPage";
 import RegistrationPatientPage from "./pages/Nurse/RegistrationPatientPage/RegistrationPatientPage";
 import ScheduleAppointmentPage from "./pages/Nurse/ScheduleAppointmentPage/ScheduleAppointmentPage";
 import NurseInfirmaryPatientAdmission from "./pages/Nurse/NurseInfirmaryPatientAdmission/NurseInfirmaryPatientAdmission";
@@ -65,7 +65,6 @@ const App = () => {
         <Route path="/" exact element={<DoctorHomepage />} />
         <Route path="/examination/:id" exact element={<PatientExamination />} />
         <Route path="/patient-preview" exact element={<PatientPreview />} />
-        <Route path="/create-refferal" exact element={<CreateRefferalPage />} />
         <Route path="/appointments" exact element={<DoctorCalendarPage />} />
         <Route path="/stationary" exact element={<PatientStationaryPage />} />
 

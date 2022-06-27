@@ -46,9 +46,6 @@ const ExaminationForm = ({ saveExamination, record }) => {
   const dob = new Date(record.pacijent.datumRodjenja);
   const dobString = dob.toLocaleDateString();
 
-  const alergies = ["polen", "macja dlaka", "mleko"];
-  const activeDiagnosis = ["slomljena kost", "upala pluca"];
-
   const confirmReport = (e) => {
     if (e) e.preventDefault();
     saveExamination(form);
@@ -86,11 +83,19 @@ const ExaminationForm = ({ saveExamination, record }) => {
         </div>
         <div className="patient-other-info">
           <p className="patient-info-text">
-            Alergije: {alergies.map((alergy) => `${alergy} `)}
+            Alergije:{" "}
+            {record.alergeni.map((alergy, index) => {
+              if (index === record.alergeni.length - 1) return alergy.alergen;
+              return `${alergy.alergen}, `;
+            })}
           </p>
           <p className="patient-info-text">
-            Aktivne dijagnoze:{" "}
-            {activeDiagnosis.map((diagnosis) => `${diagnosis} `)}
+            Vakcine:{" "}
+            {record.vakcinacije.map((vaccine, index) => {
+              if (index === record.vakcinacije.length - 1)
+                return vaccine.vakcina.naziv;
+              return `${vaccine.vakcina.naziv}, `;
+            })}
           </p>
         </div>
       </div>

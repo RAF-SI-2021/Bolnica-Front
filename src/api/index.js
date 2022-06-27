@@ -88,20 +88,22 @@ export const fetchExaminations = (lbp) =>
       on: null,
     }
   );
+
+// RECORDS
+
 export const createRecord = (formData) =>
   API.post(
     `/bolnica-management-service/api/create-examination-report`,
     formData
   );
-
-// RECORDS
-
 export const fetchRecord = (lbp) =>
   API.get(`/bolnica-management-service/api/fetch-zdravstveni-karton/${lbp}`);
 export const addVaccine = (formData) =>
   API.post(`/bolnica-management-service/api/add-vaccine`, formData);
 export const addAlergen = (formData) =>
   API.post(`/bolnica-management-service/api/add-allergen`, formData);
+export const updateRecord = (formData) =>
+  API.put(`/bolnica-management-service/api/update-medical-record`, formData);
 
 // EMPLOYEES
 export const fetchEmployees = () =>
@@ -156,7 +158,7 @@ export const updatePatient = (formData, lbp) =>
 export const deletePatient = (lbp) =>
   API.delete(`/bolnica-management-service/api/remove-patient/${lbp}`);
 export const searchPatients = (searchValues) =>
-  API.post("/patients", searchValues);
+  API.post("/bolnica-management-service/api/filter-patients", searchValues);
 
 // DISEASES
 export const fetchDiseases = (lbp, data) =>

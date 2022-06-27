@@ -5,6 +5,7 @@ import Sidebar from "../../../components/Sidebar/Sidebar";
 import { createPatient } from "../../../redux/actions/patients";
 import { useNavigate } from "react-router";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
+import CustomModal from "../../../components/CustomModal/CustomModal";
 
 const initialState = {
   jmbg: "",
@@ -34,6 +35,8 @@ function RegistrationPatientPage() {
   const [form, setForm] = useState(initialState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [modalSuccess, setModalSuccess] = useState(false);
+  const [modalError, setModalError] = useState(false);
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -54,11 +57,34 @@ function RegistrationPatientPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createPatient({ ...form, pol: "MUSKI" }));
-    navigate("/nurse/patient-preview");
+    dispatch(
+      createPatient(
+        { ...form, pol: "MUSKI" },
+        toggleModalSuccess,
+        toggleModalError
+      )
+    );
   };
+
+  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
+  const toggleModalError = () => setModalError(!modalError);
+  const navigateToHomepage = () => navigate("/nurse/patient-preview");
+
   return (
     <div style={{ marginLeft: "20%" }}>
+      <CustomModal
+        title="Uspeh"
+        content="Uspesno registrovan pacijent."
+        toggleModal={toggleModalSuccess}
+        isOpen={modalSuccess}
+        handleClick={navigateToHomepage}
+      />
+      <CustomModal
+        title="Greška"
+        content="Doslo je do greške prilikom kreiranja pacijenta."
+        toggleModal={toggleModalError}
+        isOpen={modalError}
+      />
       <div className="sidebar-link-container">
         <Sidebar links={getSidebarLinks("nurse", 4)} />
       </div>
