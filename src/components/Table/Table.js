@@ -72,7 +72,9 @@ const Table = (props) => {
   const info = tableContent.map((content) => {
     const entry = Object.entries(content).filter((item, index) => {
       for (let i = 0; i < headers.length; i++) {
-        if (headers[i].key === item[0]) return item[1];
+        if (headers[i].key === item[0]) {
+          return item[1] ? item[1] : "/";
+        }
       }
       return false;
     });
@@ -263,7 +265,7 @@ const Table = (props) => {
         }
         return (
           <td key={element} style={{ padding: "25px 0px" }}>
-            {element[1] !== "" ? element[1] : "Nije unet podatak"}
+            {element[1] !== "" && element[1] ? element[1] : "/"}
           </td>
         );
       })}
@@ -427,6 +429,14 @@ const Table = (props) => {
                 e.stopPropagation();
                 handleCreateLabReportTab1(entry);
               }}
+              disabled={
+                entry[4][1] === "OTKAZANO" || entry[4][1] === "ZAVRSENO"
+              }
+              style={
+                entry[4][1] === "OTKAZANO" || entry[4][1] === "ZAVRSENO"
+                  ? { backgroundColor: "#cacccf", borderColor: "#cacccf" }
+                  : {}
+              }
             >
               Nalog
             </button>

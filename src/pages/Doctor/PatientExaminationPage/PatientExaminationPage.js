@@ -143,7 +143,7 @@ const PatientExamination = () => {
       </div>
       <div style={{ marginLeft: "20%" }}>
         <CustomModalAnswer
-          title="Uspeh"
+          title="Potvrda"
           content="Da li želite da završite pregled?"
           toggleModal={toggleModalSuccess}
           isOpen={modalSuccess}

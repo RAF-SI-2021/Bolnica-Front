@@ -132,18 +132,18 @@ export const getSidebarLinks = (role, activeId) => {
         isActive: activeId === 1 ? true : false,
       },
       {
-        id: 2,
-        text: "Prijem pacijenata",
-        path: "/technician/patient-admission",
-        icon: <FaUserInjured />,
-        isActive: activeId === 2 ? true : false,
-      },
-      {
         id: 3,
         text: "Zakazivanje posete",
         path: "/technician/visits",
         icon: <FaPlusCircle />,
         isActive: activeId === 3 ? true : false,
+      },
+      {
+        id: 2,
+        text: "Prijem pacijenata",
+        path: "/technician/patient-admission",
+        icon: <FaUserInjured />,
+        isActive: activeId === 2 ? true : false,
       },
       {
         id: 4,

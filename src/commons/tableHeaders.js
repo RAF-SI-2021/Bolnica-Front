@@ -320,8 +320,8 @@ export const getTableHeaders = (contentType) => {
         value: "Za odeljenje",
       },
       {
-        key: "kreiraj",
-        value: "",
+        key: "uputId",
+        value: "Uput ID",
       },
     ];
   } else if (contentType === "unrealizedReferrals") {

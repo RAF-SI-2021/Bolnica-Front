@@ -25,11 +25,11 @@ const EmployeePreview = () => {
   const checkbox = useCheckboxState();
   const [modalSuccess, setModalSuccess] = useState(false);
   const [modalError, setModalError] = useState(false);
+  const [modalDelete, setModalDelete] = useState(false);
   const [form, setForm] = useState({});
   const employees = useSelector((state) => state.employees);
   const departments = useSelector((state) => state.departments);
   const hospitals = useSelector((state) => state.hospitals);
-  const [modalDelete, setModalDelete] = useState(false);
   const [deleteLbz, setDeleteLbz] = useState();
 
   useEffect(() => {
@@ -49,6 +49,10 @@ const EmployeePreview = () => {
 
   const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
   const toggleModalError = () => setModalError(!modalError);
+  const toggleModalDelete = (lbz) => {
+    setDeleteLbz(lbz);
+    setModalDelete(!modalDelete);
+  };
 
   const handleClick = () => {
     dispatch(deleteEmployee(deleteLbz, toggleModalSuccess, toggleModalError));
@@ -65,10 +69,6 @@ const EmployeePreview = () => {
     event.preventDefault();
     dispatch(searchEmployees({ ...form, obrisan: checkbox.state }));
   }
-  const toggleModalDelete = (lbz) => {
-    setDeleteLbz(lbz);
-    setModalDelete(!modalDelete);
-  };
 
   return (
     <div>

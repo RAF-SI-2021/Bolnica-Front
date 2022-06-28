@@ -177,6 +177,8 @@ export const fetchNumberOfLabAppointments = (dateNum) =>
 //LAB VISITS
 export const searchLabVisits = (data) =>
   API.post("/bolnica-laboratory-service/api/get-lab-examinations", data);
+export const getVisitCount = (data) =>
+  API.post("/bolnica-laboratory-service/api/get-lab-examination-count", data);
 export const updateLabVisits = (data) =>
   API.put("/bolnica-laboratory-service/api/set-lab-examination-status", data);
 export const createVisit = (formData) =>
