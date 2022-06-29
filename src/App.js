@@ -46,6 +46,7 @@ import IssuingResultsDetailedPage from "./pages/Tehcnician/IssuingResultsDetaile
 //RECEPCIONIST
 import RecepcionistHomepage from "./pages/Recepcionist/RecepcionistHomepage/RecepcionistHomepage";
 import RecepcionistAddPatientPage from "./pages/Recepcionist/RecepcionistAddPatientPage/RecepcionistAddPatientPage";
+import RecepcionistEditPatientPage from "./pages/Recepcionist/RecepcionistEditPatientPage/RecepcionistEditPatientPage";
 import RecepcionistScheduleAppPage from "./pages/Recepcionist/RecepcionistScheduleAppPage/RecepcionistScheduleAppPage";
 import RecepcionistVisitsPage from "./pages/Recepcionist/RecepcionistVisitsPage/RecepcionistVisitsPage";
 import RecepcionistRegistationVisitsPage from "./pages/Recepcionist/RecepcionistRegistationVisitsPage/RecepcionistRegistationVisitsPage";
@@ -129,6 +130,7 @@ const App = () => {
           element={<EditEmployeePage />}
         />
         <Route path="/edit-patient/:lbp" exact element={<EditPatientPage />} />
+
         {/* BIOCHEMIST ROUTES */}
         <Route path="/biochemist" exact element={<BiochemistHomepage />} />
         <Route
@@ -136,6 +138,7 @@ const App = () => {
           exact
           element={<DetailedResultPage />}
         />
+
         {/* TECHNICIAN ROUTES */}
         <Route path="/technician" exact element={<TechnicianHomepage />} />
         <Route
@@ -154,6 +157,7 @@ const App = () => {
           exact
           element={<IssuingResultsDetailedPage />}
         />
+
         {/* RECEPCIONIST ROUTES */}
         <Route path="/recepcionist" exact element={<RecepcionistHomepage />} />
         <Route
@@ -175,6 +179,11 @@ const App = () => {
           path="/recepcionist/registation-visits/:lbp"
           exact
           element={<RecepcionistRegistationVisitsPage />}
+        />
+        <Route
+          path="/recepcionist/edit-patient/:lbp"
+          exact
+          element={<RecepcionistEditPatientPage />}
         />
       </Routes>
     </BrowserRouter>

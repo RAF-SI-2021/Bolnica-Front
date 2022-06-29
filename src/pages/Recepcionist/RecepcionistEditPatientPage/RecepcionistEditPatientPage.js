@@ -1,17 +1,18 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Sidebar from "../../../components/Sidebar/Sidebar";
-import { createPatient } from "../../../redux/actions/patients";
-import { useNavigate } from "react-router";
+import { updatePatient, getPatient } from "../../../redux/actions/patients";
+import { useLocation, useNavigate } from "react-router";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
 import CustomModal from "../../../components/CustomModal/CustomModal";
+import CustomModalAnswer from "../../../components/CustomModalAnswer/CustomModalAnswer";
 
 const initialState = {
   jmbg: "",
   ime: "",
   imeRoditelja: "",
   prezime: "",
-  datumRodjenja: new Date(),
+  datumRodjenja: "2000-03-03",
   mestoRodjenja: "",
   zemljaDrzavljanstva: "",
   adresa: "",
@@ -27,15 +28,64 @@ const initialState = {
   stepenStrucneSpreme: "",
   zanimanje: "",
   pol: "muski",
-  datumVremeSmrti: new Date(),
+  datumVremeSmrti: "2022-03-03",
 };
 
-function RegistrationPatientPage() {
+function EditPatientPage() {
   const [form, setForm] = useState(initialState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [lbp, setLbp] = useState();
+  const [role, setRole] = useState("");
+  const patients = useSelector((state) => state.patients);
   const [modalSuccess, setModalSuccess] = useState(false);
   const [modalError, setModalError] = useState(false);
+  const [patient, setPatient] = useState({});
+
+  useEffect(() => {
+    const pathParts = location.pathname.split("/");
+    setRole(pathParts[1]);
+    setLbp(pathParts[pathParts.length - 1]);
+    dispatch(getPatient(pathParts[pathParts.length - 1]));
+  }, []);
+
+  useEffect(() => {
+    if (patients.length > 0) setPatient(patients[0]);
+  }, [patients]);
+
+  useEffect(() => {
+    if (patient) {
+      const dateOfBirth = new Date(patient.datumRodjenja);
+      var day = ("0" + dateOfBirth.getDate()).slice(-2);
+      var month = ("0" + (dateOfBirth.getMonth() + 1)).slice(-2);
+      var today = dateOfBirth.getFullYear() + "-" + month + "-" + day;
+      console.log(patient);
+      setForm({
+        ime: patient.ime,
+        prezime: patient.prezime,
+        jmbg: patient.jmbg,
+        email: patient.email,
+        adresa: patient.adresa,
+        city: patient.city,
+        zanimanje: patient.zanimanje,
+        brojDece: patient.brojDece,
+        bracniStatus: patient.bracniStatus,
+        pol: "MUSKI",
+        datumRodjenja: today,
+        imeRoditelja: patient.imeRoditelja,
+        imeStaratelj: patient.imeStaratelj,
+        jmbgStaratelj: patient.jmbgStaratelj,
+        kontaktTelefon: patient.kontaktTelefon,
+        mestoRodjenja: patient.mestoRodjenja,
+        mestoStanovanja: patient.mestoStanovanja,
+        zemljaDrzavljanstva: patient.zemljaDrzavljanstva,
+        zemljaStanovanja: patient.zemljaStanovanja,
+        porodicniStatus: patient.porodicniStatus,
+        stepenStrucneSpreme: patient.stepenStrucneSpreme,
+      });
+    }
+  }, [patient]);
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -57,8 +107,9 @@ function RegistrationPatientPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(
-      createPatient(
+      updatePatient(
         { ...form, pol: "MUSKI" },
+        lbp,
         toggleModalSuccess,
         toggleModalError
       )
@@ -73,22 +124,22 @@ function RegistrationPatientPage() {
     <div style={{ marginLeft: "20%" }}>
       <CustomModal
         title="Uspeh"
-        content="Uspesno registrovan pacijent."
+        content="Uspesno izmenjem pacijent."
         toggleModal={toggleModalSuccess}
         isOpen={modalSuccess}
         handleClick={navigateToHomepage}
       />
       <CustomModal
         title="Greška"
-        content="Doslo je do greške prilikom kreiranja pacijenta."
+        content="Doslo je do greške prilikom izmene pacijenta."
         toggleModal={toggleModalError}
         isOpen={modalError}
       />
       <div className="sidebar-link-container">
-        <Sidebar links={getSidebarLinks("recepcionist", 2)} />
+        <Sidebar links={getSidebarLinks("recepcionist", 0)} />
       </div>
       <form className="form-custom">
-        <h1 className="form-heading">Dodavanje pacijenta</h1>
+        <h1 className="form-heading">Izmena pacijenta</h1>
         <br></br>
         <div className="form-group-custom">
           <input
@@ -97,6 +148,7 @@ function RegistrationPatientPage() {
             placeholder="Ime"
             onChange={handleChange}
             name="ime"
+            value={form.ime}
           />
           <input
             type="text"
@@ -104,6 +156,7 @@ function RegistrationPatientPage() {
             placeholder="Prezime"
             onChange={handleChange}
             name="prezime"
+            value={form.prezime}
           />
         </div>
         <div className="form-group-custom">
@@ -113,6 +166,7 @@ function RegistrationPatientPage() {
             placeholder="Ime roditelja"
             onChange={handleChange}
             name="imeRoditelja"
+            value={form.imeRoditelja}
           />
           <input
             type="text"
@@ -120,6 +174,7 @@ function RegistrationPatientPage() {
             placeholder="JMBG"
             onChange={handleChange}
             name="jmbg"
+            value={form.jmbg}
           />
         </div>
         <div className="form-group-custom">
@@ -130,6 +185,7 @@ function RegistrationPatientPage() {
             data-date-format="ddmmyyyy"
             onChange={onChangeDateHandler}
             name="datumRodjenja"
+            value={form.datumRodjenja}
           />
           <input
             type="text"
@@ -137,6 +193,7 @@ function RegistrationPatientPage() {
             placeholder="Mesto rodjenja"
             name="mestoRodjenja"
             onChange={handleChange}
+            value={form.mestoRodjenja}
           />
           <input
             type="text"
@@ -144,6 +201,7 @@ function RegistrationPatientPage() {
             placeholder="Adresa stanovanja"
             onChange={handleChange}
             name="adresa"
+            value={form.adresa}
           />
         </div>
         <div className="form-group-custom">
@@ -153,6 +211,7 @@ function RegistrationPatientPage() {
             placeholder="Mesto stanovanja"
             onChange={handleChange}
             name="mestoStanovanja"
+            value={form.mestoStanovanja}
           />
           <input
             type="text"
@@ -160,6 +219,7 @@ function RegistrationPatientPage() {
             placeholder="Zemlja stanovanja"
             onChange={handleChange}
             name="zemljaStanovanja"
+            value={form.zemljaStanovanja}
           />
           <input
             type="text"
@@ -167,15 +227,17 @@ function RegistrationPatientPage() {
             placeholder="Zemlja drzavljanstva"
             onChange={handleChange}
             name="zemljaDrzavljanstva"
+            value={form.zemljaDrzavljanstva}
           />
         </div>
         <div className="form-group-custom">
           <input
             className="margin-right"
             type="text"
-            placeholder="Kontankt telefon"
+            placeholder="Kontakt telefon"
             onChange={handleChange}
             name="kontaktTelefon"
+            value={form.kontaktTelefon}
           />
           <input
             className="margin-left"
@@ -183,6 +245,7 @@ function RegistrationPatientPage() {
             placeholder="Email"
             onChange={handleChange}
             name="email"
+            value={form.email}
           />
         </div>
         <div className="form-group-custom">
@@ -192,6 +255,7 @@ function RegistrationPatientPage() {
             placeholder="Ime i prezime staratelja"
             onChange={handleChange}
             name="imeStaratelj"
+            value={form.imeStaratelj}
           />
           <input
             type="text"
@@ -199,15 +263,16 @@ function RegistrationPatientPage() {
             placeholder="JMBG staratelja"
             onChange={handleChange}
             name="jmbgStaratelj"
+            value={form.jmbgStaratelj}
           />
         </div>
         <div className="form-group-custom">
           <select
             className="form-select-custom small-select margin-right"
             aria-label="Default select example"
-            defaultValue=""
             name="porodicniStatus"
             onChange={handleChange}
+            value={form.porodicniStatus}
           >
             <option value="" disabled>
               Porodicni status
@@ -222,9 +287,9 @@ function RegistrationPatientPage() {
           <select
             className="form-select-custom small-select margin-left"
             aria-label="Default select example"
-            defaultValue=""
             name="bracniStatus"
             onChange={handleChange}
+            value={form.bracniStatus}
           >
             <option value="" disabled>
               Bracni status
@@ -243,6 +308,7 @@ function RegistrationPatientPage() {
             placeholder="Broj dece"
             onChange={handleChange}
             name="brojDece"
+            value={form.brojDece}
           />
           <input
             type="text"
@@ -250,13 +316,14 @@ function RegistrationPatientPage() {
             placeholder="Zanimanje"
             onChange={handleChange}
             name="zanimanje"
+            value={form.zanimanje}
           />
           <select
             className="form-select-custom small-select margin-left"
             aria-label="Default select example"
-            defaultValue=""
             onChange={handleChange}
             name="stepenStrucneSpreme"
+            value={form.stepenStrucneSpreme}
           >
             <option value="" disabled>
               Stepen strucne spreme
@@ -270,39 +337,11 @@ function RegistrationPatientPage() {
             <option value="VISOKO">Visoko obrazovanje</option>
           </select>
         </div>
-        <br></br>
-        <div className="form-group-custom">
-          <div className="wrapper">
-            <input
-              type="radio"
-              name="pol"
-              id="option-1"
-              value="MUSKI"
-              onChange={handleChange}
-              checked
-            />
-            <input
-              type="radio"
-              name="pol"
-              value="ZENSKI"
-              id="option-2"
-              onChange={handleChange}
-            />
-            <label htmlFor="option-1" className="option option-1">
-              <div className="dot"></div>
-              <span>Muski pol</span>
-            </label>
-            <label htmlFor="option-2" className="option option-2">
-              <div className="dot"></div>
-              <span>Zenski pol</span>
-            </label>
-          </div>
-        </div>
         <button onClick={handleSubmit} style={{ marginTop: "10px" }}>
-          Registruj pacijenta
+          Izmeni
         </button>
       </form>
     </div>
   );
 }
-export default RegistrationPatientPage;
+export default EditPatientPage;

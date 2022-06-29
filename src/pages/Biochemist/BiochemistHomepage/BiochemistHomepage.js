@@ -15,6 +15,7 @@ import { getTableHeaders } from "../../../commons/tableHeaders";
 import { getPatients } from "../../../redux/actions/patients";
 import Header from "../../../components/Header/Header";
 import { format } from "date-fns";
+import { getAnalysisResults } from "../../../redux/actions/analysisResults";
 
 const DoctorHomepage = () => {
   const dispatch = useDispatch();
@@ -28,6 +29,12 @@ const DoctorHomepage = () => {
     dispatch(searchLabReports({}));
     dispatch(getPatients());
   }, []);
+
+  useEffect(() => {
+    if (labReports && labReports.length > 0) {
+      dispatch(getAnalysisResults(labReports[0].laboratorijskiRadniNalogId));
+    }
+  }, [labReports]);
   console.log(labReports);
 
   function handleOnChange(event) {

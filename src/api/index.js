@@ -56,6 +56,11 @@ export const updateReferral = (data) =>
 export const searchReferrals = (lbp, type, status) =>
   API.post("/bolnica-management-service/api/", lbp, type, status);
 
+//ANALYSIS RESULTS
+
+export const fetchAnalysisResults = (id) =>
+  API.get(`/bolnica-laboratory-service/api/fetch-analysis-results?id=${id}`);
+
 // LAB REPORTS
 
 export const fetchLabReports = (data) =>
