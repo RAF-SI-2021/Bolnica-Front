@@ -25,7 +25,7 @@ const DoctorHomepage = () => {
   const patients = useSelector((state) => state.patients);
 
   useEffect(() => {
-    dispatch(getLabReports());
+    dispatch(searchLabReports({}));
     dispatch(getPatients());
   }, []);
   console.log(labReports);
@@ -36,8 +36,8 @@ const DoctorHomepage = () => {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log({ ...form, status: "NEOBRADJEN" });
-    dispatch(searchLabReports({ ...form, status: "NEOBRADJEN" }));
+    console.log({ ...form, statusObrade: "NEOBRADJEN" });
+    dispatch(searchLabReports({ ...form, statusObrade: "NEOBRADJEN" }));
   }
 
   const handleRowClick = (entry) => {

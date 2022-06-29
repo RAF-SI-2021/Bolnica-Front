@@ -12,7 +12,6 @@ const Table = (props) => {
     handleEdit,
     handleRowClick,
     handleButtonCanceled,
-    handleButtonFinished,
     handlecreateLabReport,
     handleCancelVisit,
     handleCreateLabReportTab1,
@@ -20,6 +19,7 @@ const Table = (props) => {
     handleCancelAdmission,
     handleChooseReferral,
     handleChooseRoom,
+    onResultChange,
   } = props;
 
   const listHeaders = headers.map((header) => {
@@ -349,16 +349,21 @@ const Table = (props) => {
         </>
       ) : tableType === "detailedResultPreview" ? (
         <>
-          <td style={{ width: "5%" }}>
-            <button className="buttonIconBlue">
-              <ImPencil />
-            </button>
+          <td style={{ width: "10%" }}>
+            <input
+              type="text"
+              placeholder="Rezultat"
+              onChange={(e) => {
+                onResultChange(e, entry);
+              }}
+            />
           </td>
           <td style={{ width: "5%" }}>
             <button
               className="buttonIconGreen"
               onClick={(e) => {
                 e.stopPropagation();
+                handleClick(entry);
               }}
             >
               <ImCheckmark />

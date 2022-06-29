@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import Header from "../../../components/Header/Header";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,24 +12,34 @@ import { getTableHeaders } from "../../../commons/tableHeaders";
 const DoctorHomepage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const labReport = useSelector((state) => state.labReports);
+  const labReports = useSelector((state) => state.labReports);
+  const [results, setResults] = useState([]);
 
   useEffect(() => {
     const pathParts = location.pathname.split("/");
     dispatch(getLabReport(pathParts[pathParts.length - 1]));
   }, []);
 
+  useEffect(() => {
+    if (labReports && labReports.length > 0) {
+      setResults(labReports.map((labReport) => 0));
+    }
+  }, [labReports]);
+
+  const onResultChange = (event, entry) => {
+    console.log(event.target.value);
+    console.log(entry);
+  };
+
+  const handleClick = (entry) => {
+    console.log(entry);
+  };
+
   const headerProps = {
     avatarUrl: "nikolaSlika 1.jpg",
     welcomeMsg: "Dobro jutro",
     userName: "Dr. Paun",
     userTitle: "Kardiolog",
-  };
-
-  const demolabReport = {
-    lbpPacijenta: "129038192381",
-    ime: "Darko",
-    prezime: "Darkovic",
   };
 
   const demoAnalysisPreview = [
@@ -89,6 +99,8 @@ const DoctorHomepage = () => {
           headers={getTableHeaders("detailedResultPreview")}
           tableContent={demoAnalysisPreview}
           tableType="detailedResultPreview"
+          handleClick={handleClick}
+          onResultChange={onResultChange}
         />
       </div>
     </>

@@ -38,6 +38,7 @@ export const createLabReport =
     try {
       console.log(formData);
       const { data } = await api.createLabReport(formData);
+      console.log(data);
       dispatch({ type: CREATE_LAB_REPORT, data });
       if (toggleModalSuccess) toggleModalSuccess();
     } catch (error) {

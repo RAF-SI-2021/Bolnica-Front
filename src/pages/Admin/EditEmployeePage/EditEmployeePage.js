@@ -45,7 +45,7 @@ function EditEmployeePage() {
   }, []);
 
   useEffect(() => {
-    if (employee.length !== 0) {
+    if (employee && employee.length !== 0) {
       const dateOfBirth = new Date(employee.dob);
       var day = ("0" + dateOfBirth.getDate()).slice(-2);
       var month = ("0" + (dateOfBirth.getMonth() + 1)).slice(-2);
@@ -97,7 +97,6 @@ function EditEmployeePage() {
       updateEmployee(
         {
           ...form,
-          department: 1,
           newPassword: "",
           oldPassword: "",
           lbz,
