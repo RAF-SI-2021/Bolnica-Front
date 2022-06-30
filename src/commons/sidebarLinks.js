@@ -73,6 +73,7 @@ export const getSidebarLinks = (role, activeId) => {
         path: "/nurse/register-patient",
         icon: <FaPlusCircle />,
         isActive: activeId === 4 ? true : false,
+        dividerAfter: true,
       },
       {
         id: 5,

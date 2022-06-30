@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../../components/Sidebar/Sidebar";
-import HeaderRight from "../../../components/HeaderRight/HeaderRight";
 import Table from "../../../components/Table/Table";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getLabReports,
-  searchLabReports,
-} from "../../../redux/actions/labReports";
+import { searchLabReports } from "../../../redux/actions/labReports";
 import { useNavigate } from "react-router";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
-import { BiSearchAlt } from "react-icons/bi";
 import { getTableHeaders } from "../../../commons/tableHeaders";
 import { getPatients } from "../../../redux/actions/patients";
 import { format } from "date-fns";
@@ -22,11 +17,25 @@ const DoctorHomepage = () => {
   const [form, setForm] = useState({});
   const labReports = useSelector((state) => state.labReports);
   const patients = useSelector((state) => state.patients);
+  const [tableContent, setTableContent] = useState([]);
 
   useEffect(() => {
-    dispatch(getLabReports());
+    dispatch(searchLabReports({}));
     dispatch(getPatients());
   }, []);
+
+  useEffect(() => {
+    if (patients.length > 0 && labReports.length > 0) {
+      setTableContent(
+        labReports.map((labReport) => {
+          const patient = patients.find((patient) =>
+            patient.lbp === labReport.lbp ? patient : false
+          );
+          return { ...labReport, ...patient };
+        })
+      );
+    }
+  }, [patients, labReports]);
 
   function handleOnChange(event) {
     setValue(event.target.value);
@@ -44,8 +53,6 @@ const DoctorHomepage = () => {
       ...form,
       [targetName]: formatted,
     });
-
-    console.log({ ...form });
   };
 
   function handleSubmit(event) {
@@ -64,27 +71,6 @@ const DoctorHomepage = () => {
     userName: "Dr. Paun",
     userTitle: "Lab Tehnicar",
   };
-
-  const demoLabReports = [
-    {
-      id: 1,
-      lbpPacijenta: "1029481922",
-      ime: "Marko",
-      prezime: "Markovic",
-    },
-    {
-      id: 2,
-      lbpPacijenta: "12398129381",
-      ime: "Zarko",
-      prezime: "Zarkovic",
-    },
-    {
-      id: 3,
-      lbpPacijenta: "129038192381",
-      ime: "Darko",
-      prezime: "Darkovic",
-    },
-  ];
 
   return (
     <>
@@ -151,14 +137,12 @@ const DoctorHomepage = () => {
             </button>
           </form>
         </div>
-        {/* {labReports.length > 0 && ( */}
         <Table
           headers={getTableHeaders("labReportPreview")}
-          tableContent={demoLabReports}
+          tableContent={tableContent}
           handleRowClick={handleRowClick}
           tableType="labReports"
         />
-        {/* )} */}
       </div>
     </>
   );

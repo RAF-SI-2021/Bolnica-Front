@@ -15,7 +15,6 @@ import { getTableHeaders } from "../../../commons/tableHeaders";
 import { getPatients } from "../../../redux/actions/patients";
 import Header from "../../../components/Header/Header";
 import { format } from "date-fns";
-import { getAnalysisResults } from "../../../redux/actions/analysisResults";
 
 const DoctorHomepage = () => {
   const dispatch = useDispatch();
@@ -24,6 +23,7 @@ const DoctorHomepage = () => {
   const [form, setForm] = useState({});
   const labReports = useSelector((state) => state.labReports);
   const patients = useSelector((state) => state.patients);
+  const [tableContent, setTableContent] = useState([]);
 
   useEffect(() => {
     dispatch(searchLabReports({}));
@@ -31,11 +31,17 @@ const DoctorHomepage = () => {
   }, []);
 
   useEffect(() => {
-    if (labReports && labReports.length > 0) {
-      dispatch(getAnalysisResults(labReports[0].laboratorijskiRadniNalogId));
+    if (patients.length > 0 && labReports.length > 0) {
+      setTableContent(
+        labReports.map((labReport) => {
+          const patient = patients.find((patient) =>
+            patient.lbp === labReport.lbp ? patient : false
+          );
+          return { ...labReport, ...patient };
+        })
+      );
     }
-  }, [labReports]);
-  console.log(labReports);
+  }, [patients, labReports]);
 
   function handleOnChange(event) {
     setForm({ ...form, lbp: event.target.value });
@@ -48,6 +54,7 @@ const DoctorHomepage = () => {
   }
 
   const handleRowClick = (entry) => {
+    console.log(entry);
     navigate(`/biochemist/detailed-result/${entry[0][1]}`);
   };
 
@@ -64,30 +71,7 @@ const DoctorHomepage = () => {
       ...form,
       [targetName]: formatted,
     });
-
-    console.log({ ...form });
   };
-
-  const demoLabReports = [
-    {
-      id: 1,
-      lbpPacijenta: "1029481922",
-      ime: "Marko",
-      prezime: "Markovic",
-    },
-    {
-      id: 2,
-      lbpPacijenta: "12398129381",
-      ime: "Zarko",
-      prezime: "Zarkovic",
-    },
-    {
-      id: 3,
-      lbpPacijenta: "129038192381",
-      ime: "Darko",
-      prezime: "Darkovic",
-    },
-  ];
 
   const headerProps = {
     userName: "Dr. Paun",
@@ -162,7 +146,7 @@ const DoctorHomepage = () => {
         {/* {labReports.length > 0 && ( */}
         <Table
           headers={getTableHeaders("labReportPreview")}
-          tableContent={demoLabReports}
+          tableContent={tableContent}
           handleRowClick={handleRowClick}
           tableType="labReports"
         />

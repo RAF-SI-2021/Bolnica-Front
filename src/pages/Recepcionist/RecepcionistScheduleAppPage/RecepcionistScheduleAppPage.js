@@ -10,96 +10,54 @@ import {
   createAppointment,
   deleteAppointment,
   getAppointments,
+  updateAppointment,
 } from "../../../redux/actions/appointments";
 import DeleteAppointment from "../../../components/DeleteAppointment/DeleteAppointment";
-import { getEmployees, getEmployeesDep } from "../../../redux/actions/employee";
+import { getEmployees } from "../../../redux/actions/employee";
 import { getPatients } from "../../../redux/actions/patients";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
-import { getDepartments } from "../../../redux/actions/departments";
+import CustomModal from "../../../components/CustomModal/CustomModal";
 
-const RecepcionistScheduleAppPage = () => {
+const ScheduleAppointmentPage = () => {
   const dispatch = useDispatch();
   const employees = useSelector((state) => state.employees);
   const patients = useSelector((state) => state.patients);
   const appointments = useSelector((state) => state.appointments);
-  const departments = useSelector((state) => state.departments);
   const [date, setDate] = useState(new Date());
-
   const [newAppointmentVisible, setNewAppointmentVisible] = useState(false);
   const [deleteAppointmentVisible, setDeleteAppointmentVisible] =
     useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState({});
-  const [selectedDepartment, setSelectedDepartment] = useState({});
-  /*const [Departments, setDepartment] = useState([
-        {
-            name: "Lab1",
-        },
-        {   name: "Lab2"
-        },
-        {
-            name: "Lab3",
-        },
-        {   name:"Laboratorija 1"
-        },
-        {   name:"Laboratorija 2"
-        },
-        {   name:"Dijagnostika 1"
-        },
-        {   name:"Dijagnostika 2"
-        },
-    ])*/
   const [appointmentIdDelete, setAppointmentIdDelete] = useState(1);
-  const [events, setEvents] = useState([
-    {
-      id: 1,
-      startAt: "2022-04-08T08:00:00.000Z",
-      endAt: "2022-04-08T09:00:00.000Z",
-      summary: "Prvi pregled",
-      color: "#336cfb",
-      calendarID: "work",
-    },
-  ]);
+  const [events, setEvents] = useState([]);
+  const [cancelAppointmentId, setCancelAppointmentId] = useState(-1);
+  const [modalSuccess, setModalSuccess] = useState(false);
+  const [modalError, setModalError] = useState(false);
+
   useEffect(() => {
-    //dispatch(getEmployees());
+    dispatch(getEmployees());
     dispatch(getPatients());
-    dispatch(getDepartments());
   }, []);
 
   useEffect(() => {
-    if (departments.length > 0) {
-      setSelectedDepartment(departments[0]);
-    }
-  }, [departments]);
+    setSelectedDoctor(employees[0]);
 
-  /*useEffect(() => {
-         if (employees.length > 0) {
-             setSelectedDoctor(employees[0]);
-             getAppointments(employees[0].lbz);
-         } else {
-             console.log("Doc");
-         }
-     }, [employees]);*/
-
-  useEffect(() => {
-    if (selectedDepartment !== null) {
-      dispatch(getEmployeesDep(selectedDepartment.id));
-      /*if (employees.length > 0) {
-                setSelectedDoctor(employees[0]);
-                getAppointments(employees[0].lbz);
-            }*/
-    }
-  }, [selectedDepartment]);
+    if (employees[0]) dispatch(getAppointments(employees[0].lbz));
+  }, [employees]);
 
   useEffect(() => {
     if (appointments.length > 0) {
+      const newEvents = appointments.filter((appo) =>
+        appo.statusPregleda === "ZAKAZANO" ? appo : false
+      );
       setEvents(
-        appointments.map((appointment) => {
+        newEvents.map((appointment) => {
           const date = new Date(appointment.datumIVremePregleda);
           return {
-            id: 1,
+            id: appointment.zakazaniPregledId,
             startAt: date.toISOString(),
             endAt: date.addHours(1).toISOString(),
-            summary: `Pacijent: ${appointment.pacijent.ime} ${appointment.pacijent.prezime} - ${appointment.statusPregleda}, Status prispeca: ${appointment.prispecePacijenta}`,
+            summary: `Pacijent: ${appointment.pacijent.ime} ${appointment.pacijent.prezime}`,
             color: "#336cfb",
             calendarID: "work",
           };
@@ -120,48 +78,71 @@ const RecepcionistScheduleAppPage = () => {
     dispatch(getAppointments(lbz));
   };
 
-  const setCurrentDep = (id) => {
-    const newDep = departments.find((d) => d.id === id);
-    //const newDep = Departments.find((d) => d.name === name);
-    setSelectedDepartment(newDep);
+  const setCancelAppointment = (id) => {
+    setDeleteAppointmentVisible(true);
+    setCancelAppointmentId(id);
   };
 
   const createNewAppointment = (patientId, date, examinationType, note) => {
-    const newEvent = {
-      id: events.length + 1,
-      startAt: date.toISOString(),
-      endAt: date.addHours(1).toISOString(),
-      summary: events.length + 1 + ". pregled",
-      color: "#336cfb",
-      calendarID: "work",
-    };
     setNewAppointmentVisible(false);
-    setEvents([...events, newEvent]);
+    console.log({
+      lbz: selectedDoctor.lbz,
+      lbp: patientId,
+      dateAndTimeOfAppointment: date,
+      note,
+      // examinationType,
+    });
     dispatch(
-      createAppointment({
-        lbz: selectedDoctor.lbz,
-        lbp: patientId,
-        dateAndTimeOfAppointment: date.toISOString(),
-        note,
-        // examinationType,
+      createAppointment(
+        {
+          lbz: selectedDoctor.lbz,
+          lbp: patientId,
+          dateAndTimeOfAppointment: date,
+          note,
+          // examinationType,
+        },
+        toggleModalSuccess,
+        toggleModalError
+      )
+    );
+  };
+
+  const deleteAppointmentClick = () => {
+    setDeleteAppointmentVisible(false);
+    console.log({
+      appointmentId: cancelAppointmentId,
+      appointmentStatus: "OTKAZANO",
+    });
+    dispatch(
+      updateAppointment({
+        appointmentId: cancelAppointmentId,
+        appointmentStatus: "OTKAZANO",
       })
     );
   };
 
-  const deleteAppointment = () => {
-    setDeleteAppointmentVisible(false);
-    dispatch((appointmentIdDelete) =>
-      deleteAppointment({ appointmentIdDelete })
-    );
-  };
+  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
+  const toggleModalError = () => setModalError(!modalError);
 
   return (
     <div className="page-container">
       <div>
         <Sidebar links={getSidebarLinks("recepcionist", 3)} />
       </div>
+      <CustomModal
+        title="Uspeh"
+        content="Uspesno zakazan pregled."
+        toggleModal={toggleModalSuccess}
+        isOpen={modalSuccess}
+      />
+      <CustomModal
+        title="Greška"
+        content="Doslo je do greške prilikom zakazivanja pregleda."
+        toggleModal={toggleModalError}
+        isOpen={modalError}
+      />
       {selectedDoctor && (
-        <Dropdown className="dropdownButton2">
+        <Dropdown className="dropdownButton">
           <Dropdown.Toggle variant="primary" id="dropdown-basic">
             Dr. {selectedDoctor.name}
           </Dropdown.Toggle>
@@ -177,34 +158,8 @@ const RecepcionistScheduleAppPage = () => {
                     Dr. {doctor.name}
                   </Dropdown.Item>
                 );
+              else return <></>;
             })}
-          </Dropdown.Menu>
-        </Dropdown>
-      )}
-      {selectedDepartment && (
-        <Dropdown className="dropdownButton">
-          <Dropdown.Toggle variant="primary" id="dropdown-basic">
-            Department: {selectedDepartment.name}
-          </Dropdown.Toggle>
-
-          <Dropdown.Menu>
-            {departments
-              .filter(
-                (dep) =>
-                  !dep.name.includes("Laboratorija") &&
-                  !dep.name.includes("Dijagnostika")
-              )
-              .map((d) => {
-                if (d.name !== selectedDepartment.name)
-                  return (
-                    <Dropdown.Item
-                      key={d.name}
-                      onClick={() => setCurrentDep(d.name)}
-                    >
-                      Department: {d.name}
-                    </Dropdown.Item>
-                  );
-              })}
           </Dropdown.Menu>
         </Dropdown>
       )}
@@ -213,7 +168,7 @@ const RecepcionistScheduleAppPage = () => {
           events={events}
           setDate={setDate}
           setNewAppointmentVisible={setNewAppointmentVisible}
-          setDeleteAppointmentVisible={setDeleteAppointmentVisible}
+          setCancelAppointment={setCancelAppointment}
           setAppointmentIdDelete={setAppointmentIdDelete}
         />
       </div>
@@ -237,7 +192,7 @@ const RecepcionistScheduleAppPage = () => {
           avatarUrl={"nikolaSlika 1.jpg"}
           userName={"Dr. Paun"}
           userTitle={"Kardiolog"}
-          deleteAppointment={deleteAppointment}
+          deleteAppointment={deleteAppointmentClick}
           date={date}
         />
       ) : (
@@ -247,4 +202,4 @@ const RecepcionistScheduleAppPage = () => {
   );
 };
 
-export default RecepcionistScheduleAppPage;
+export default ScheduleAppointmentPage;

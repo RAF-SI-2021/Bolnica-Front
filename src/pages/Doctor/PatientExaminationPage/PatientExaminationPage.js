@@ -17,13 +17,17 @@ import {
   updateAppointment,
   getAppointments,
 } from "../../../redux/actions/appointments";
-import { getLabReports } from "../../../redux/actions/labReports";
+import {
+  getLabReports,
+  searchLabReports,
+} from "../../../redux/actions/labReports";
 import CustomModalAnswer from "../../../components/CustomModalAnswer/CustomModalAnswer";
 import CustomModal from "../../../components/CustomModal/CustomModal";
 import CreateRefferal from "../../../components/CreateRefferal/CreateRefferal";
 import { getHospitals } from "../../../redux/actions/hospitals";
 import { getDepartments } from "../../../redux/actions/departments";
 import { getEmployees } from "../../../redux/actions/employee";
+import { getPatient, getPatients } from "../../../redux/actions/patients";
 
 const PatientExamination = () => {
   const location = useLocation();
@@ -39,12 +43,14 @@ const PatientExamination = () => {
   const record = useSelector((state) => state.records[0]);
   const diseases = useSelector((state) => state.diseases);
   const referrals = useSelector((state) => state.referrals);
+  const patients = useSelector((state) => state.patients);
   const hospitals = useSelector((state) => state.hospitals);
   const labReports = useSelector((state) => state.labReports);
   const [modalSuccess, setModalSuccess] = useState(false);
   const [modalError, setModalError] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [referralTableContent, setReferralTableContent] = useState([]);
+  const [tableContent, setTableContent] = useState([]);
 
   useEffect(() => {
     const doctorLocal = JSON.parse(localStorage.getItem("loggedUser"));
@@ -58,12 +64,14 @@ const PatientExamination = () => {
       getDiseases(pathParts[pathParts.length - 1], { dijagnoza: "string" })
     );
     dispatch(getExaminations(pathParts[pathParts.length - 1]));
-    dispatch(getLabReports(pathParts[pathParts.length - 1]));
+    // dispatch(getLabReports(pathParts[pathParts.length - 1]));
     dispatch(getAppointments(doctorLocal.LBZ));
     dispatch(getHospitals());
     dispatch(getDepartments());
+    dispatch(getPatients());
     dispatch(getEmployees());
     dispatch(getReferrals(pathParts[pathParts.length - 1]));
+    dispatch(searchLabReports({}));
   }, []);
 
   useEffect(() => {
@@ -103,6 +111,19 @@ const PatientExamination = () => {
         })
       );
   }, [referrals, employees, departments]);
+
+  useEffect(() => {
+    if (patients.length > 0 && labReports.length > 0) {
+      setTableContent(
+        labReports.map((labReport) => {
+          const patient = patients.find((patient) =>
+            patient.lbp === labReport.lbp ? patient : false
+          );
+          return { ...labReport, ...patient };
+        })
+      );
+    }
+  }, [patients, labReports]);
 
   const saveExamination = (formData) => {
     const currentAppointment = appointments.find(
@@ -212,6 +233,8 @@ const PatientExamination = () => {
                     referrals={referrals}
                     labReports={labReports}
                     referralTableContent={referralTableContent}
+                    tableContent={tableContent}
+                    lbp={lbp}
                   />
                 )
               ) : (

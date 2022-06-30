@@ -1,23 +1,93 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import Header from "../../../components/Header/Header";
 import { useDispatch, useSelector } from "react-redux";
-import { getLabReport } from "../../../redux/actions/labReports";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
 import { useLocation } from "react-router";
 import { format } from "date-fns";
 import Table from "../../../components/Table/Table";
 import { getTableHeaders } from "../../../commons/tableHeaders";
+import {
+  getAnalysisResults,
+  saveAnalysisResult,
+} from "../../../redux/actions/analysisResults";
+import { getEmployees } from "../../../redux/actions/employee";
+import { verifyReport } from "../../../redux/actions/labReports";
 
 const DoctorHomepage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const labReport = useSelector((state) => state.labReports);
+  const analysisResults = useSelector((state) => state.analysisResults);
+  const employees = useSelector((state) => state.employees);
+  const [tableContent, setTableContent] = useState([]);
+  const [results, setResults] = useState([]);
+  const [labReportId, setLabReportId] = useState();
 
   useEffect(() => {
     const pathParts = location.pathname.split("/");
-    dispatch(getLabReport(pathParts[pathParts.length - 1]));
+    dispatch(getAnalysisResults(pathParts[pathParts.length - 1]));
+    dispatch(getEmployees());
+    setLabReportId(pathParts[pathParts.length - 1]);
   }, []);
+
+  useEffect(() => {
+    if (
+      analysisResults &&
+      analysisResults.rezultatiAnaliza &&
+      employees &&
+      employees.length > 0
+    ) {
+      const user = JSON.parse(localStorage.getItem("loggedUser"));
+      const biochemist = employees.find(
+        (employee) => employee.lbz === user.LBZ
+      );
+      setTableContent(
+        analysisResults.rezultatiAnaliza.map((rezultatAnalize) => {
+          return {
+            ...rezultatAnalize.analiza,
+            ...rezultatAnalize.parametar,
+            ...rezultatAnalize.rezultat,
+            ...biochemist,
+          };
+        })
+      );
+    }
+  }, [analysisResults, employees]);
+
+  useEffect(() => {
+    setResults(
+      tableContent.map((content) => {
+        return { parametarId: content.parametarId, rezultat: "" };
+      })
+    );
+  }, [tableContent]);
+
+  const onResultChange = (event, entry) => {
+    setResults(
+      results.map((result) => {
+        if (result.parametarId === entry[1][1]) {
+          return { ...result, rezultat: event.target.value };
+        } else return result;
+      })
+    );
+  };
+
+  const handleClick = (entry) => {
+    const resultToUpdate = results.find(
+      (result) => result.parametarId === entry[1][1]
+    );
+    dispatch(saveAnalysisResult({ nalogId: labReportId, ...resultToUpdate }));
+  };
+
+  const handleVerify = () => {
+    const emptyResult = results.find((result) => result.rezultat === "");
+    console.log(emptyResult);
+    if (emptyResult) {
+      // modal za gresk
+    } else {
+      dispatch(verifyReport(labReportId));
+    }
+  };
 
   const headerProps = {
     avatarUrl: "nikolaSlika 1.jpg",
@@ -25,52 +95,7 @@ const DoctorHomepage = () => {
     userName: "Dr. Paun",
     userTitle: "Kardiolog",
   };
-
-  const demolabReport = {
-    lbpPacijenta: "129038192381",
-    ime: "Darko",
-    prezime: "Darkovic",
-  };
-
-  const demoAnalysisPreview = [
-    {
-      analysisId: "1239871293",
-      analysisName: "GLU",
-      parameterId: "84810193",
-      parameterName: "Parametar 1",
-      unit: "unit1",
-      lowerThreshold: "5",
-      upperThreshold: "10",
-      doctorName: "Marko",
-      doctorSurname: "Markovic",
-      editLabReportHeader: "true",
-    },
-    {
-      analysisId: "4128319231",
-      analysisName: "HEM",
-      parameterId: "7127319238",
-      parameterName: "Parametar 2",
-      unit: "jedinica",
-      lowerThreshold: "1.4",
-      upperThreshold: "3.2",
-      doctorName: "Miroslav",
-      doctorSurname: "Zeljic",
-      editLabReportHeader: "true",
-    },
-    {
-      analysisId: "81928319",
-      analysisName: "KREAT",
-      parameterId: "581923719",
-      parameterName: "Parametar 3",
-      unit: "jedinicaNeka",
-      lowerThreshold: "123",
-      upperThreshold: "200",
-      doctorName: "Pera",
-      doctorSurname: "Zivkovic",
-      editLabReportHeader: "true",
-    },
-  ];
-
+  console.log(tableContent);
   return (
     <>
       <div className="sidebar-link-container">
@@ -86,9 +111,12 @@ const DoctorHomepage = () => {
           date={format(new Date(), "d MMMM, yyyy")}
         />
         <Table
-          headers={getTableHeaders("detailedResultPreview")}
-          tableContent={demoAnalysisPreview}
-          tableType="detailedResultPreview"
+          headers={getTableHeaders("issuingResults")}
+          tableContent={tableContent}
+          tableType="issuingResults"
+          handleClick={handleClick}
+          onResultChange={onResultChange}
+          handleRowClick={() => {}}
         />
       </div>
     </>

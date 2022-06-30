@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "../Table/Table";
 import { Button } from "reactstrap";
 import { getTableHeaders } from "../../commons/tableHeaders";
@@ -12,6 +12,7 @@ import {
   updateRecord,
 } from "../../redux/actions/records";
 import { deleteReferral } from "../../redux/actions/referrals";
+import { searchLabReports } from "../../redux/actions/labReports";
 
 const MedicalRecord = ({
   record,
@@ -20,6 +21,8 @@ const MedicalRecord = ({
   referrals,
   labReports,
   referralTableContent,
+  tableContent,
+  lbp,
 }) => {
   const dob = new Date(record.pacijent.datumRodjenja);
   const stringDate = dob.toLocaleDateString();
@@ -41,8 +44,9 @@ const MedicalRecord = ({
   const [modalDelete, setModalDelete] = useState(false);
   const [deleteUput, setDeleteUput] = useState();
   const [successMessage, setSuccessMessage] = useState();
+  const [formLabReports, setFormLabReports] = useState();
 
-  console.log(referralTableContent);
+  console.log(tableContent);
 
   const handleClick = () => {
     dispatch(deleteReferral(deleteUput, toggleModalSuccess, toggleModalError));
@@ -104,6 +108,34 @@ const MedicalRecord = ({
     });
   };
 
+  const onChangeDateHandlerOdDatuma = (e) => {
+    const date = new Date(e.target.value);
+    const years = date.toLocaleDateString("en-US", { year: "numeric" });
+    const month = date.toLocaleDateString("en-US", { month: "numeric" });
+    const day = date.toLocaleDateString("en-US", { day: "numeric" });
+    let formatted = years;
+    formatted += month.length === 1 ? `-0${month}` : `-${month}`;
+    formatted += day.length === 1 ? `-0${day}` : `-${day}`;
+    setFormLabReports({
+      ...formLabReports,
+      odDatuma: formatted,
+    });
+  };
+
+  const onChangeDateHandlerDoDatuma = (e) => {
+    const date = new Date(e.target.value);
+    const years = date.toLocaleDateString("en-US", { year: "numeric" });
+    const month = date.toLocaleDateString("en-US", { month: "numeric" });
+    const day = date.toLocaleDateString("en-US", { day: "numeric" });
+    let formatted = years;
+    formatted += month.length === 1 ? `-0${month}` : `-${month}`;
+    formatted += day.length === 1 ? `-0${day}` : `-${day}`;
+    setFormLabReports({
+      ...formLabReports,
+      doDatuma: formatted,
+    });
+  };
+
   const handleFormChange = () => {
     if (formChange) {
       setForm({
@@ -142,6 +174,11 @@ const MedicalRecord = ({
     setDeleteUput(uputId);
     setModalDelete(!modalDelete);
   };
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    dispatch(searchLabReports({ ...formLabReports, lbp }));
+  }
 
   return (
     <>
@@ -414,7 +451,7 @@ const MedicalRecord = ({
                 onClick={swapTabsRefferal}
                 style={{ marginLeft: "30px" }}
               >
-                Istorija bolesti
+                Istorija radnih naloga
               </Button>
             )}
           </p>
@@ -427,7 +464,7 @@ const MedicalRecord = ({
         </>
       ) : labReports.length > 0 ? (
         <>
-          <p className="form-section-heading">
+          <p className="form-section-heading" style={{ marginTop: "40px" }}>
             Istorija laboratorijskih izvestaja{" "}
             {referrals.length > 0 && (
               <Button
@@ -436,13 +473,38 @@ const MedicalRecord = ({
                 onClick={swapTabsRefferal}
                 style={{ marginLeft: "30px" }}
               >
-                Istorija pregleda
+                Istorija uputa
               </Button>
             )}
           </p>
+          <div style={{ width: "60%", margin: "auto" }}>
+            <form>
+              <div className="form-group-custom">
+                <input
+                  type="date"
+                  data-date=""
+                  data-date-format="ddmmyyyy"
+                  name="odDatuma"
+                  onChange={(e) => onChangeDateHandlerOdDatuma(e, "odDatuma")}
+                  className="margin-right"
+                />
+                <input
+                  type="date"
+                  data-date=""
+                  data-date-format="ddmmyyyy"
+                  name="doDatuma"
+                  onChange={(e) => onChangeDateHandlerDoDatuma(e, "doDatuma")}
+                  className="margin-left"
+                />
+              </div>
+              <button onClick={handleSubmit} style={{ marginTop: "10px" }}>
+                Pretrazi
+              </button>
+            </form>
+          </div>
           <Table
-            headers={getTableHeaders("diseaseHistory")}
-            tableContent={labReports}
+            headers={getTableHeaders("labReportPreview")}
+            tableContent={tableContent}
             handleClick={handleClick}
             tableType="labReports"
           />

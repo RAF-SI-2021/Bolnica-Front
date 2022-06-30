@@ -453,7 +453,7 @@ const Table = (props) => {
     </tr>
   ));
   const numberOfItems = listTable.length;
-  const numberPerPage = 3;
+  const numberPerPage = 5;
   const pageLimit = 1;
   const numberOfPages = Math.ceil(numberOfItems / numberPerPage);
   const [currentPage, setCurrentPage] = useState(1);

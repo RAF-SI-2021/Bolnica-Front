@@ -207,12 +207,16 @@ export const getTableHeaders = (contentType) => {
   } else if (contentType === "labReportPreview") {
     return [
       {
-        key: "id",
+        key: "laboratorijskiRadniNalogId",
         value: "ID izvestaja",
       },
       {
-        key: "lbpPacijenta",
-        value: "LBP",
+        key: "datumVremeKreiranja",
+        value: "Datum kreiranja",
+      },
+      {
+        key: "statusObrade",
+        value: "Status obrade",
       },
       {
         key: "ime",
@@ -381,39 +385,74 @@ export const getTableHeaders = (contentType) => {
   } else if (contentType === "detailedResultPreview") {
     return [
       {
-        key: "analysisId",
-        value: "ID naloga",
-      },
-      {
-        key: "analysisName",
+        key: "skracenica",
         value: "Naziv analize",
       },
       {
-        key: "parameterId",
+        key: "parametarId",
         value: "ID parametra",
       },
       {
-        key: "parameterName",
+        key: "nazivParametra",
         value: "Naziv parametra",
       },
       {
-        key: "unit",
-        value: "Jedinica",
+        key: "jedinicaMere",
+        value: "Jedinica mere",
       },
       {
-        key: "lowerThreshold",
+        key: "donjaGranica",
         value: "Donja granica",
       },
       {
-        key: "upperThreshold",
+        key: "gornjaGranica",
         value: "Gornja granica",
       },
       {
-        key: "doctorName",
+        key: "name",
         value: "Ime lekara",
       },
       {
-        key: "doctorSurname",
+        key: "surname",
+        value: "Prezime lekara",
+      },
+    ];
+  } else if (contentType === "issuingResults") {
+    return [
+      {
+        key: "skracenica",
+        value: "Naziv analize",
+      },
+      {
+        key: "parametarId",
+        value: "ID parametra",
+      },
+      {
+        key: "nazivParametra",
+        value: "Naziv parametra",
+      },
+      {
+        key: "jedinicaMere",
+        value: "Jedinica mere",
+      },
+      {
+        key: "donjaGranica",
+        value: "Donja granica",
+      },
+      {
+        key: "gornjaGranica",
+        value: "Gornja granica",
+      },
+      {
+        key: "rezultat",
+        value: "Rezultat",
+      },
+      {
+        key: "name",
+        value: "Ime lekara",
+      },
+      {
+        key: "surname",
         value: "Prezime lekara",
       },
     ];

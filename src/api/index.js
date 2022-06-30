@@ -60,6 +60,8 @@ export const searchReferrals = (lbp, type, status) =>
 
 export const fetchAnalysisResults = (id) =>
   API.get(`/bolnica-laboratory-service/api/fetch-analysis-results?id=${id}`);
+export const saveAnalysisResultApi = (data) =>
+  API.put(`/bolnica-laboratory-service/api/save-analysis-result`, data);
 
 // LAB REPORTS
 
@@ -74,6 +76,8 @@ export const createLabReport = (data) =>
   API.post(
     `/bolnica-laboratory-service/api/create-laboratory-work-order?uputId=${data}`
   );
+export const verifyReportApi = (id) =>
+  API.put(`/bolnica-laboratory-service/api/verify-work-order?id=${id}`);
 export const deleteLabReport = (id) => API.delete(`/demos/${id}`);
 export const updateLabReport = (data) =>
   API.put(`/bolnica-management-service/api/update-lab-report-status`, data);

@@ -23,8 +23,18 @@ export const getLabReport = (id) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const verifyReport = (id) => async (dispatch) => {
+  try {
+    await api.verifyReportApi(id);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const searchLabReports = (searchInfo) => async (dispatch) => {
   try {
+    console.log(searchInfo);
     const { data } = await api.searchLabReports({ searchInfo });
     console.log(data);
     dispatch({ type: GET_LAB_REPORTS, data });
