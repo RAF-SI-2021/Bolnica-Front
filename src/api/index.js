@@ -196,13 +196,32 @@ export const createVisit = (formData) =>
     formData
   );
 
+//ADMISSIONS
+export const searchAdmissions = (data) =>
+  API.post("/bolnica-management-service/api/get-lab-examinations", data);
+export const getAdmissions = (data) =>
+  API.post(
+    `/bolnica-management-service/api/get-zakazani-termini-prijema`,
+    data
+  );
+export const updateAdmission = (data) =>
+  API.put(
+    "/bolnica-management-service/api/update-zakazani-termin-prijema-status",
+    data
+  );
+export const createAdmission = (formData) =>
+  API.post(
+    "/bolnica-management-service/api/create-zakazani-termin-prijema",
+    formData
+  );
+
 //PATIENTS ADMISSIONS
 export const searchPatientsAdmissions = (lbp, dateValue) =>
   API.post("/patientsAdmissions", lbp, dateValue);
 export const updatePatientAdmission = (id, status) =>
   API.put("/patientsAdmissions", id, status);
-export const createPatientAdmission = (id, status) =>
-  API.put("/patientsAdmissions", id, status);
+export const createPatientAdmission = (data) =>
+  API.post("/bolnica-management-service/api/hospitalizePatient", data);
 
 //HOSPITAL ROOMS
 export const searchHospitalRooms = (pbo) => API.post("/hospitalRooms", pbo);

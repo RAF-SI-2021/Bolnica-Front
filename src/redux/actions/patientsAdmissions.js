@@ -24,20 +24,13 @@ export const updatePatientAdmission = (id, status) => async (dispatch) => {
   }
 };
 
-export const createPatientAdmission =
-  (lbp, referralId, referralDiagnosis, hospitalRoomId, selectedDoctor, note) =>
-  async (dispatch) => {
-    try {
-      const { data } = await api.createPatientAdmission(
-        lbp,
-        referralId,
-        referralDiagnosis,
-        hospitalRoomId,
-        selectedDoctor,
-        note
-      );
-      dispatch({ type: CREATE_PATIENT_ADMISSION, data });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+export const createPatientAdmission = (formData) => async (dispatch) => {
+  try {
+    console.log(formData);
+    const { data } = await api.createPatientAdmission(formData);
+    console.log(data);
+    dispatch({ type: CREATE_PATIENT_ADMISSION, data });
+  } catch (error) {
+    console.log(error);
+  }
+};

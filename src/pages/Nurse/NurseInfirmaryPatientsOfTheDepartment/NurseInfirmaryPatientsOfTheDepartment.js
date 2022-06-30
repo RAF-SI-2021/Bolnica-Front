@@ -15,6 +15,7 @@ const NurseInfirmaryPatientsOfTheDepartment = () => {
 
   const [form, setForm] = useState();
   const [isSearch, setSearch] = useState(false);
+  const patients = useSelector((state) => state.patients);
 
   const demoPatients = [
     {
@@ -42,8 +43,6 @@ const NurseInfirmaryPatientsOfTheDepartment = () => {
     // dispatch(searchPatients({ ...form }));
     setSearch(!isSearch);
   }
-
-  const patients = useSelector((state) => state.patients);
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });

@@ -15,8 +15,18 @@ import {
 import { searchHospitalRooms } from "../../../redux/actions/hospitalRooms";
 import { getEmployeesDep } from "../../../redux/actions/employee";
 import CustomModal from "../../../components/CustomModal/CustomModal";
-import { searchReferrals } from "../../../redux/actions/referrals";
+import {
+  getReferrals,
+  getUnprocessedReferrals,
+  searchReferrals,
+} from "../../../redux/actions/referrals";
 import { Dropdown } from "react-bootstrap";
+import { getPatients } from "../../../redux/actions/patients";
+import { getDepartments } from "../../../redux/actions/departments";
+import {
+  getAdmissions,
+  updateAdmission,
+} from "../../../redux/actions/admissions";
 
 const initialStateFormLbp2 = {
   lbpForm2: "",
@@ -52,20 +62,79 @@ const NurseInfirmaryPatientAdmission = () => {
   const [selectedDoctor, setSelectedDoctor] = useState({});
 
   const employees = useSelector((state) => state.employees);
-  const patientsAdmissions = useSelector((state) => state.patientsAdmissions);
+  const patients = useSelector((state) => state.patients);
+  const admissions = useSelector((state) => state.admissions);
+  const departments = useSelector((state) => state.departments);
   const referrals = useSelector((state) => state.referrals);
-  const rooms = useSelector((state) => state.rooms);
 
   const [stepOne, setStepOne] = useState(true);
   const [stepTwo, setStepTwo] = useState(false);
   const [stepThree, setStepThree] = useState(false);
   const [stepFour, setStepFour] = useState(false);
+  const [tableContent, setTableContent] = useState([]);
+  const [referralTableContent, setReferralTableContent] = useState([]);
 
   useEffect(() => {
+    dispatch(getPatients());
+    dispatch(getDepartments());
+    dispatch(getAdmissions({}));
     dispatch(searchPatientsAdmissions(dateValue));
     dispatch(searchHospitalRooms(pbo));
     dispatch(getEmployeesDep(pbo));
   }, []);
+
+  useEffect(() => {
+    if (
+      patients.length > 0 &&
+      admissions.length > 0 &&
+      departments.length > 0
+    ) {
+      setTableContent(
+        admissions.map((admission) => {
+          const patient = patients.find((patient) =>
+            patient.lbp === admission.lbpPacijenta ? patient : false
+          );
+          const odeljenje = departments.find(
+            (department) => department.odeljenjeId === admission.odeljenjeId
+          );
+          return { ...admission, ...patient, ...odeljenje };
+        })
+      );
+    }
+  }, [patients, admissions, departments]);
+
+  useEffect(() => {
+    if (
+      referrals.length > 0 &&
+      employees.length > 0 &&
+      departments.length > 0
+    ) {
+      setReferralTableContent(
+        referrals
+          .filter((referral) =>
+            referral.tip === "STACIONAR" ? referral : false
+          )
+          .map((referral) => {
+            const employee = employees.find(
+              (employee) => employee.lbz === referral.lbz
+            );
+            const izOdeljenja = departments.find(
+              (department) => department.odeljenjeId === referral.izOdeljenjaId
+            );
+            const zaOdeljenje = departments.find(
+              (department) => department.odeljenjeId === referral.zaOdeljenjeId
+            );
+            return {
+              ...referral,
+              ...employee,
+              izOdeljenjaNaziv: izOdeljenja ? izOdeljenja.naziv : "",
+              zaOdeljenjeNaziv: zaOdeljenje ? zaOdeljenje.naziv : "",
+            };
+          })
+      );
+    }
+  }, [referrals, employees, departments]);
+  console.log(referralTableContent);
 
   const [isClicked1, setClicked1] = useState(true);
   const [isClicked2, setClicked2] = useState(false);
@@ -88,49 +157,63 @@ const NurseInfirmaryPatientAdmission = () => {
     setDisable(true);
   };
 
-  const handleChangeLbp1 = (e) => {
-    setFormLbp1({ ...formLbp1, [e.target.name]: e.target.value });
-    setValueLbp1(e.target.value);
-    setDisable(e.target.value === "");
-    dispatch(searchPatientsAdmissions({ ...formLbp1 }, dateValue));
-  };
+  function undoStepOne() {
+    setStepOne(true);
+    setStepTwo(false);
+    setStepThree(false);
+    setStepFour(false);
+    setSelectedDoctor({});
+    setNote("");
+  }
 
-  const handleAcceptAdmission = (key, entry) => {
-    dispatch(updatePatientAdmission(entry[0][1], "Realizovan"));
+  function handleButtonCanceled(entry) {
+    console.log(entry);
+    dispatch(updateAdmission({ id: entry[0][1], status: "OTKAZAN" }));
+  }
+
+  function handleAcceptAdmission(entry) {
+    console.log(entry);
+    dispatch(updateAdmission({ id: entry[0][1], status: "REALIZOVAN" }));
     setClicked2(true);
     setClicked1(false);
     setValueLbp2(entry[1][1]);
     setDisable(false);
+    dispatch(getUnprocessedReferrals(entry[1][1]));
+  }
+
+  const handleChangeLbp1 = (e) => {
+    setFormLbp1({ ...formLbp1, [e.target.name]: e.target.value });
+    setValueLbp1(e.target.value);
+    setDisable(e.target.value === "");
+    dispatch(getAdmissions({ lbp: formLbp1 }));
   };
 
-  const handleCancelAdmission = (key, entry) => {
-    dispatch(updatePatientAdmission(entry[0][1], "Otkazan"));
-  };
-
-  const handleRowClick = (entry) => {};
+  const handleRowClick = () => {};
 
   const handleSubmitLbp2 = (e) => {
     e.preventDefault();
-    dispatch(searchReferrals({ ...formLbp2 }, "Stacionar", "Nerealizovan"));
   };
 
   const handleChangeLbp2 = (e) => {
     setFormLbp2({ ...formLbp2, [e.target.name]: e.target.value });
     setValueLbp2(e.target.value);
     setDisable(e.target.value === "");
+    dispatch(getUnprocessedReferrals(e.target.value));
   };
+  console.log(referrals);
 
   const handleSubmitAdmission = (e) => {
     e.preventDefault();
+
     dispatch(
-      createPatientAdmission(
-        lbp,
-        referralId,
-        referralDiagnosis,
-        hospitalRoomId,
-        doctorId,
-        note
-      )
+      createPatientAdmission({
+        lbp: formLbp2.lbp,
+        uputId: referralId,
+        uputnaDijagnoza: referralDiagnosis,
+        bolnickaSobaId: hospitalRoomId,
+        lbzLekara: doctorId,
+        note,
+      })
     );
   };
 
@@ -147,7 +230,7 @@ const NurseInfirmaryPatientAdmission = () => {
     setStepThree(true);
   };
 
-  const handleChooseDoctor = (key, entry) => {
+  const handleChooseDoctor = (key) => {
     setStepThree(false);
     const newDoctor = employees.find((doctor) => doctor.lbz === key);
     setSelectedDoctor(newDoctor);
@@ -158,27 +241,6 @@ const NurseInfirmaryPatientAdmission = () => {
   const handleChangeNote = (e) => {
     setNote(e.target.value);
   };
-
-  const demoPatientsAdmissions = [
-    {
-      id: 1,
-      lbpNumber: 1234,
-      departmentId: 321,
-      datumVreme: new Date("December 30, 2019 17:30:00").getTime(),
-      pacijent: "Milan Milanovic",
-      statusPrijemZakazaniPacijent: "Zakazan",
-      komentarStacionar: "komentar",
-    },
-    {
-      id: 2,
-      lbpNumber: 12345,
-      departmentId: 3210,
-      datumVreme: new Date("December 30, 2021 17:30:00").getTime(),
-      pacijent: "Petar Petrovic",
-      statusPrijemZakazaniPacijent: "stat",
-      komentarStacionar: "komentar",
-    },
-  ];
 
   const demoUnrealizedReferrals = [
     {
@@ -234,33 +296,46 @@ const NurseInfirmaryPatientAdmission = () => {
         <form onSubmit={handleSubmitLbp2} className="form-custom familyFix">
           <br></br>
           <div className="form-group-custom">
-            <input
-              className="margin-right"
-              placeholder="LBP"
+            <select
+              className="form-select-custom small-select"
               onChange={handleChangeLbp2}
-              name="lbp2"
-              type="text"
+              name="lbp"
               value={valueLbp2}
-            />
-            <button
-              disabled={disable}
-              onClick={handleSubmitLbp2}
-              className={` ${disable ? "disabled" : ""}`}
-              type="button"
+              defaultValue=""
             >
-              Pretrazi
-            </button>
+              <option value="" disabled>
+                Izaberite pacijenta
+              </option>
+              {patients.length > 0 ? (
+                <>
+                  {patients.map((patient) => {
+                    return (
+                      <option key={patient.lbp} value={patient.lbp}>
+                        {patient.ime}
+                      </option>
+                    );
+                  })}
+                </>
+              ) : (
+                <></>
+              )}
+            </select>
           </div>
         </form>
         {/*         {referrals.length > 0 && ( */}
         {demoUnrealizedReferrals.length > 0 && (
+          // <Table
+          //   headers={getTableHeaders("unrealizedReferrals")}
+          //   tableContent={demoUnrealizedReferrals}
+          //   handleChooseReferral={handleChooseReferral}
+          //   handleRowClick={handleRowClick}
+          // />
           <Table
-            headers={getTableHeaders("unrealizedReferrals")}
-            tableContent={demoUnrealizedReferrals}
-            /*              tableContent={referrals}
-             */
-            handleChooseReferral={handleChooseReferral}
+            headers={getTableHeaders("referralsStationary")}
+            tableContent={referralTableContent}
             handleRowClick={handleRowClick}
+            tableType="referralsStationary"
+            handleChooseReferral={handleChooseReferral}
           />
         )}
         {/*         {referrals.length === 0 && ( */}
@@ -279,7 +354,18 @@ const NurseInfirmaryPatientAdmission = () => {
   } else {
     stepOneTable = (
       <div>
-        <p>
+        <button
+          className="buttonBlue"
+          onClick={undoStepOne}
+          style={{
+            margin: "20px",
+            marginLeft: "50%",
+            transform: "translateX(-50%)",
+          }}
+        >
+          Resetuj formu
+        </button>
+        <p style={{ marginLeft: "15px" }}>
           Izabrali ste <b>uput</b>: ID uputa: {referralId}, Uputna dijagnoza:{" "}
           {referralDiagnosis}.
         </p>
@@ -304,7 +390,9 @@ const NurseInfirmaryPatientAdmission = () => {
   } else if (!stepOne && !stepTwo) {
     stepTwoTable = (
       <div>
-        <p>Izabrali ste bolnicku sobu, ID sobe: {hospitalRoomId}.</p>
+        <p style={{ marginLeft: "15px" }}>
+          Izabrali ste bolnicku sobu, ID sobe: {hospitalRoomId}.
+        </p>
         <hr></hr>
       </div>
     );
@@ -339,7 +427,7 @@ const NurseInfirmaryPatientAdmission = () => {
   } else if (!stepOne && !stepTwo && !stepThree) {
     stepThreeDropdown = (
       <div>
-        <p>Izabrali ste doktora: {doctorId}.</p>
+        <p style={{ marginLeft: "15px" }}>Izabrali ste doktora: {doctorId}.</p>
         <hr></hr>
       </div>
     );
@@ -374,25 +462,46 @@ const NurseInfirmaryPatientAdmission = () => {
         <form className="form-custom familyFix">
           <br></br>
           <div className="form-group-custom">
-            <input
-              className="margin-right"
-              placeholder="LBP"
+            <select
+              className="form-select-custom small-select"
               onChange={handleChangeLbp1}
-              name="lbp1"
-              type="text"
+              name="lbp"
               value={valueLbp1}
-            />
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Izaberite pacijenta
+              </option>
+              {patients.length > 0 ? (
+                <>
+                  {patients.map((patient) => {
+                    return (
+                      <option key={patient.lbp} value={patient.lbp}>
+                        {patient.ime}
+                      </option>
+                    );
+                  })}
+                </>
+              ) : (
+                <></>
+              )}
+            </select>
           </div>
         </form>
         <Table
+          headers={getTableHeaders("admissions")}
+          tableContent={tableContent}
+          tableType="admissionsFinish"
+          handleButtonCanceled={handleButtonCanceled}
+          handleAcceptAdmission={handleAcceptAdmission}
+        />
+        {/* <Table
           headers={getTableHeaders("patientsAdmissions")}
           tableContent={demoPatientsAdmissions}
-          /*              tableContent={patientsAdmissions}
-           */
           handleRowClick={handleRowClick}
           handleAcceptAdmission={handleAcceptAdmission}
           handleCancelAdmission={handleCancelAdmission}
-        />
+        /> */}
       </div>
     );
   } else {

@@ -328,6 +328,45 @@ export const getTableHeaders = (contentType) => {
         value: "Uput ID",
       },
     ];
+  } else if (contentType === "referralsStationary") {
+    return [
+      {
+        key: "tip",
+        value: "Tip",
+      },
+      {
+        key: "datumVremeKreiranja",
+        value: "Datum",
+      },
+      {
+        key: "komentar",
+        value: "Komentar",
+      },
+      {
+        key: "uputnaDijagnoza",
+        value: "Dijagnoza",
+      },
+      {
+        key: "name",
+        value: "Ime",
+      },
+      {
+        key: "surname",
+        value: "Prezime",
+      },
+      {
+        key: "izOdeljenjaNaziv",
+        value: "Iz odeljenja",
+      },
+      {
+        key: "zaOdeljenjeNaziv",
+        value: "Za odeljenje",
+      },
+      {
+        key: "uputId",
+        value: "Uput ID",
+      },
+    ];
   } else if (contentType === "unrealizedReferrals") {
     return [
       {
@@ -516,6 +555,41 @@ export const getTableHeaders = (contentType) => {
       {
         key: "komentarStacionar",
         value: "",
+      },
+    ];
+  } else if (contentType === "admissions") {
+    return [
+      {
+        key: "lbpPacijenta",
+        value: "LBP",
+      },
+      {
+        key: "zakazaniTerminPrijemaId",
+        value: "ID prijema",
+      },
+      {
+        key: "datumVremePrijema",
+        value: "Datum",
+      },
+      {
+        key: "statusTermina",
+        value: "Status prijema",
+      },
+      {
+        key: "napomena",
+        value: "Napomena",
+      },
+      {
+        key: "ime",
+        value: "Ime pacijenta",
+      },
+      {
+        key: "prezime",
+        value: "Prezime pacijenta",
+      },
+      {
+        key: "naziv",
+        value: "Odeljenje",
       },
     ];
   } else if (contentType === "hospitalRoom") {

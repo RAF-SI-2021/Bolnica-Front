@@ -25,6 +25,7 @@ const Table = (props) => {
   const listHeaders = headers.map((header) => {
     if (
       header.key === "lbp" ||
+      header.key === "lbpPacijenta" ||
       header.key === "lbz" ||
       header.key === "uputId" ||
       header.key === "obrisan"
@@ -40,6 +41,7 @@ const Table = (props) => {
     tableType === "employees" ||
     tableType === "detailedResultPreview" ||
     tableType === "admissionVisits" ||
+    tableType === "admissionsFinish" ||
     tableType === "patients"
   ) {
     listHeaders.push(<th scope="col"></th>);
@@ -48,6 +50,8 @@ const Table = (props) => {
   if (
     tableType === "searchVisits" ||
     tableType === "unrealizedLabReferrals" ||
+    tableType === "admissions" ||
+    tableType === "referralsStationary" ||
     tableType === "referrals"
   ) {
     listHeaders.push(<th scope="col"></th>);
@@ -86,6 +90,7 @@ const Table = (props) => {
       {entry.map((element) => {
         if (
           element[0] === "lbp" ||
+          element[0] === "lbpPacijenta" ||
           element[0] === "lbz" ||
           element[0] === "uputId" ||
           element[0] === "obrisan"
@@ -96,6 +101,7 @@ const Table = (props) => {
           element[0] === "zakazanDatum" ||
           element[0] === "datumVremeKreiranja" ||
           element[0] === "datumRodjenja" ||
+          element[0] === "datumVremePrijema" ||
           element[0] === "dob"
         ) {
           return (
@@ -126,26 +132,6 @@ const Table = (props) => {
                   }}
                 >
                   <ImFileText2 />
-                </button>
-              </td>
-            );
-          } else {
-            return <></>;
-          }
-        }
-
-        if (element[0] === "odabir") {
-          if (entry[2][1] > new Date().getTime() - 2592000000) {
-            return (
-              <td style={{ width: "5%" }}>
-                <button
-                  className="buttonBlue"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleChooseReferral("lbz", entry);
-                  }}
-                >
-                  Odaberi uput
                 </button>
               </td>
             );
@@ -308,6 +294,20 @@ const Table = (props) => {
             </button>
           </td>
         </>
+      ) : tableType === "referralsStationary" ? (
+        <>
+          <td style={{ width: "5%" }}>
+            <button
+              className="buttonBlue"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleChooseReferral("lbz", entry);
+              }}
+            >
+              Odaberi uput
+            </button>
+          </td>
+        </>
       ) : tableType === "employees" ? (
         <>
           <td style={{ width: "5%" }}>
@@ -331,6 +331,74 @@ const Table = (props) => {
             >
               <ImBin />
             </button>
+          </td>
+        </>
+      ) : tableType === "admissionsFinish" ? (
+        <>
+          <td style={{ width: "5%" }}>
+            <>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleAcceptAdmission(entry);
+                }}
+                disabled={
+                  entry[3][1] === "OTKAZAN" || entry[3][1] === "REALIZOVAN"
+                }
+                style={
+                  entry[3][1] === "OTKAZAN" || entry[3][1] === "REALIZOVAN"
+                    ? { backgroundColor: "#cacccf", borderColor: "#cacccf" }
+                    : {}
+                }
+              >
+                Prijem
+              </button>
+            </>
+          </td>
+          <td style={{ width: "5%" }}>
+            <>
+              <button
+                className={"searchCanceled"}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleButtonCanceled(entry);
+                }}
+                disabled={
+                  entry[3][1] === "OTKAZAN" || entry[3][1] === "REALIZOVAN"
+                }
+                style={
+                  entry[3][1] === "OTKAZAN" || entry[3][1] === "REALIZOVAN"
+                    ? { backgroundColor: "#cacccf", borderColor: "#cacccf" }
+                    : {}
+                }
+              >
+                Otkazi
+              </button>
+            </>
+          </td>
+        </>
+      ) : tableType === "admissions" ? (
+        <>
+          <td style={{ width: "5%" }}>
+            <>
+              <button
+                className={"searchCanceled"}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleButtonCanceled(entry);
+                }}
+                disabled={
+                  entry[2][1] === "OTKAZAN" || entry[2][1] === "REALIZOVAN"
+                }
+                style={
+                  entry[2][1] === "OTKAZAN" || entry[2][1] === "REALIZOVAN"
+                    ? { backgroundColor: "#cacccf", borderColor: "#cacccf" }
+                    : {}
+                }
+              >
+                Otkazi
+              </button>
+            </>
           </td>
         </>
       ) : tableType === "referrals" ? (

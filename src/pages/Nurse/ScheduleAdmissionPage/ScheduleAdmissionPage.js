@@ -6,17 +6,19 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Table from "../../../components/Table/Table";
 import { getTableHeaders } from "../../../commons/tableHeaders";
-import { getNumberofAppointments } from "../../../redux/actions/numberOfAppointments";
 import {
   searchLabVisits,
   updateLabVisits,
 } from "../../../redux/actions/visits";
-import { createVisit } from "../../../redux/actions/visits";
 import { BiSearchAlt } from "react-icons/bi";
-import { getLabReports } from "../../../redux/actions/labReports";
 import { getPatients } from "../../../redux/actions/patients";
-import { set } from "date-fns";
 import { getUnprocessedReferrals } from "../../../redux/actions/referrals";
+import {
+  createAdmission,
+  getAdmissions,
+  updateAdmission,
+} from "../../../redux/actions/admissions";
+import { getDepartments } from "../../../redux/actions/departments";
 
 const VisitsPage = () => {
   const [isClicked1, setClicked1] = useState(true);
@@ -29,15 +31,33 @@ const VisitsPage = () => {
   const [isSearch, setSearch] = useState(false);
   const [value, setValue] = useState("");
   const patients = useSelector((state) => state.patients);
-  const number = useSelector((state) => state.number);
-  const referrals = useSelector((state) => state.referrals);
+  const admissions = useSelector((state) => state.admissions);
+  const departments = useSelector((state) => state.departments);
   const visits = useSelector((state) => state.visits);
+  const [tableContent, setTableContent] = useState([]);
 
   useEffect(() => {
-    // dispatch(getLabReports());
     dispatch(getPatients());
+    dispatch(getDepartments());
+    dispatch(getAdmissions({}));
   }, []);
 
+  useEffect(() => {
+    if (patients.length > 0 && admissions.length > 0) {
+      setTableContent(
+        admissions.map((admission) => {
+          const patient = patients.find((patient) =>
+            patient.lbp === admission.lbpPacijenta ? patient : false
+          );
+          const odeljenje = departments.find(
+            (department) => department.odeljenjeId === admission.odeljenjeId
+          );
+          return { ...admission, ...patient, ...odeljenje };
+        })
+      );
+    }
+  }, [patients, admissions]);
+  console.log(tableContent);
   const toggleClass1 = () => {
     if (!isClicked1) {
       setClicked2(!isClicked2);
@@ -52,31 +72,15 @@ const VisitsPage = () => {
     }
   };
 
-  const toggleReport = () => {
-    if (isClicked1) setReport(!isReport);
-  };
-
   const toggleSeach = () => {
     console.log(form2);
-    dispatch(searchLabVisits(form2));
+    dispatch(getAdmissions(form2));
     if (isClicked2) setSearch(!isSearch);
-  };
-
-  // const toggleModal = () => {
-  //   setModal(!isModal);
-  // };
-
-  const handleChangeInput = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    setValue(e.target.value);
   };
 
   const handleChangeArea = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-
-  const handleChange = (e) =>
-    setForm2({ ...form2, [e.target.name]: e.target.value });
 
   let formatted;
   const onChangeDateHandler = (e) => {
@@ -89,7 +93,7 @@ const VisitsPage = () => {
     formatted += day.length === 1 ? `-0${day}` : `-${day}`;
     setForm({
       ...form,
-      date: formatted,
+      datumVremePrijema: formatted,
     });
 
     console.log({ ...form });
@@ -124,65 +128,19 @@ const VisitsPage = () => {
   function handleScheduling(event) {
     event.preventDefault();
     console.log({ ...form });
-    dispatch(createVisit({ ...form }));
-  }
-
-  function handleReports(event) {
-    event.preventDefault();
-    console.log({ value });
-    dispatch(searchLabVisits({ value }));
+    dispatch(createAdmission(form));
   }
 
   let status;
   function handleButtonCanceled(entry) {
-    dispatch(updateLabVisits({ id: entry[0][1], status: "OTKAZANO" }));
+    console.log(entry);
+    dispatch(updateAdmission({ id: entry[0][1], status: "OTKAZAN" }));
   }
 
   function handleButtonFinished(entry) {
-    console.log("kliknuto2");
-    status = "Zavrseno";
-    dispatch(updateLabVisits(entry[0][1], { status }));
+    console.log(entry);
+    dispatch(updateAdmission({ id: entry[0][1], status: "REALIZOVAN" }));
   }
-
-  function handleNumberOfReports(event) {
-    event.preventDefault();
-    console.log(form.date);
-    dispatch(getNumberofAppointments(form.date));
-  }
-
-  let currDate = new Date();
-  function handleLabVisits(event) {
-    event.preventDefault();
-    if (form2.length > 0) dispatch(searchLabVisits({ ...form2 }));
-    else dispatch(searchLabVisits({ currDate }));
-  }
-
-  const demoSearchVisits = [
-    {
-      id: 1,
-      lbpPacijenta: 1234,
-      lbzTehnicara: "klm",
-      napomena: "nesto",
-      datumPregleda: new Date().getTime(),
-      statusPregleda: "Zakazano",
-    },
-    {
-      id: 2,
-      lbpPacijenta: 1234,
-      lbzTehnicara: "klm",
-      napomena: "nesto",
-      datumPregleda: new Date().getTime(),
-      statusPregleda: "Zavrseno",
-    },
-    {
-      id: 3,
-      lbpPacijenta: 1234,
-      lbzTehnicara: "klm",
-      napomena: "nesto",
-      datumPregleda: new Date().getTime(),
-      statusPregleda: "Otkazano",
-    },
-  ];
 
   const demoUnrealizedLabReports = [
     {
@@ -214,43 +172,28 @@ const VisitsPage = () => {
     },
   ];
 
-  // if (isModal) {
-  //   <ActionConformationModal
-  //     title="Naslov"
-  //     info="info"
-  //     handleClick={handleEnd}
-  //     id="myModal"
-  //   />;
-  // }
   let table;
   if (isReport) {
     table = (
-      // {referrals.length === 0 && (
       <Table
         headers={getTableHeaders("unrealizedLabReferrals")}
-        // tableContent={referrals}
         tableContent={demoUnrealizedLabReports}
       />
-      // )};
     );
   } else {
     table = <div></div>;
   }
   console.log(visits);
   let table2;
-  // if (isSearch) {
-  if (visits.length > 0) {
+  if (admissions.length > 0) {
     table2 = (
-      // {visits.length === 0 && (
       <Table
-        headers={getTableHeaders("scheduledVisits")}
-        // tableContent={visits}
-        tableContent={visits}
-        tableType="searchVisits"
+        headers={getTableHeaders("admissions")}
+        tableContent={tableContent}
+        tableType="admissions"
         handleButtonCanceled={handleButtonCanceled}
         handleButtonFinished={handleButtonFinished}
       />
-      // )};
     );
   } else {
     table2 = <div></div>;
@@ -290,17 +233,9 @@ const VisitsPage = () => {
               type="date"
               data-date=""
               data-date-format="ddmmyyyy"
-              name="date"
+              name="datumVremePrijema"
               onChange={onChangeDateHandler}
-              className="margin-right margin-left"
-            />
-            <input
-              type="text"
-              placeholder="Broj zakazanih pacijenata"
-              name="number"
               className="margin-left"
-              value={number}
-              disabled="disabled"
             />
           </div>
           <div className="form-group-custom">
@@ -404,7 +339,7 @@ const VisitsPage = () => {
               className={` ${isClicked2 ? "active" : "disabled"}`}
               onClick={toggleClass2}
             >
-              Pregled zakazanih poseta
+              Zakazani prijemi
             </button>
           </li>
         </ul>
