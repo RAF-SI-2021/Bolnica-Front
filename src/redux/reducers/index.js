@@ -9,6 +9,7 @@ import examinations from "./examinations";
 import labReports from "./labReports";
 import departments from "./departments";
 import patients from "./patients";
+import patientStates from "./patientStates";
 import admissions from "./admissions";
 import analysisResults from "./analysisResults";
 import filteredPatients from "./filteredPatients";
@@ -42,4 +43,5 @@ export const reducers = combineReducers({
   patientHistoryReducer,
   analysisResults,
   admissions,
+  patientStates,
 });

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createPatientHistory } from "../../api";
+import { createPatientState } from "../../redux/actions/patientsStates";
 
 const Registration = (props) => {
   const { lbp } = props;
@@ -22,7 +23,7 @@ const Registration = (props) => {
     formatted += day.length === 1 ? `-0${day}` : `-${day}`;
     setForm({
       ...form,
-      startdate: formatted,
+      datumVreme: formatted,
     });
 
     console.log({ ...form });
@@ -30,7 +31,14 @@ const Registration = (props) => {
 
   function handleRegistration(event) {
     event.preventDefault();
-    dispatch(createPatientHistory({ lbp, ...form }));
+    const user = JSON.parse(localStorage.getItem("loggedUser"));
+    dispatch(
+      createPatientState({
+        ...form,
+        lbpPacijenta: lbp,
+        lbzRegistratora: user.LBZ,
+      })
+    );
   }
   return (
     <div>
@@ -49,7 +57,7 @@ const Registration = (props) => {
           <input
             type="text"
             className="margin-left"
-            name="krvni pritisak"
+            name="krvniPritisak"
             placeholder="Krvni pritisak"
             onChange={handleChange}
           />
@@ -65,7 +73,7 @@ const Registration = (props) => {
           <input
             type="text"
             className="margin-left"
-            name="primenjene terapije"
+            name="primenjeneTerapije"
             placeholder="Primenjene terapije"
             onChange={handleChange}
           />
@@ -74,15 +82,15 @@ const Registration = (props) => {
           <input
             type="text"
             className="margin-left"
-            name="stanje pacijenta"
-            placeholder="Stanje pacijenta"
+            name="opis"
+            placeholder="Opis stanja pacijenta"
             onChange={handleChange}
           />
           <input
             type="date"
             data-date=""
             data-date-format="ddmmyyyy"
-            name="startdate"
+            name="datumVreme"
             onChange={onChangeDateHandler}
             className="margin-left"
             required

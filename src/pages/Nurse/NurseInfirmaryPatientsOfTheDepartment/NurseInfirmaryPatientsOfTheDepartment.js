@@ -1,46 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import "./styles.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { searchPatients } from "../../../redux/actions/patients";
+import { getPatients, searchPatients } from "../../../redux/actions/patients";
 import { useNavigate } from "react-router";
 import { getTableHeaders } from "../../../commons/tableHeaders";
 import Table from "../../../components/Table/Table";
+import { searchPatientsAdmissions } from "../../../redux/actions/patientsAdmissions";
 
 const NurseInfirmaryPatientsOfTheDepartment = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [form, setForm] = useState();
+  const [form, setForm] = useState({});
   const [isSearch, setSearch] = useState(false);
   const patients = useSelector((state) => state.patients);
+  const patientsAdmissions = useSelector((state) => state.patientsAdmissions);
 
-  const demoPatients = [
-    {
-      lbpPacijenta: "0123",
-      ime: "Marta",
-      prezime: "Markovic",
-      jmbg: "12345678",
-    },
-    {
-      lbpPacijenta: "2345",
-      ime: "Goran",
-      prezime: "Markovic",
-      jmbg: "12345678",
-    },
-    {
-      lbpPacijenta: "7890",
-      ime: "Rosa",
-      prezime: "Markovic",
-      jmbg: "12345678",
-    },
-  ];
+  useEffect(() => {
+    dispatch(getPatients());
+  }, []);
 
   function handleSubmit(event) {
     event.preventDefault();
-    // dispatch(searchPatients({ ...form }));
+    dispatch(searchPatientsAdmissions({ ...form, pbo: 1 }));
     setSearch(!isSearch);
   }
 
@@ -52,14 +37,12 @@ const NurseInfirmaryPatientsOfTheDepartment = () => {
   };
 
   let table;
-  if (isSearch) {
+  if (patientsAdmissions && patientsAdmissions.length > 0) {
     table = (
       <Table
-        headers={getTableHeaders("departmentPatients")}
-        // tableContent={patients}
+        headers={getTableHeaders("patientAdmissions")}
         handleRowClick={handleNavigate}
-        // tableType="patients"
-        tableContent={demoPatients}
+        tableContent={patientsAdmissions}
       />
     );
   }
@@ -73,16 +56,33 @@ const NurseInfirmaryPatientsOfTheDepartment = () => {
           <h1 className="form-heading">Rad sa pacijentima</h1>
           <br></br>
           <div className="form-group-custom">
-            <input
-              type="text"
-              className="margin-right"
-              placeholder="LBP"
+            <select
+              className="form-select-custom small-select margin-right"
               onChange={handleChange}
-              name="LBP"
-            />
+              name="lbp"
+              value={form.lbp}
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Izaberite pacijenta
+              </option>
+              {patients.length > 0 ? (
+                <>
+                  {patients.map((patient) => {
+                    return (
+                      <option key={patient.lbp} value={patient.lbp}>
+                        {patient.ime}
+                      </option>
+                    );
+                  })}
+                </>
+              ) : (
+                <></>
+              )}
+            </select>
             <input
               type="text"
-              className="margin-right"
+              className="margin-left"
               placeholder="Ime"
               onChange={handleChange}
               name="ime"

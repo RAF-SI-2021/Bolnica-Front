@@ -5,15 +5,16 @@ import {
 } from "../actionTypes";
 import * as api from "../../api/index.js";
 
-export const searchPatientsAdmissions =
-  (lbp, dateValue) => async (dispatch) => {
-    try {
-      const { data } = await api.searchPatientsAdmissions(lbp, dateValue);
-      dispatch({ type: GET_PATIENTS_ADMISSIONS, data });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+export const searchPatientsAdmissions = (formData) => async (dispatch) => {
+  try {
+    console.log(formData);
+    const { data } = await api.searchPatientsAdmissions(formData);
+    dispatch({ type: GET_PATIENTS_ADMISSIONS, data });
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const updatePatientAdmission = (id, status) => async (dispatch) => {
   try {

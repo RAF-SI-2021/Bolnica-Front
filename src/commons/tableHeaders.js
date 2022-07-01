@@ -173,6 +173,33 @@ export const getTableHeaders = (contentType) => {
         value: "Objektivni nalaz",
       },
     ];
+  } else if (contentType === "patientStates") {
+    return [
+      {
+        key: "datumVreme",
+        value: "Datum",
+      },
+      {
+        key: "temperatura",
+        value: "Temperatura",
+      },
+      {
+        key: "krvniPritisak",
+        value: "Krvni pritisak",
+      },
+      {
+        key: "puls",
+        value: "Puls",
+      },
+      {
+        key: "primenjeneTerapije",
+        value: "Primenjene terapije",
+      },
+      {
+        key: "opis",
+        value: "Opis stanja",
+      },
+    ];
   } else if (contentType === "diseaseHistory") {
     return [
       {
@@ -225,6 +252,33 @@ export const getTableHeaders = (contentType) => {
       {
         key: "prezime",
         value: "Prezime",
+      },
+    ];
+  } else if (contentType === "patientAdmissions") {
+    return [
+      {
+        key: "datumVremePrijema",
+        value: "Datum prijema",
+      },
+      {
+        key: "uputnaDijagnoza",
+        value: "Uputna dijagnoza",
+      },
+      {
+        key: "ime",
+        value: "Ime",
+      },
+      {
+        key: "prezime",
+        value: "Prezime",
+      },
+      {
+        key: "jmbg",
+        value: "JMBG",
+      },
+      {
+        key: "lbp",
+        value: "lbp",
       },
     ];
   } else if (contentType === "scheduledVisits") {

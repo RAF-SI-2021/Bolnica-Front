@@ -102,6 +102,7 @@ const Table = (props) => {
           element[0] === "datumVremeKreiranja" ||
           element[0] === "datumRodjenja" ||
           element[0] === "datumVremePrijema" ||
+          element[0] === "datumVreme" ||
           element[0] === "dob"
         ) {
           return (
@@ -110,15 +111,15 @@ const Table = (props) => {
             </td>
           );
         }
-        if (element[0] === "datumVreme") {
-          return (
-            <td key={element} style={{ padding: "25px 0px" }}>
-              {new Date(element[1]).toLocaleDateString() +
-                " " +
-                new Date(element[1]).toLocaleTimeString()}
-            </td>
-          );
-        }
+        // if (element[0] === "datumVreme") {
+        //   return (
+        //     <td key={element} style={{ padding: "25px 0px" }}>
+        //       {new Date(element[1]).toLocaleDateString() +
+        //         " " +
+        //         new Date(element[1]).toLocaleTimeString()}
+        //     </td>
+        //   );
+        // }
 
         if (element[0] === "status") {
           if (element[1] === "neobradjeno") {

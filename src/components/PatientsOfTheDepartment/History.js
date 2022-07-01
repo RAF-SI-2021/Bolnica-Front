@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchPatientsHistory } from "../../api";
 import { getTableHeaders } from "../../commons/tableHeaders";
+import { getPatientStates } from "../../redux/actions/patientsStates";
 import Table from "../Table/Table";
 const History = (props) => {
   const { lbp, toggleClass2 } = props;
@@ -10,6 +11,11 @@ const History = (props) => {
   const [form2, setForm2] = useState();
   const [patHistory, setPatHistory] = useState();
   const dispatch = useDispatch();
+  const patientStates = useSelector((state) => state.patientStates);
+
+  useEffect(() => {
+    dispatch(getPatientStates({ lbp }));
+  }, []);
 
   let formatted;
   const onChangeDateHandler = (e) => {
@@ -47,11 +53,7 @@ const History = (props) => {
   function handleGet(event) {
     event.preventDefault();
     // if (form.length > 0 && form2.length > 0)
-    dispatch(fetchPatientsHistory({ ...form, ...form2, lbp }));
-  }
-
-  function handleGetTabel() {
-    setPatHistory(!patHistory);
+    dispatch(getPatientStates({ ...form, ...form2, lbp }));
   }
 
   const demoPatientHistory = [
@@ -93,11 +95,11 @@ const History = (props) => {
   let table;
   let button;
 
-  if (patHistory) {
+  if (patientStates && patientStates.length > 0) {
     table = (
       <Table
-        headers={getTableHeaders("patientsHistory")}
-        tableContent={demoPatientHistory}
+        headers={getTableHeaders("patientStates")}
+        tableContent={patientStates}
       />
     );
     button = (
@@ -140,7 +142,7 @@ const History = (props) => {
           />
 
           {/* <button onClick={handleGet}>Pretraži</button> */}
-          <button type="button" onClick={handleGetTabel}>
+          <button type="button" onClick={handleGet}>
             Pretraži
           </button>
         </div>

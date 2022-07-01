@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { createPatientVisits } from "../../api";
+import { createPatientsVisits } from "../../redux/actions/patientsVisits";
 
 const RegistrationOfVisits = (props) => {
   const { lbp } = props;
@@ -13,7 +13,7 @@ const RegistrationOfVisits = (props) => {
 
   function handleRegistration(event) {
     event.preventDefault();
-    dispatch(createPatientVisits({ lbp, ...form }));
+    dispatch(createPatientsVisits({ lbp, ...form }));
   }
 
   return (

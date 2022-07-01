@@ -27,10 +27,10 @@ const NurseInfirmaryPatientsOfTheDepartmentHistory = () => {
     const pathParts = location.pathname.split("/");
     const values = pathParts[pathParts.length - 1];
     const perm = values.split(",");
-    setLbp(perm[1]);
-    setIme(perm[3]);
-    setPrezime(perm[5]);
-    setJmbg(perm[7]);
+    setLbp(perm[5]);
+    setIme(perm[7]);
+    setPrezime(perm[9]);
+    setJmbg(perm[11]);
     // dispatch(getEmployee(pathParts[pathParts.length - 1]));
   }, []);
 
@@ -111,7 +111,7 @@ const NurseInfirmaryPatientsOfTheDepartmentHistory = () => {
               className={` ${isTab2 ? "active" : "disabled"}`}
               onClick={toggleClass2}
             >
-              Registrovanje stanja
+              Reg. stanja
             </button>
           </li>
           <li className="nav-item">
@@ -127,7 +127,7 @@ const NurseInfirmaryPatientsOfTheDepartmentHistory = () => {
               className={` ${isTab4 ? "active" : "disabled"}`}
               onClick={toggleClass4}
             >
-              Registracija posete
+              Reg. posete
             </button>
           </li>
         </ul>

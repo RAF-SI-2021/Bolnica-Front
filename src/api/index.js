@@ -38,6 +38,16 @@ export const deleteAppointment = (id) => API.delete(`/demos/${id}`);
 export const updateAppointment = (data) =>
   API.put(`/bolnica-management-service/api/update-appointment-status`, data);
 
+// PATIENT STATES
+
+export const fetchPatientStates = (data) =>
+  API.post(`/bolnica-management-service/api/searchPatientStateHistory`, data);
+export const createPatientState = (data) =>
+  API.put("/bolnica-management-service/api/setPatientsState", data);
+export const deletePatientState = (id) => API.delete(`/demos/${id}`);
+export const updatePatientState = (data) =>
+  API.put(`/bolnica-management-service/api/update-State-status`, data);
+
 // REFERRALS
 
 export const fetchReferrals = (data) =>
@@ -216,8 +226,8 @@ export const createAdmission = (formData) =>
   );
 
 //PATIENTS ADMISSIONS
-export const searchPatientsAdmissions = (lbp, dateValue) =>
-  API.post("/patientsAdmissions", lbp, dateValue);
+export const searchPatientsAdmissions = (data) =>
+  API.post("/bolnica-management-service/api/searchHospitalizedPatients", data);
 export const updatePatientAdmission = (id, status) =>
   API.put("/patientsAdmissions", id, status);
 export const createPatientAdmission = (data) =>
