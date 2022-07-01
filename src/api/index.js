@@ -160,15 +160,10 @@ export const fetchHospitals = () =>
 
 export const fetchPatients = () =>
   API.post(`/bolnica-management-service/api/filter-patients`, {});
-export const fetchPatientsVisits = (formData) =>
-  API.post(`/bolnica-management-service/api/filter-patients`, {
-    formData,
-  });
-export const createPatientVisit = (lbp, formData) =>
-  API.post(`/bolnica-management-service/api/filter-patients`, {
-    lbp,
-    formData,
-  });
+export const fetchPatientsVisits = (lbp) =>
+  API.get(`/bolnica-management-service/api/patient-visits/${lbp}`);
+export const createPatientVisit = (formData) =>
+  API.post(`/bolnica-management-service/api/patient-visit/save`, formData);
 export const fetchPatient = (lbp) =>
   API.get(`/bolnica-management-service/api/fetch-patient/${lbp}`);
 export const createPatient = (formData) =>
@@ -232,6 +227,22 @@ export const updatePatientAdmission = (id, status) =>
   API.put("/patientsAdmissions", id, status);
 export const createPatientAdmission = (data) =>
   API.post("/bolnica-management-service/api/hospitalizePatient", data);
+
+//DISCHARGE LISTS
+export const getDischargeLists = (data) =>
+  API.post("/bolnica-management-service/api/search-otpusna-lista", data);
+export const updateDischargeList = (id, status) =>
+  API.put("/patientsAdmissions", id, status);
+export const createDischargeList = (data) =>
+  API.post("/bolnica-management-service/api/add-otpusna-lista", data);
+
+//MEDICAL REPORTS
+export const getMedicalReports = (data) =>
+  API.post("/bolnica-management-service/api/search-lekarski-izvestaj", data);
+export const updateMedicalReport = (id, status) =>
+  API.put("/patientsAdmissions", id, status);
+export const createMedicalReport = (data) =>
+  API.post("/bolnica-management-service/api/add-lekarski-izvestaj", data);
 
 //HOSPITAL ROOMS
 export const searchHospitalRooms = (pbo) => API.post("/hospitalRooms", pbo);

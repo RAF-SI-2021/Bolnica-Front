@@ -16,10 +16,10 @@ import RegistrationPage from "./pages/Admin/RegistrationPage/RegistrationPage";
 // DOCTOR
 import DoctorHomepage from "./pages/Doctor/DoctorHomepage/DoctorHomepage";
 import PatientPreview from "./pages/Doctor/PatientPreviewPage/PatientPreviewPage";
-import CreateRefferalPage from "./pages/Doctor/CreateRefferalPage/CreateRefferalPage";
 import PatientExamination from "./pages/Doctor/PatientExaminationPage/PatientExaminationPage";
 import DoctorCalendarPage from "./pages/Doctor/DoctorCalendarPage/DoctorCalendarPage";
 import PatientStationaryPage from "./pages/Doctor/PatientStationaryPage/PatientStationaryPage";
+import PatientStationaryWorkspacePage from "./pages/Doctor/PatientStationaryPage/PatientStationaryWorkspacePage";
 
 // NURSE
 import NurseHomepage from "./pages/Nurse/NurseHomepage/NurseHomepage";
@@ -68,6 +68,11 @@ const App = () => {
         <Route path="/patient-preview" exact element={<PatientPreview />} />
         <Route path="/appointments" exact element={<DoctorCalendarPage />} />
         <Route path="/stationary" exact element={<PatientStationaryPage />} />
+        <Route
+          path="/stationary/patient/:lbp"
+          exact
+          element={<PatientStationaryWorkspacePage />}
+        />
 
         {/* NURSE ROUTES */}
         <Route path="/nurse" exact element={<NurseHomepage />} />

@@ -17,6 +17,7 @@ import { searchPatientsAdmissions } from "../../../redux/actions/patientsAdmissi
 const PatientStationaryPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const patientsAdmissions = useSelector((state) => state.patientsAdmissions);
   const patients = useSelector((state) => state.patients);
   const [value, setValue] = useState("");
   const [form, setForm] = useState({});
@@ -60,6 +61,10 @@ const PatientStationaryPage = () => {
 
   const handlePatientChange = (event) => {
     setForm({ ...form, lbp: event.target.value });
+  };
+
+  const handleNavigate = (lbp) => {
+    navigate(`/stationary/patient/${lbp}`);
   };
 
   return (
@@ -136,14 +141,19 @@ const PatientStationaryPage = () => {
         <div>
           <h1 className="myTitle">Pacijenti</h1>
         </div>
-        {patients.length > 0 && (
+        {patientsAdmissions.length > 0 && (
+          // <Table
+          //   headers={getTableHeaders("patientPreview")}
+          //   tableContent={patients}
+          //   handleClick={handleClick}
+          //   handleEdit={handleEdit}
+          //   handleRowClick={handleRowClick}
+          //   tableType="patients"
+          // />
           <Table
-            headers={getTableHeaders("patientPreview")}
-            tableContent={patients}
-            handleClick={handleClick}
-            handleEdit={handleEdit}
-            handleRowClick={handleRowClick}
-            tableType="patients"
+            headers={getTableHeaders("patientAdmissions")}
+            handleRowClick={handleNavigate}
+            tableContent={patientsAdmissions}
           />
         )}
         <br />

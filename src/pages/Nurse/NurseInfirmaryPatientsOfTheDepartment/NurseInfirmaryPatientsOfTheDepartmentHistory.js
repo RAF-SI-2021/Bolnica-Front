@@ -88,7 +88,7 @@ const NurseInfirmaryPatientsOfTheDepartmentHistory = () => {
 
   let regOfVisits;
   if (isTab4) {
-    regOfVisits = <RegistrationOfVisits />;
+    regOfVisits = <RegistrationOfVisits lbp={lbp} />;
   }
 
   return (

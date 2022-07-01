@@ -26,7 +26,7 @@ const RegistrationOfVisits = (props) => {
           <input
             type="text"
             className="margin-left"
-            name="ime"
+            name="patientName"
             placeholder="Ime"
             onChange={handleChange}
             required
@@ -34,7 +34,7 @@ const RegistrationOfVisits = (props) => {
           <input
             type="text"
             className="margin-left"
-            name="prezime"
+            name="patientSurname"
             placeholder="Prezime"
             onChange={handleChange}
             required
@@ -44,7 +44,7 @@ const RegistrationOfVisits = (props) => {
           <input
             type="text"
             className="margin-left"
-            name="jmbg"
+            name="patientPID"
             placeholder="JMBG"
             onChange={handleChange}
             required
@@ -52,7 +52,7 @@ const RegistrationOfVisits = (props) => {
           <input
             type="text"
             className="margin-left"
-            name="napomena"
+            name="note"
             placeholder="Napomena"
             onChange={handleChange}
           />

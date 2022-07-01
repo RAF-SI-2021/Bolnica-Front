@@ -28,6 +28,8 @@ import { getHospitals } from "../../../redux/actions/hospitals";
 import { getDepartments } from "../../../redux/actions/departments";
 import { getEmployees } from "../../../redux/actions/employee";
 import { getPatient, getPatients } from "../../../redux/actions/patients";
+import { getDischargeLists } from "../../../redux/actions/dischargeLists";
+import { getMedicalReports } from "../../../redux/actions/medicalReports";
 
 const PatientExamination = () => {
   const location = useLocation();
@@ -44,6 +46,8 @@ const PatientExamination = () => {
   const diseases = useSelector((state) => state.diseases);
   const referrals = useSelector((state) => state.referrals);
   const patients = useSelector((state) => state.patients);
+  const dischargeLists = useSelector((state) => state.dischargeLists);
+  const medicalReports = useSelector((state) => state.medicalReports);
   const hospitals = useSelector((state) => state.hospitals);
   const labReports = useSelector((state) => state.labReports);
   const [modalSuccess, setModalSuccess] = useState(false);
@@ -51,6 +55,9 @@ const PatientExamination = () => {
   const [disabled, setDisabled] = useState(false);
   const [referralTableContent, setReferralTableContent] = useState([]);
   const [tableContent, setTableContent] = useState([]);
+  const [dischargeListsTableContent, setDischargeListsTableContent] = useState(
+    []
+  );
 
   useEffect(() => {
     const doctorLocal = JSON.parse(localStorage.getItem("loggedUser"));
@@ -70,6 +77,8 @@ const PatientExamination = () => {
     dispatch(getDepartments());
     dispatch(getPatients());
     dispatch(getEmployees());
+    dispatch(getDischargeLists({ lbp: pathParts[pathParts.length - 1] }));
+    dispatch(getMedicalReports({ lbp: pathParts[pathParts.length - 1] }));
     dispatch(getReferrals(pathParts[pathParts.length - 1]));
     dispatch(searchLabReports({}));
   }, []);
@@ -124,6 +133,16 @@ const PatientExamination = () => {
       );
     }
   }, [patients, labReports]);
+
+  useEffect(() => {
+    if (dischargeLists) {
+      setDischargeListsTableContent(
+        dischargeLists.map((dischargeList) => {
+          return { ...dischargeList.otpusnaLista };
+        })
+      );
+    }
+  }, [dischargeLists]);
 
   const saveExamination = (formData) => {
     const currentAppointment = appointments.find(
@@ -234,6 +253,9 @@ const PatientExamination = () => {
                     labReports={labReports}
                     referralTableContent={referralTableContent}
                     tableContent={tableContent}
+                    dischargeListsTableContent={dischargeListsTableContent}
+                    dischargeLists={dischargeLists}
+                    medicalReports={medicalReports}
                     lbp={lbp}
                   />
                 )

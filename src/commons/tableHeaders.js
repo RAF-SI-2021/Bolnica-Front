@@ -84,6 +84,29 @@ export const getTableHeaders = (contentType) => {
         value: "JMBG",
       },
     ];
+  } else if (contentType === "medicalReports") {
+    return [
+      {
+        key: "datumVremeKreiranja",
+        value: "Datum",
+      },
+      {
+        key: "objektivniNalaz",
+        value: "Objektivni nalaz",
+      },
+      {
+        key: "dijagnoza",
+        value: "Dijagnoza",
+      },
+      {
+        key: "predlozenaTerapija",
+        value: "Predlozena terapija",
+      },
+      {
+        key: "savet",
+        value: "Savet",
+      },
+    ];
   } else if (contentType === "patientsHistory") {
     return [
       {
@@ -123,34 +146,22 @@ export const getTableHeaders = (contentType) => {
         value: "Opis",
       },
     ];
-  } else if (contentType === "patientsVisit") {
+  } else if (contentType === "patientsVisits") {
     return [
       {
-        key: "idPosete",
-        value: "ID posete",
-      },
-      {
-        key: "lbpPacijenta",
-        value: "LBP",
-      },
-      {
-        key: "lbzPacijenta",
-        value: "LBZ",
-      },
-      {
-        key: "datumPosete",
+        key: "datumVreme",
         value: "Datum",
       },
       {
-        key: "ime",
-        value: "Ime",
+        key: "imePosetioca",
+        value: "Ime posetioca",
       },
       {
-        key: "prezime",
-        value: "Prezime",
+        key: "prezimePosetioca",
+        value: "Prezime posetioca",
       },
       {
-        key: "jmbg",
+        key: "jmbgPosetioca",
         value: "JMBG",
       },
       {
@@ -171,6 +182,45 @@ export const getTableHeaders = (contentType) => {
       {
         key: "objektivniNalaz",
         value: "Objektivni nalaz",
+      },
+    ];
+  } else if (contentType === "dischargeLists") {
+    //     analize: "asdf"
+    // anamneza: "asdf"
+    // datumVremeKreiranja: 1656633600000
+    // hospitalizacijaId: 1
+    // lbpPacijenta: "237e9877-e79b-12d4-a765-321741963000"
+    // lbzNacelnikOdeljenja: "6cfe71bb-e4ee-49dd-a3ad-28e043f8b435"
+    // lbzOrdinirajucegLekara: "6cfe71bb-e4ee-49dd-a3ad-28e043f8b435"
+    // otpusnaListaId: 1
+    // prateceDijagnoze: "asdf"
+    // terapija: "asdf"
+    // tokBolesti: "asdf"
+    // zakljucak: "asdf"
+    return [
+      {
+        key: "analize",
+        value: "Analize",
+      },
+      {
+        key: "anamneza",
+        value: "Anamneza",
+      },
+      {
+        key: "prateceDijagnoze",
+        value: "Preteće dijagnoze",
+      },
+      {
+        key: "terapija",
+        value: "Terapija",
+      },
+      {
+        key: "tokBolesti",
+        value: "Tok bolesti",
+      },
+      {
+        key: "zakljucak",
+        value: "Zaključak",
       },
     ];
   } else if (contentType === "patientStates") {

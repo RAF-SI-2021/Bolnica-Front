@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Table from "../Table/Table";
 import { Button } from "reactstrap";
 import { getTableHeaders } from "../../commons/tableHeaders";
-import "./styles.css";
 import { useDispatch } from "react-redux";
 import CustomModalAnswer from "../CustomModalAnswer/CustomModalAnswer";
 import CustomModal from "../CustomModal/CustomModal";
@@ -13,10 +12,10 @@ import {
 } from "../../redux/actions/records";
 import { deleteReferral } from "../../redux/actions/referrals";
 import { searchLabReports } from "../../redux/actions/labReports";
-import { getDischargeLists } from "../../redux/actions/dischargeLists";
 import { getMedicalReports } from "../../redux/actions/medicalReports";
+import { getDischargeLists } from "../../redux/actions/dischargeLists";
 
-const MedicalRecord = ({
+const PatientRecord = ({
   record,
   diseases,
   examinations,
@@ -202,6 +201,7 @@ const MedicalRecord = ({
     });
   };
 
+  console.log(dischargeListsTableContent);
   const handleFormChange = () => {
     if (formChange) {
       setForm({
@@ -230,6 +230,7 @@ const MedicalRecord = ({
     if (e) e.preventDefault();
     setModalInfo(!modalInfo);
   };
+
   const toggleModalAlergen = (e) => {
     if (e) e.preventDefault();
     setModalAlergen(!modalAlergen);
@@ -628,7 +629,7 @@ const MedicalRecord = ({
                   className="margin-left"
                 />
               </div>
-              <button onClick={handleSubmit} style={{ marginTop: "10px" }}>
+              <button onClick={handleSubmit2} style={{ marginTop: "10px" }}>
                 Pretrazi
               </button>
             </form>
@@ -695,4 +696,4 @@ const MedicalRecord = ({
   );
 };
 
-export default MedicalRecord;
+export default PatientRecord;
