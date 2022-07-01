@@ -354,15 +354,6 @@ function EditEmployeePage() {
               <>
                 <div className="form-group-custom">
                   <input
-                    placeholder="Stara lozinka"
-                    onChange={handleChange}
-                    name="oldPassword"
-                    type="password"
-                    value={form.oldPassword}
-                  />
-                </div>
-                <div className="form-group-custom">
-                  <input
                     className="margin-right"
                     placeholder="Nova lozinka"
                     onChange={handleChange}
