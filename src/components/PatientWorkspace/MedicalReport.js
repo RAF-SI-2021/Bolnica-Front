@@ -24,27 +24,27 @@ const MedicalReport = ({ lbp }) => {
 
   const confirmReport = (e) => {
     if (e) e.preventDefault();
-    dispatch(createMedicalReport(form, lbp));
+    dispatch(createMedicalReport(form, toggleModalSuccess, toggleModalError));
   };
 
   return (
     <form action="#" className="examForm">
       <CustomModalAnswer
         title="Potvrda akcije"
-        content="Da li želite da završite pregled?"
+        content="Da li želite da kreirate izveštaj?"
         toggleModal={toggleModalConfirm}
         isOpen={modalConfirm}
         handleClick={confirmReport}
       />
       <CustomModal
         title="Greška"
-        content="Doslo je do greške prilikom dodavanja."
+        content="Doslo je do greške prilikom kreiranja."
         toggleModal={toggleModalError}
         isOpen={modalError}
       />
       <CustomModal
         title="Uspeh"
-        content="Uspešno dodato"
+        content="Uspešno kreiran izveštaj"
         toggleModal={toggleModalSuccess}
         isOpen={modalSuccess}
       />

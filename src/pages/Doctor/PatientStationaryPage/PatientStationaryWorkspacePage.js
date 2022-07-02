@@ -26,7 +26,6 @@ const PatientWorkspacePage = () => {
   const dispatch = useDispatch();
   const examinations = useSelector((state) => state.examinations);
   const employees = useSelector((state) => state.employees);
-  const appointments = useSelector((state) => state.appointments);
   const departments = useSelector((state) => state.departments);
   const record = useSelector((state) => state.records[0]);
   const diseases = useSelector((state) => state.diseases);
@@ -34,7 +33,6 @@ const PatientWorkspacePage = () => {
   const patients = useSelector((state) => state.patients);
   const dischargeLists = useSelector((state) => state.dischargeLists);
   const medicalReports = useSelector((state) => state.medicalReports);
-  const hospitals = useSelector((state) => state.hospitals);
   const labReports = useSelector((state) => state.labReports);
 
   const [isTab1, setTab1] = useState(true);
