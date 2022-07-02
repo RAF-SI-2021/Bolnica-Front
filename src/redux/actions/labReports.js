@@ -24,9 +24,10 @@ export const getLabReport = (id) => async (dispatch) => {
   }
 };
 
-export const verifyReport = (id) => async (dispatch) => {
+export const verifyReport = (id, toggleModalSuccess) => async (dispatch) => {
   try {
     await api.verifyReportApi(id);
+    toggleModalSuccess();
   } catch (error) {
     console.log(error);
   }

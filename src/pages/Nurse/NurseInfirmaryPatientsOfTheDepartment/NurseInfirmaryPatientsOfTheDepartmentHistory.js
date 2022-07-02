@@ -7,6 +7,8 @@ import Registration from "../../../components/PatientsOfTheDepartment/Registrati
 import RegistrationOfVisits from "../../../components/PatientsOfTheDepartment/RegistrationOfVisits";
 import Visits from "../../../components/PatientsOfTheDepartment/Visits";
 import Sidebar from "../../../components/Sidebar/Sidebar";
+import { getPatientStates } from "../../../redux/actions/patientsStates";
+import { getPatientsVisits } from "../../../redux/actions/patientsVisits";
 
 const NurseInfirmaryPatientsOfTheDepartmentHistory = () => {
   const location = useLocation();
@@ -31,6 +33,9 @@ const NurseInfirmaryPatientsOfTheDepartmentHistory = () => {
     setIme(perm[7]);
     setPrezime(perm[9]);
     setJmbg(perm[11]);
+    dispatch(getPatientStates({ lbp: perm[5] }));
+    dispatch(getPatientsVisits(perm[5]));
+
     // dispatch(getEmployee(pathParts[pathParts.length - 1]));
   }, []);
 
@@ -78,7 +83,7 @@ const NurseInfirmaryPatientsOfTheDepartmentHistory = () => {
 
   let registration;
   if (isTab2) {
-    registration = <Registration lbp={lbp} />;
+    registration = <Registration lbp={lbp} toggleClass1={toggleClass1} />;
   }
 
   let visit;
@@ -88,7 +93,9 @@ const NurseInfirmaryPatientsOfTheDepartmentHistory = () => {
 
   let regOfVisits;
   if (isTab4) {
-    regOfVisits = <RegistrationOfVisits lbp={lbp} />;
+    regOfVisits = (
+      <RegistrationOfVisits lbp={lbp} toggleClass3={toggleClass3} />
+    );
   }
 
   return (

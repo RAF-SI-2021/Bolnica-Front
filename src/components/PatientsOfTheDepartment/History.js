@@ -13,10 +13,6 @@ const History = (props) => {
   const dispatch = useDispatch();
   const patientStates = useSelector((state) => state.patientStates);
 
-  useEffect(() => {
-    dispatch(getPatientStates({ lbp }));
-  }, []);
-
   let formatted;
   const onChangeDateHandler = (e) => {
     const date = new Date(e.target.value);
@@ -56,42 +52,6 @@ const History = (props) => {
     dispatch(getPatientStates({ ...form, ...form2, lbp }));
   }
 
-  const demoPatientHistory = [
-    {
-      stanjePacijenta: 1,
-      lbpPacijenta: 123,
-      lbzPacijenta: "000",
-      datumPregleda: "2022-03-03",
-      temperatura: "37,4",
-      krvniPritisak: "180/120",
-      puls: "100",
-      primenjeneTerapije: "nista",
-      opis: "dobar je",
-    },
-    {
-      stanjePacijenta: 2,
-      lbpPacijenta: 456,
-      lbzPacijenta: "000",
-      datumPregleda: "2022-03-03",
-      temperatura: "37,4",
-      krvniPritisak: "180/120",
-      puls: "100",
-      primenjeneTerapije: "nista",
-      opis: "dobar je",
-    },
-    {
-      stanjePacijenta: 3,
-      lbpPacijenta: 789,
-      lbzPacijenta: "000",
-      datumPregleda: "2022-03-03",
-      temperatura: "37,4",
-      krvniPritisak: "180/120",
-      puls: "100",
-      primenjeneTerapije: "nista",
-      opis: "dobar je",
-    },
-  ];
-
   let table;
   let button;
 
@@ -107,7 +67,12 @@ const History = (props) => {
         Registruj novo stanje
       </button>
     );
-  }
+  } else
+    table = (
+      <p className="form-section-heading">
+        Trenutno ne postoji istorija stanja
+      </p>
+    );
 
   return (
     <div>
@@ -141,7 +106,6 @@ const History = (props) => {
             className="margin-right"
           />
 
-          {/* <button onClick={handleGet}>Pretraži</button> */}
           <button type="button" onClick={handleGet}>
             Pretraži
           </button>

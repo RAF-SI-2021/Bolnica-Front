@@ -2,15 +2,20 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createPatientHistory } from "../../api";
 import { createPatientState } from "../../redux/actions/patientsStates";
+import CustomModal from "../CustomModal/CustomModal";
 
 const Registration = (props) => {
-  const { lbp } = props;
+  const { lbp, toggleClass1 } = props;
 
   const [form, setForm] = useState("");
   const dispatch = useDispatch();
+  const [modalError, setModalError] = useState(false);
+  const [modalSuccess, setModalSuccess] = useState(false);
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
+  const toggleModalError = () => setModalError(!modalError);
+  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
 
   let formatted;
   const onChangeDateHandler = (e) => {
@@ -33,15 +38,32 @@ const Registration = (props) => {
     event.preventDefault();
     const user = JSON.parse(localStorage.getItem("loggedUser"));
     dispatch(
-      createPatientState({
-        ...form,
-        lbpPacijenta: lbp,
-        lbzRegistratora: user.LBZ,
-      })
+      createPatientState(
+        {
+          ...form,
+          lbpPacijenta: lbp,
+          lbzRegistratora: user.LBZ,
+        },
+        toggleModalSuccess,
+        toggleModalError
+      )
     );
   }
   return (
     <div>
+      <CustomModal
+        title="Greška"
+        content="Doslo je do greške prilikom registrovanja."
+        toggleModal={toggleModalError}
+        isOpen={modalError}
+      />
+      <CustomModal
+        title="Uspeh"
+        content="Uspešno registrovano stanje."
+        toggleModal={toggleModalSuccess}
+        isOpen={modalSuccess}
+        handleClick={toggleClass1}
+      />
       <br></br>
       <br></br>
       <br></br>

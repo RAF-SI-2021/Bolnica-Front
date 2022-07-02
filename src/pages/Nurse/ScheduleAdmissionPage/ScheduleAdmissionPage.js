@@ -6,10 +6,6 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Table from "../../../components/Table/Table";
 import { getTableHeaders } from "../../../commons/tableHeaders";
-import {
-  searchLabVisits,
-  updateLabVisits,
-} from "../../../redux/actions/visits";
 import { BiSearchAlt } from "react-icons/bi";
 import { getPatients } from "../../../redux/actions/patients";
 import { getUnprocessedReferrals } from "../../../redux/actions/referrals";
@@ -19,6 +15,7 @@ import {
   updateAdmission,
 } from "../../../redux/actions/admissions";
 import { getDepartments } from "../../../redux/actions/departments";
+import CustomModal from "../../../components/CustomModal/CustomModal";
 
 const VisitsPage = () => {
   const [isClicked1, setClicked1] = useState(true);
@@ -35,6 +32,9 @@ const VisitsPage = () => {
   const departments = useSelector((state) => state.departments);
   const visits = useSelector((state) => state.visits);
   const [tableContent, setTableContent] = useState([]);
+  const [modalError, setModalError] = useState(false);
+  const [modalSuccess, setModalSuccess] = useState(false);
+  const [modalCancel, setModalCancel] = useState(false);
 
   useEffect(() => {
     dispatch(getPatients());
@@ -57,7 +57,7 @@ const VisitsPage = () => {
       );
     }
   }, [patients, admissions]);
-  console.log(tableContent);
+
   const toggleClass1 = () => {
     if (!isClicked1) {
       setClicked2(!isClicked2);
@@ -126,64 +126,26 @@ const VisitsPage = () => {
   };
 
   function handleScheduling(event) {
-    event.preventDefault();
+    if (event) event.preventDefault();
     console.log({ ...form });
-    dispatch(createAdmission(form));
+    dispatch(createAdmission(form, toggleModalSuccess, toggleModalError));
   }
 
-  let status;
   function handleButtonCanceled(entry) {
     console.log(entry);
-    dispatch(updateAdmission({ id: entry[0][1], status: "OTKAZAN" }));
+    dispatch(
+      updateAdmission({ id: entry[0][1], status: "OTKAZAN" }, toggleModalCancel)
+    );
   }
 
   function handleButtonFinished(entry) {
     console.log(entry);
     dispatch(updateAdmission({ id: entry[0][1], status: "REALIZOVAN" }));
   }
+  const toggleModalError = () => setModalError(!modalError);
+  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
+  const toggleModalCancel = () => setModalCancel(!modalCancel);
 
-  const demoUnrealizedLabReports = [
-    {
-      id: 1,
-      ime: "Marko",
-      prezime: "Markovic",
-      datumRodjenja: "29.05.2020.",
-      odeljenje: "ocno",
-      spisakAnaliza: "spisakAnaliza",
-      komentar: "komentar",
-    },
-    {
-      id: 2,
-      ime: "Marko",
-      prezime: "Markovic",
-      datumRodjenja: "29.05.2020.",
-      odeljenje: "ocno",
-      spisakAnaliza: "spisakAnaliza",
-      komentar: "komentar",
-    },
-    {
-      id: 3,
-      ime: "Marko",
-      prezime: "Markovic",
-      datumRodjenja: "29.05.2020.",
-      odeljenje: "ocno",
-      spisakAnaliza: "spisakAnaliza",
-      komentar: "komentar",
-    },
-  ];
-
-  let table;
-  if (isReport) {
-    table = (
-      <Table
-        headers={getTableHeaders("unrealizedLabReferrals")}
-        tableContent={demoUnrealizedLabReports}
-      />
-    );
-  } else {
-    table = <div></div>;
-  }
-  console.log(visits);
   let table2;
   if (admissions.length > 0) {
     table2 = (
@@ -252,15 +214,12 @@ const VisitsPage = () => {
             <button
               className="buttonForm"
               type="button"
-              // data-bs-toggle="modal"
-              // data-bs-target="#myModal"
               onClick={handleScheduling}
             >
               Zakaži
             </button>
           </div>
         </form>
-        {table}
       </div>
     );
   }
@@ -324,6 +283,25 @@ const VisitsPage = () => {
       <div className="sidebar-link-container">
         <Sidebar links={getSidebarLinks("nurse", 5)} />
       </div>
+      <CustomModal
+        title="Greška"
+        content="Doslo je do greške."
+        toggleModal={toggleModalError}
+        isOpen={modalError}
+      />
+      <CustomModal
+        title="Uspeh"
+        content="Uspešno zakazan prijem"
+        toggleModal={toggleModalSuccess}
+        isOpen={modalSuccess}
+        handleClick={toggleClass2}
+      />
+      <CustomModal
+        title="Uspeh"
+        content="Uspešno otkazan prijem"
+        toggleModal={toggleModalCancel}
+        isOpen={modalCancel}
+      />
       <div style={{ marginLeft: "20%" }}>
         <ul className="nav nav-tabs nav-justified">
           <li className="nav-item">

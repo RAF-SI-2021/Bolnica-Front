@@ -10,10 +10,6 @@ const Visits = (props) => {
   const dispatch = useDispatch();
   const patientsVisits = useSelector((state) => state.patientsVisits);
 
-  useEffect(() => {
-    dispatch(getPatientsVisits(lbp));
-  }, []);
-
   let table;
   if (isTab3) {
     table = (
@@ -22,7 +18,12 @@ const Visits = (props) => {
         tableContent={patientsVisits}
       />
     );
-  }
+  } else
+    table = (
+      <p className="form-section-heading">
+        Trenutno ne postoji istorija stanja
+      </p>
+    );
   return <div>{table}</div>;
 };
 

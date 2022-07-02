@@ -1,23 +1,47 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createPatientsVisits } from "../../redux/actions/patientsVisits";
+import CustomModal from "../CustomModal/CustomModal";
 
 const RegistrationOfVisits = (props) => {
-  const { lbp } = props;
+  const { lbp, toggleClass3 } = props;
 
   const [form, setForm] = useState("");
   const dispatch = useDispatch();
+  const [modalError, setModalError] = useState(false);
+  const [modalSuccess, setModalSuccess] = useState(false);
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
+  const toggleModalError = () => setModalError(!modalError);
+  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
 
   function handleRegistration(event) {
     event.preventDefault();
-    dispatch(createPatientsVisits({ lbp, ...form }));
+    dispatch(
+      createPatientsVisits(
+        { lbp, ...form },
+        toggleModalSuccess,
+        toggleModalError
+      )
+    );
   }
 
   return (
     <div>
+      <CustomModal
+        title="Greška"
+        content="Doslo je do greške prilikom registrovanja."
+        toggleModal={toggleModalError}
+        isOpen={modalError}
+      />
+      <CustomModal
+        title="Uspeh"
+        content="Uspešno registrovana poseta."
+        toggleModal={toggleModalSuccess}
+        isOpen={modalSuccess}
+        handleClick={toggleClass3}
+      />
       <br></br>
       <br></br>
       <br></br>

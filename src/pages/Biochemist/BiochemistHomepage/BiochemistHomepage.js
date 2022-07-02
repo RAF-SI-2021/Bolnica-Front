@@ -33,12 +33,16 @@ const DoctorHomepage = () => {
   useEffect(() => {
     if (patients.length > 0 && labReports.length > 0) {
       setTableContent(
-        labReports.map((labReport) => {
-          const patient = patients.find((patient) =>
-            patient.lbp === labReport.lbp ? patient : false
-          );
-          return { ...labReport, ...patient };
-        })
+        labReports
+          .filter((labReport) =>
+            labReport.statusObrade === "OBRADJEN" ? false : labReport
+          )
+          .map((labReport) => {
+            const patient = patients.find((patient) =>
+              patient.lbp === labReport.lbp ? patient : false
+            );
+            return { ...labReport, ...patient };
+          })
       );
     }
   }, [patients, labReports]);
@@ -143,14 +147,14 @@ const DoctorHomepage = () => {
             </button>
           </form>
         </div>
-        {/* {labReports.length > 0 && ( */}
-        <Table
-          headers={getTableHeaders("labReportPreview")}
-          tableContent={tableContent}
-          handleRowClick={handleRowClick}
-          tableType="labReports"
-        />
-        {/* )} */}
+        {tableContent.length > 0 && (
+          <Table
+            headers={getTableHeaders("labReportPreview")}
+            tableContent={tableContent}
+            handleRowClick={handleRowClick}
+            tableType="labReports"
+          />
+        )}
       </div>
     </>
   );

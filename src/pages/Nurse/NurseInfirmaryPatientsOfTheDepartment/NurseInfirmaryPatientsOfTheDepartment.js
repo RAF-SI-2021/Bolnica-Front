@@ -21,6 +21,7 @@ const NurseInfirmaryPatientsOfTheDepartment = () => {
 
   useEffect(() => {
     dispatch(getPatients());
+    dispatch(searchPatientsAdmissions({}));
   }, []);
 
   function handleSubmit(event) {

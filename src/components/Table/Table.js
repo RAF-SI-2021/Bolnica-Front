@@ -389,10 +389,10 @@ const Table = (props) => {
                   handleButtonCanceled(entry);
                 }}
                 disabled={
-                  entry[2][1] === "OTKAZAN" || entry[2][1] === "REALIZOVAN"
+                  entry[3][1] === "OTKAZAN" || entry[3][1] === "REALIZOVAN"
                 }
                 style={
-                  entry[2][1] === "OTKAZAN" || entry[2][1] === "REALIZOVAN"
+                  entry[3][1] === "OTKAZAN" || entry[3][1] === "REALIZOVAN"
                     ? { backgroundColor: "#cacccf", borderColor: "#cacccf" }
                     : {}
                 }

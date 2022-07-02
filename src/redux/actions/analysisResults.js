@@ -10,12 +10,14 @@ export const getAnalysisResults = (id) => async (dispatch) => {
   }
 };
 
-export const saveAnalysisResult = (resultData) => async (dispatch) => {
-  try {
-    const { data } = await api.saveAnalysisResultApi(resultData);
-    console.log(resultData);
-    dispatch({ type: UPDATE_ANALYSIS_RESULT, data });
-  } catch (error) {
-    console.log(error);
-  }
-};
+export const saveAnalysisResult =
+  (resultData, toggleModalResult) => async (dispatch) => {
+    try {
+      const { data } = await api.saveAnalysisResultApi(resultData);
+      console.log(resultData);
+      dispatch({ type: UPDATE_ANALYSIS_RESULT, data });
+      toggleModalResult();
+    } catch (error) {
+      console.log(error);
+    }
+  };

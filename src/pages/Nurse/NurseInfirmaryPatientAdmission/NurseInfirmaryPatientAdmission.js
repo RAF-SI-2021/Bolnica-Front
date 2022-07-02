@@ -27,6 +27,7 @@ import {
   getAdmissions,
   updateAdmission,
 } from "../../../redux/actions/admissions";
+import { useNavigate } from "react-router";
 
 const initialStateFormLbp2 = {
   lbpForm2: "",
@@ -49,6 +50,7 @@ const NurseInfirmaryPatientAdmission = () => {
 
   const [disable, setDisable] = useState(true);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formLbp2, setFormLbp2] = useState(initialStateFormLbp2);
   const [formLbp1, setFormLbp1] = useState(initialStateFormLbp1);
   const [valueLbp2, setValueLbp2] = useState();
@@ -73,6 +75,8 @@ const NurseInfirmaryPatientAdmission = () => {
   const [stepFour, setStepFour] = useState(false);
   const [tableContent, setTableContent] = useState([]);
   const [referralTableContent, setReferralTableContent] = useState([]);
+  const [modalError, setModalError] = useState(false);
+  const [modalSuccess, setModalSuccess] = useState(false);
 
   useEffect(() => {
     dispatch(getPatients());
@@ -156,6 +160,8 @@ const NurseInfirmaryPatientAdmission = () => {
     }
     setDisable(true);
   };
+  const toggleModalError = () => setModalError(!modalError);
+  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
 
   function undoStepOne() {
     setStepOne(true);
@@ -206,14 +212,18 @@ const NurseInfirmaryPatientAdmission = () => {
     e.preventDefault();
 
     dispatch(
-      createPatientAdmission({
-        lbp: formLbp2.lbp,
-        uputId: referralId,
-        uputnaDijagnoza: referralDiagnosis,
-        bolnickaSobaId: hospitalRoomId,
-        lbzLekara: doctorId,
-        note,
-      })
+      createPatientAdmission(
+        {
+          lbp: formLbp2.lbp,
+          uputId: referralId,
+          uputnaDijagnoza: referralDiagnosis,
+          bolnickaSobaId: hospitalRoomId,
+          lbzLekara: doctorId,
+          note,
+        },
+        toggleModalSuccess,
+        toggleModalError
+      )
     );
   };
 
@@ -241,33 +251,9 @@ const NurseInfirmaryPatientAdmission = () => {
   const handleChangeNote = (e) => {
     setNote(e.target.value);
   };
-
-  const demoUnrealizedReferrals = [
-    {
-      id: 1,
-      lekar: "Ivan Ivanovic",
-      datumVreme: new Date("May 25, 2022 17:30:00").getTime(),
-      odeljenje: "odeljenje",
-      dijagnoza: "dijagnoza",
-      odabir: "odabir",
-    },
-    {
-      id: 2,
-      lekar: "Ivan Ivanovic",
-      datumVreme: new Date("May 26, 2022 17:30:00").getTime(),
-      odeljenje: "XX",
-      dijagnoza: "dijagnoza",
-      odabir: "odabir",
-    },
-    {
-      id: 3,
-      lekar: "Ivan Ivanovic",
-      datumVreme: new Date("December 30, 2018 17:30:00").getTime(),
-      odeljenje: "odeljenje",
-      dijagnoza: "dijagnoza",
-      odabir: "odabir",
-    },
-  ];
+  const navigateFurther = () => {
+    navigate("/nurse/infirmary/patients-department");
+  };
 
   const demoHospitalRoom = [
     {
@@ -322,8 +308,7 @@ const NurseInfirmaryPatientAdmission = () => {
             </select>
           </div>
         </form>
-        {/*         {referrals.length > 0 && ( */}
-        {demoUnrealizedReferrals.length > 0 && (
+        {referralTableContent.length > 0 ? (
           // <Table
           //   headers={getTableHeaders("unrealizedReferrals")}
           //   tableContent={demoUnrealizedReferrals}
@@ -337,17 +322,11 @@ const NurseInfirmaryPatientAdmission = () => {
             tableType="referralsStationary"
             handleChooseReferral={handleChooseReferral}
           />
-        )}
-        {/*         {referrals.length === 0 && ( */}
-        {demoUnrealizedReferrals.length === 0 && (
-          <div>
-            <CustomModal
-              title="Greška"
-              info="Lista nerealizovanih uputa za stacionar je prazna"
-              isSuccess={false}
-              id="false"
-            />
-          </div>
+        ) : (
+          <p className="form-section-heading">
+            Trenutno ne postoji nijedan uput za datog pacijenta, ili pacijent
+            nije odabran.
+          </p>
         )}
       </div>
     );
@@ -513,6 +492,19 @@ const NurseInfirmaryPatientAdmission = () => {
       <div className="sidebar-link-container">
         <Sidebar links={getSidebarLinks("nurse", 6)} />
       </div>
+      <CustomModal
+        title="Greška"
+        content="Doslo je do greške prilikom dodavanja."
+        toggleModal={toggleModalError}
+        isOpen={modalError}
+      />
+      <CustomModal
+        title="Uspeh"
+        content="Uspešno primljen pacijent."
+        toggleModal={toggleModalSuccess}
+        isOpen={modalSuccess}
+        handleClick={navigateFurther}
+      />
       <ul className="nav nav-tabs nav-justified">
         <li className="nav-item">
           <button
