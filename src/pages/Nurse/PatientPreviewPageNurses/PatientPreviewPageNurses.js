@@ -82,7 +82,7 @@ const PatientPreviewNurses = () => {
       />
       <CustomModal
         title="Uspeh"
-        content="Uspesno izmenjem pacijent."
+        content="Uspesno izmenjen pacijent."
         toggleModal={toggleModalSuccess}
         isOpen={modalSuccess}
         handleClick={navigateToHomepage}

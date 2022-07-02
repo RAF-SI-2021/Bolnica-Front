@@ -12,6 +12,7 @@ import { getSidebarLinks } from "../../../commons/sidebarLinks";
 const NurseHomepage = () => {
   const dispatch = useDispatch();
   const [selectedDoctor, setSelectedDoctor] = useState({});
+  const [appointmentsContent, setAppointmentsContent] = useState({});
   const employees = useSelector((state) => state.employees);
   const patients = useSelector((state) => state.patients);
   const appointments = useSelector((state) => state.appointments);
@@ -26,6 +27,15 @@ const NurseHomepage = () => {
 
     if (employees[0]) dispatch(getAppointments(employees[0].lbz));
   }, [employees]);
+
+  useEffect(() => {
+    if (appointments.length > 0)
+      setAppointmentsContent(
+        appointments.filter((appointment) =>
+          appointment.statusPregleda === "ZAKAZANO" ? appointment : false
+        )
+      );
+  }, [appointments]);
 
   const headerProps = {
     userName: "Ana Reljic",
@@ -57,11 +67,15 @@ const NurseHomepage = () => {
             getDoctorAppointments={getDoctorAppointments}
           />
         )}
-        {patients && (
+        {appointmentsContent && appointmentsContent.length > 0 ? (
           <ScheduledAppointmentsNurse
-            appointments={appointments}
+            appointments={appointmentsContent}
             updateAppointmentStatus={updateAppointmentStatus}
           />
+        ) : (
+          <p className="form-section-heading">
+            Trenutno nema zakazanih pregleda.
+          </p>
         )}
       </div>
     </>

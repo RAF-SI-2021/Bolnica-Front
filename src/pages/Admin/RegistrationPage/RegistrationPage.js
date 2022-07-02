@@ -81,7 +81,7 @@ function RegistrationPage() {
       />
       <CustomModal
         title="Greška"
-        content="Neophodno je uneti sve podatke."
+        content="Doslo je do greške prilikom kreiranja zaposlenog."
         toggleModal={toggleModalError}
         isOpen={modalError}
       />

@@ -220,7 +220,7 @@ const PatientExamination = () => {
                 outline={tabNumber !== 1}
                 onClick={() => swapTabs(1)}
               >
-                Kreiraj uput
+                Uput
               </Button>
               <Button
                 color="primary"

@@ -124,7 +124,7 @@ function EditPatientPage() {
     <div style={{ marginLeft: "20%" }}>
       <CustomModal
         title="Uspeh"
-        content="Uspesno izmenjem pacijent."
+        content="Uspesno izmenjen pacijent."
         toggleModal={toggleModalSuccess}
         isOpen={modalSuccess}
         handleClick={navigateToHomepage}
@@ -284,9 +284,9 @@ function EditPatientPage() {
               Porodicni status
             </option>
             <option value="OBA_RODITELJA">Oba roditelja</option>
-            <option value="RAZDVOJENI">Roditelj razdvojeni</option>
+            <option value="RAZDVOJENI">Roditelji razdvojeni</option>
             <option value="RAZVEDENI">Razvedeni</option>
-            <option value="JEDAN_RODITELJ">Jedan roditelje</option>
+            <option value="JEDAN_RODITELJ">Jedan roditelj</option>
             <option value="BEZ_RODITELJA">Bez roditelja</option>
             <option value="USVOJEN">Usvojen</option>
           </select>

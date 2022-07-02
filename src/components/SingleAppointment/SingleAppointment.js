@@ -15,7 +15,7 @@ const SingleAppointment = ({ appointment }) => {
 
   let age = format(new Date(), "yyyy") - format(pacijent.datumRodjenja, "yyyy");
   let appointTime = format(new Date(datumIVremePregleda), "HH:mm");
-  let appointDate = format(new Date(datumIVremePregleda), "dd:MM:yyyy");
+  let appointDate = format(new Date(datumIVremePregleda), "dd-MM-yyyy");
 
   const navigate = useNavigate();
 
@@ -55,7 +55,8 @@ const SingleAppointment = ({ appointment }) => {
       />
       <div className="d-flex flex-row align-items-center ">
         <div className="appTime">
-          {appointTime} {appointDate}
+          {appointTime} <br />
+          {appointDate}
         </div>
         <div className="customContainer">
           <div className="d-flex flex-row justify-content-around appointment">

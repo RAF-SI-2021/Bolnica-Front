@@ -46,7 +46,7 @@ export const getTableHeaders = (contentType) => {
       },
       {
         key: "datumRodjenja",
-        value: "Datum",
+        value: "Datum rodjenja",
       },
       {
         key: "jmbg",
@@ -185,18 +185,6 @@ export const getTableHeaders = (contentType) => {
       },
     ];
   } else if (contentType === "dischargeLists") {
-    //     analize: "asdf"
-    // anamneza: "asdf"
-    // datumVremeKreiranja: 1656633600000
-    // hospitalizacijaId: 1
-    // lbpPacijenta: "237e9877-e79b-12d4-a765-321741963000"
-    // lbzNacelnikOdeljenja: "6cfe71bb-e4ee-49dd-a3ad-28e043f8b435"
-    // lbzOrdinirajucegLekara: "6cfe71bb-e4ee-49dd-a3ad-28e043f8b435"
-    // otpusnaListaId: 1
-    // prateceDijagnoze: "asdf"
-    // terapija: "asdf"
-    // tokBolesti: "asdf"
-    // zakljucak: "asdf"
     return [
       {
         key: "analize",

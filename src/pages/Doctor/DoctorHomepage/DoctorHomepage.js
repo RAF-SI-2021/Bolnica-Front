@@ -74,12 +74,16 @@ const DoctorHomepage = () => {
             number={patients.length}
           />
         </div>
-        {appointments.length > 0 && (
+        {appointments.length > 0 ? (
           <ScheduledAppointments
             appointments={appointments.filter(
               (appointment) => appointment.statusPregleda === "ZAKAZANO"
             )}
           />
+        ) : (
+          <p className="form-section-heading">
+            Trenutno nema zakazanih pregleda.
+          </p>
         )}
       </div>
     </>

@@ -1,8 +1,15 @@
 import * as actionType from "../actionTypes";
 const employeeReducer = (state = [], action) => {
   switch (action.type) {
-    case actionType.GET_EMPLOYEES:
-      return action.data;
+    case actionType.GET_EMPLOYEES: {
+      if (action.payload.obrisan) {
+        return action.payload.data;
+      } else {
+        return action.payload.data.filter((employee) =>
+          employee.obrisan ? false : employee
+        );
+      }
+    }
     case actionType.GET_EMPLOYEE:
       return [action.data];
     case actionType.CREATE_EMPLOYEE:

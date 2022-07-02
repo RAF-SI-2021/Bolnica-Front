@@ -174,7 +174,7 @@ function RegistrationPatientPage() {
           <input
             className="margin-right"
             type="text"
-            placeholder="Kontankt telefon"
+            placeholder="Kontakt telefon"
             onChange={handleChange}
             name="kontaktTelefon"
           />
@@ -214,9 +214,9 @@ function RegistrationPatientPage() {
               Porodicni status
             </option>
             <option value="OBA_RODITELJA">Oba roditelja</option>
-            <option value="RAZDVOJENI">Roditelj razdvojeni</option>
+            <option value="RAZDVOJENI">Roditelji razdvojeni</option>
             <option value="RAZVEDENI">Razvedeni</option>
-            <option value="JEDAN_RODITELJ">Jedan roditelje</option>
+            <option value="JEDAN_RODITELJ">Jedan roditelj</option>
             <option value="BEZ_RODITELJA">Bez roditelja</option>
             <option value="USVOJEN">Usvojen</option>
           </select>
