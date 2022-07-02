@@ -8,10 +8,9 @@ const patientReducer = (state = [], action) => {
         patient.lbz !== action.data.lbz ? patient : action.data
       );
     case actionType.DELETE_PATIENT:
-      return [
-        ...state,
-        state.filter((patient) => (patient.id !== action.id ? patient : false)),
-      ];
+      return state.filter((patient) =>
+        patient.lbp !== action.lbp ? patient : false
+      );
     default:
       return state;
   }

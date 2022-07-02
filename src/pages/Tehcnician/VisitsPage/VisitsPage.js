@@ -17,26 +17,65 @@ import { getLabReports } from "../../../redux/actions/labReports";
 import { getPatients } from "../../../redux/actions/patients";
 import { set } from "date-fns";
 import { getUnprocessedReferrals } from "../../../redux/actions/referrals";
+import { getDepartments } from "../../../redux/actions/departments";
+import { getEmployees } from "../../../redux/actions/employee";
+import { getVisitCount } from "../../../api";
+import CustomModalAnswer from "../../../components/CustomModalAnswer/CustomModalAnswer";
+import CustomModal from "../../../components/CustomModal/CustomModal";
 
 const VisitsPage = () => {
   const [isClicked1, setClicked1] = useState(true);
   const [isClicked2, setClicked2] = useState(false);
-  const [isReport, setReport] = useState(false);
-  const [form, setForm] = useState({});
+  const [form, setForm] = useState({ date: new Date() });
   const [form2, setForm2] = useState({});
   const dispatch = useDispatch();
-  const [isModal, setModal] = useState();
   const [isSearch, setSearch] = useState(false);
-  const [value, setValue] = useState("");
+  const [visitCount, setVisitCount] = useState("Broj zakazanih pacijenata");
   const patients = useSelector((state) => state.patients);
   const number = useSelector((state) => state.number);
+  const departments = useSelector((state) => state.departments);
   const referrals = useSelector((state) => state.referrals);
+  const employees = useSelector((state) => state.employees);
   const visits = useSelector((state) => state.visits);
+  const [referralTableContent, setReferralTableContent] = useState([]);
+  const [modalSuccess, setModalSuccess] = useState(false);
+  const [modalError, setModalError] = useState(false);
+  const [modalConfirm, setModalConfirm] = useState(false);
+  const [modalSuccess2, setModalSuccess2] = useState(false);
+  const [modalError2, setModalError2] = useState(false);
+  const [modalConfirm2, setModalConfirm2] = useState(false);
+  const [entry, setEntry] = useState();
 
   useEffect(() => {
     // dispatch(getLabReports());
     dispatch(getPatients());
+    dispatch(getDepartments());
+    dispatch(getEmployees());
+    dispatch(searchLabVisits({}));
   }, []);
+
+  useEffect(() => {
+    if (referrals.length > 0 && employees.length > 0 && departments.length > 0)
+      setReferralTableContent(
+        referrals.map((referral) => {
+          const employee = employees.find(
+            (employee) => employee.lbz === referral.lbz
+          );
+          const izOdeljenja = departments.find(
+            (department) => department.odeljenjeId === referral.izOdeljenjaId
+          );
+          const zaOdeljenje = departments.find(
+            (department) => department.odeljenjeId === referral.zaOdeljenjeId
+          );
+          return {
+            ...referral,
+            ...employee,
+            izOdeljenjaNaziv: izOdeljenja ? izOdeljenja.naziv : "",
+            zaOdeljenjeNaziv: zaOdeljenje ? zaOdeljenje.naziv : "",
+          };
+        })
+      );
+  }, [referrals, employees, departments]);
 
   const toggleClass1 = () => {
     if (!isClicked1) {
@@ -52,31 +91,15 @@ const VisitsPage = () => {
     }
   };
 
-  const toggleReport = () => {
-    if (isClicked1) setReport(!isReport);
-  };
-
   const toggleSeach = () => {
     console.log(form2);
     dispatch(searchLabVisits(form2));
     if (isClicked2) setSearch(!isSearch);
   };
 
-  // const toggleModal = () => {
-  //   setModal(!isModal);
-  // };
-
-  const handleChangeInput = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    setValue(e.target.value);
-  };
-
   const handleChangeArea = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-
-  const handleChange = (e) =>
-    setForm2({ ...form2, [e.target.name]: e.target.value });
 
   let formatted;
   const onChangeDateHandler = (e) => {
@@ -91,8 +114,6 @@ const VisitsPage = () => {
       ...form,
       date: formatted,
     });
-
-    console.log({ ...form });
   };
 
   const onChangeDateHandler2 = (e) => {
@@ -107,8 +128,6 @@ const VisitsPage = () => {
       ...form2,
       date: formatted,
     });
-
-    console.log({ ...form2 });
   };
 
   const handlePatientChange = (event) => {
@@ -121,136 +140,67 @@ const VisitsPage = () => {
     // dispatch(getUnprocessedReferrals(event.target.value));
   };
 
-  function handleScheduling(event) {
-    event.preventDefault();
-    console.log({ ...form });
-    dispatch(createVisit({ ...form }));
-  }
-
-  function handleReports(event) {
-    event.preventDefault();
-    console.log({ value });
-    dispatch(searchLabVisits({ value }));
+  function handleScheduling() {
+    console.log(form);
+    dispatch(createVisit(form, toggleModalSuccess, toggleModalError));
   }
 
   let status;
-  function handleButtonCanceled(entry) {
-    dispatch(updateLabVisits({ id: entry[0][1], status: "OTKAZANO" }));
+  function handleButtonCanceled() {
+    dispatch(
+      updateLabVisits(
+        { id: entry[0][1], status: "OTKAZANO" },
+        toggleModalSuccess2,
+        toggleModalError2
+      )
+    );
   }
 
   function handleButtonFinished(entry) {
-    console.log("kliknuto2");
-    status = "Zavrseno";
-    dispatch(updateLabVisits(entry[0][1], { status }));
+    status = "ZAVRSENO";
+    dispatch(updateLabVisits({ id: entry[0][1], status }));
   }
 
-  function handleNumberOfReports(event) {
-    event.preventDefault();
-    console.log(form.date);
-    dispatch(getNumberofAppointments(form.date));
+  async function handleNumberFetch() {
+    const number = await getVisitCount({ dateAndTime: form.date });
+    console.log(number);
+    setVisitCount(number.data);
   }
+  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
+  const toggleModalError = () => setModalError(!modalError);
+  const toggleModalConfirm = () => setModalConfirm(!modalConfirm);
+  const toggleModalSuccess2 = () => setModalSuccess2(!modalSuccess2);
+  const toggleModalError2 = () => setModalError2(!modalError2);
+  const toggleModalConfirm2 = (entry) => {
+    setModalConfirm2(!modalConfirm2);
+    if (entry) setEntry(entry);
+  };
 
-  let currDate = new Date();
-  function handleLabVisits(event) {
-    event.preventDefault();
-    if (form2.length > 0) dispatch(searchLabVisits({ ...form2 }));
-    else dispatch(searchLabVisits({ currDate }));
-  }
-
-  const demoSearchVisits = [
-    {
-      id: 1,
-      lbpPacijenta: 1234,
-      lbzTehnicara: "klm",
-      napomena: "nesto",
-      datumPregleda: new Date().getTime(),
-      statusPregleda: "Zakazano",
-    },
-    {
-      id: 2,
-      lbpPacijenta: 1234,
-      lbzTehnicara: "klm",
-      napomena: "nesto",
-      datumPregleda: new Date().getTime(),
-      statusPregleda: "Zavrseno",
-    },
-    {
-      id: 3,
-      lbpPacijenta: 1234,
-      lbzTehnicara: "klm",
-      napomena: "nesto",
-      datumPregleda: new Date().getTime(),
-      statusPregleda: "Otkazano",
-    },
-  ];
-
-  const demoUnrealizedLabReports = [
-    {
-      id: 1,
-      ime: "Marko",
-      prezime: "Markovic",
-      datumRodjenja: "29.05.2020.",
-      odeljenje: "ocno",
-      spisakAnaliza: "spisakAnaliza",
-      komentar: "komentar",
-    },
-    {
-      id: 2,
-      ime: "Marko",
-      prezime: "Markovic",
-      datumRodjenja: "29.05.2020.",
-      odeljenje: "ocno",
-      spisakAnaliza: "spisakAnaliza",
-      komentar: "komentar",
-    },
-    {
-      id: 3,
-      ime: "Marko",
-      prezime: "Markovic",
-      datumRodjenja: "29.05.2020.",
-      odeljenje: "ocno",
-      spisakAnaliza: "spisakAnaliza",
-      komentar: "komentar",
-    },
-  ];
-
-  // if (isModal) {
-  //   <ActionConformationModal
-  //     title="Naslov"
-  //     info="info"
-  //     handleClick={handleEnd}
-  //     id="myModal"
-  //   />;
-  // }
-  let table;
-  if (isReport) {
-    table = (
-      // {referrals.length === 0 && (
+  let table =
+    referrals.length !== 0 ? (
       <Table
         headers={getTableHeaders("unrealizedLabReferrals")}
-        // tableContent={referrals}
-        tableContent={demoUnrealizedLabReports}
+        tableContent={referralTableContent}
       />
-      // )};
+    ) : form.lbp !== undefined ? (
+      <p className="form-section-heading">
+        Trenutno ne postoji nijedan uput vezan za traženog pacijenta
+      </p>
+    ) : (
+      <p className="form-section-heading">Pretraga uputa</p>
     );
-  } else {
-    table = <div></div>;
-  }
-  console.log(visits);
+
   let table2;
-  // if (isSearch) {
+  console.log(visits);
   if (visits.length > 0) {
     table2 = (
-      // {visits.length === 0 && (
       <Table
         headers={getTableHeaders("scheduledVisits")}
-        // tableContent={visits}
         tableContent={visits}
         tableType="searchVisits"
-        handleButtonCanceled={handleButtonCanceled}
+        handleButtonCanceled={toggleModalConfirm2}
         handleButtonFinished={handleButtonFinished}
       />
-      // )};
     );
   } else {
     table2 = <div></div>;
@@ -299,7 +249,7 @@ const VisitsPage = () => {
               placeholder="Broj zakazanih pacijenata"
               name="number"
               className="margin-left"
-              value={number}
+              value={visitCount}
               disabled="disabled"
             />
           </div>
@@ -312,14 +262,18 @@ const VisitsPage = () => {
             ></textarea>
           </div>
           <br></br>
-          <br></br>
           <div className="form-group-custom">
             <button
-              className="buttonForm"
+              className="buttonForm margin-right"
               type="button"
-              // data-bs-toggle="modal"
-              // data-bs-target="#myModal"
-              onClick={handleScheduling}
+              onClick={handleNumberFetch}
+            >
+              Broj poseta
+            </button>
+            <button
+              className="buttonForm margin-left"
+              type="button"
+              onClick={toggleModalConfirm}
             >
               Zakaži
             </button>
@@ -390,6 +344,49 @@ const VisitsPage = () => {
         <Sidebar links={getSidebarLinks("technician", 3)} />
       </div>
       <div style={{ marginLeft: "20%" }}>
+        <CustomModalAnswer
+          title="Potvrda akcije"
+          content="Da li želite da zakažete posetu?"
+          toggleModal={toggleModalConfirm}
+          isOpen={modalConfirm}
+          handleClick={handleScheduling}
+        />
+        <CustomModal
+          title="Uspeh"
+          content="Uspesno zakazana poseta."
+          toggleModal={toggleModalSuccess}
+          isOpen={modalSuccess}
+          handleClick={() => {
+            setClicked1(false);
+            setClicked2(true);
+            dispatch(searchLabVisits());
+          }}
+        />
+        <CustomModal
+          title="Greška"
+          content="Doslo je do greške prilikom zakazivanja posete."
+          toggleModal={toggleModalError}
+          isOpen={modalError}
+        />
+        <CustomModalAnswer
+          title="Potvrda akcije"
+          content="Da li želite da otkažete posetu?"
+          toggleModal={toggleModalConfirm2}
+          isOpen={modalConfirm2}
+          handleClick={handleButtonCanceled}
+        />
+        <CustomModal
+          title="Uspeh"
+          content="Uspesno otkazana poseta."
+          toggleModal={toggleModalSuccess2}
+          isOpen={modalSuccess2}
+        />
+        <CustomModal
+          title="Greška"
+          content="Doslo je do greške prilikom otkazivanja posete."
+          toggleModal={toggleModalError2}
+          isOpen={modalError2}
+        />
         <ul className="nav nav-tabs nav-justified">
           <li className="nav-item">
             <button

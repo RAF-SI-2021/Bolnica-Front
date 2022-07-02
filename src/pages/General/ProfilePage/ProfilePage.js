@@ -6,6 +6,8 @@ import { getEmployee, updateEmployee } from "../../../redux/actions/employee";
 import { ImPencil } from "react-icons/im";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
+import CustomModal from "../../../components/CustomModal/CustomModal";
+import { getDepartments } from "../../../redux/actions/departments";
 
 const initialState = {
   name: "",
@@ -21,90 +23,84 @@ const initialState = {
   department: "",
   newPassword: "",
   oldPassword: "",
+  confirmPassword: "",
 };
 
 function EditEmployeePage() {
   const dispatch = useDispatch();
   const [employee, setEmployee] = useState();
   const [user, setUser] = useState();
+  const [roles, setRoles] = useState();
   const [editable, setEditable] = useState(false);
   const [passwordEditable, setPasswordEditable] = useState(false);
   const [links, setLinks] = useState([]);
   const navigate = useNavigate();
   const [form, setForm] = useState(initialState);
   const employees = useSelector((state) => state.employees);
+  const departments = useSelector((state) => state.departments);
+  const [modalSuccess, setModalSuccess] = useState(false);
+  const [modalError, setModalError] = useState(false);
+  const [modalMessage, setModalMessage] = useState();
 
   useEffect(() => {
     const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
     if (loggedUser) {
       setUser(loggedUser);
-      const roles = loggedUser.roles.split(",");
-      if (roles.includes("ROLE_ADMIN")) setLinks(getSidebarLinks("admin", 4));
-      else if (roles.includes("ROLE_DR_SPEC_POV"))
+      const allRoles = loggedUser.roles.split(",");
+      setRoles(allRoles);
+      if (allRoles.includes("ROLE_ADMIN"))
+        setLinks(getSidebarLinks("admin", 4));
+      else if (allRoles.includes("ROLE_DR_SPEC_POV"))
         setLinks(getSidebarLinks("doctor", 4));
       else setLinks(getSidebarLinks("nurse", 5));
       dispatch(getEmployee(loggedUser.LBZ));
     } else navigate("/login");
+    dispatch(getDepartments());
   }, []);
 
   useEffect(() => {
-    if (employees) {
-      setEmployee(employees);
-      const dateOfBirth = new Date(employees.dob);
+    console.log(employees[0]);
+    if (employees.length > 0) {
+      setEmployee(employees[0]);
+      const dateOfBirth = new Date(employees[0].dob);
       var day = ("0" + dateOfBirth.getDate()).slice(-2);
       var month = ("0" + (dateOfBirth.getMonth() + 1)).slice(-2);
       var today = dateOfBirth.getFullYear() + "-" + month + "-" + day;
 
       setForm({
-        name: employees.name,
-        surname: employees.surname,
-        jmbg: employees.jmbg,
-        address: employees.address,
-        city: employees.city,
-        profession: employees.profession,
-        title: employees.title,
-        contact: employees.contact,
-        gender: employees.gender,
+        name: employees[0].name,
+        surname: employees[0].surname,
+        jmbg: employees[0].jmbg,
+        address: employees[0].address,
+        city: employees[0].city,
+        profession: employees[0].profession,
+        title: employees[0].title,
+        contact: employees[0].contact,
+        gender: employees[0].gender,
         dob: today,
-        department: employees.department,
+        department: employees[0].department,
         newPassword: "",
         oldPassword: "",
+        confirmPassword: "",
       });
     }
   }, [employees]);
 
-  const departmentsDemo = [
-    {
-      id: 0,
-      name: "Prvo odeljenje",
-    },
-    {
-      id: 1,
-      name: "Drugo odeljenje",
-    },
-    {
-      id: 2,
-      name: "Trece odeljenje",
-    },
-  ];
-
-  const privilegesDemo = [
-    {
-      id: 0,
-      name: "Admin",
-    },
-    {
-      id: 1,
-      name: "Doktor",
-    },
-    {
-      id: 2,
-      name: "Sestra",
-    },
-  ];
-
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
+
+  const toggleModalError = (message) => {
+    setModalMessage(message);
+    setModalError(!modalError);
+  };
+
+  const navigateToHomepage = () => {
+    if (roles.includes("ROLE_ADMIN")) navigate("/admin");
+    else if (roles.includes("ROLE_DR_SPEC_POV")) navigate("/");
+    else navigate("/nurse");
   };
 
   const onChangeDateHandler = (e) => {
@@ -135,26 +131,41 @@ function EditEmployeePage() {
     e.preventDefault();
     console.log({
       ...form,
-      department: 1,
       lbz: employee.lbz,
       gender: "male",
     });
+    if (form.newPassword !== form.confirmPassword) {
+      toggleModalError("Nova lozinka i potrvda lozinke se moraju podudarati.");
+      return;
+    }
     dispatch(
-      updateEmployee({
-        ...form,
-        department: 1,
-        lbz: employee.lbz,
-        gender: "male",
-      })
+      updateEmployee(
+        {
+          ...form,
+          lbz: employee.lbz,
+          gender: "male",
+        },
+        toggleModalSuccess,
+        toggleModalError
+      )
     );
-    const roles = user.roles.split(",");
-    if (roles.includes("ROLE_ADMIN")) navigate("/admin");
-    else if (roles.includes("ROLE_DR_SPEC_POV")) navigate("/");
-    else navigate("/nurse");
   };
 
   return (
     <div style={{ marginLeft: "20%" }}>
+      <CustomModal
+        title="Uspeh"
+        content="Uspesno izmenjen profil."
+        toggleModal={toggleModalSuccess}
+        isOpen={modalSuccess}
+        handleClick={navigateToHomepage}
+      />
+      <CustomModal
+        title="Greška"
+        content={modalMessage}
+        toggleModal={toggleModalError}
+        isOpen={modalError}
+      />
       <div className="sidebar-link-container">
         <Sidebar links={links} />
       </div>
@@ -164,19 +175,21 @@ function EditEmployeePage() {
             <h1 className="form-heading">Profil</h1>
             <p className="form-section-heading">
               Podaci{" "}
-              <button className="buttonIconBlue" onClick={swapEditable}>
-                {editable ? (
-                  <>
-                    {" "}
-                    Pregled podataka <AiOutlineCloseCircle />
-                  </>
-                ) : (
-                  <>
-                    {" "}
-                    Izmeni <ImPencil />
-                  </>
-                )}
-              </button>
+              {roles.includes("ROLE_ADMIN") && (
+                <button className="buttonIconBlue" onClick={swapEditable}>
+                  {editable ? (
+                    <>
+                      {" "}
+                      Pregled podataka <AiOutlineCloseCircle />
+                    </>
+                  ) : (
+                    <>
+                      {" "}
+                      Izmeni <ImPencil />
+                    </>
+                  )}
+                </button>
+              )}
             </p>
             <div className="form-group-custom">
               <input
@@ -291,23 +304,32 @@ function EditEmployeePage() {
                 <option value="Spec. hirurg">Spec. hirurg</option>
               </select>
               <select
+                className="form-select-custom small-select margin-right"
                 onChange={handleChange}
-                className="form-select-custom small-select margin-left"
-                aria-label="Default select example"
                 name="department"
                 value={form.department}
-                disabled={!editable}
+                defaultValue=""
               >
                 <option value="" disabled>
-                  Odeljenje
+                  Izaberite odeljenje
                 </option>
-                {departmentsDemo.map((department) => {
-                  return (
-                    <option key={department.id} value="0">
-                      {department.name}
-                    </option>
-                  );
-                })}
+                <option value="-1">Sva odeljenja</option>
+                {departments.length > 0 ? (
+                  <>
+                    {departments.map((department) => {
+                      return (
+                        <option
+                          key={department.odeljenjeId}
+                          value={department.odeljenjeId}
+                        >
+                          {department.naziv} - {department.bolnica.skracenNaziv}
+                        </option>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <></>
+                )}
               </select>
             </div>
           </form>
@@ -330,15 +352,6 @@ function EditEmployeePage() {
             </p>
             {passwordEditable && (
               <>
-                <div className="form-group-custom">
-                  <input
-                    placeholder="Stara lozinka"
-                    onChange={handleChange}
-                    name="oldPassword"
-                    type="password"
-                    value={form.oldPassword}
-                  />
-                </div>
                 <div className="form-group-custom">
                   <input
                     className="margin-right"

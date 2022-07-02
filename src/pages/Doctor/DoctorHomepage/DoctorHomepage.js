@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import Header from "../../../components/Header/Header";
 import GeneralStats from "../../../components/GeneralStats/GeneralStats";
@@ -16,8 +16,9 @@ import { getSidebarLinks } from "../../../commons/sidebarLinks";
 const DoctorHomepage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const appointments = useSelector((state) => state.appointments);
+  const patients = useSelector((state) => state.patients);
+  const [appointmentNumber, setAppointmentNubmer] = useState();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -30,30 +31,21 @@ const DoctorHomepage = () => {
     } else navigate("/login");
   }, []);
 
+  useEffect(() => {
+    if (appointments.length > 0) {
+      const scheduledAppointments = appointments.filter((appointment) =>
+        appointment.statusPregleda === "ZAKAZANO" ? appointment : false
+      );
+      setAppointmentNubmer(scheduledAppointments.length);
+    } else setAppointmentNubmer(0);
+  }, [appointments]);
+
   const headerProps = {
     avatarUrl: "nikolaSlika 1.jpg",
     welcomeMsg: "Dobro jutro",
     userName: "Dr. Paun",
     userTitle: "Kardiolog",
   };
-
-  const generalStatsProps = [
-    {
-      image: <GiMedicalPack size="45px" />,
-      text: "Zakazani pregledi",
-      number: "34",
-    },
-    {
-      image: <FaUserInjured size="45px" />,
-      text: "Broj pacijenata",
-      number: "10",
-    },
-    {
-      image: <GiMedicalDrip size="45px" />,
-      text: "Operacije",
-      number: "10",
-    },
-  ];
 
   return (
     <>
@@ -72,23 +64,26 @@ const DoctorHomepage = () => {
 
         <div className="components">
           <GeneralStats
-            image={generalStatsProps[0].image}
-            text={generalStatsProps[0].text}
-            number={generalStatsProps[0].number}
+            image={<GiMedicalPack size="45px" />}
+            text="Zakazani pregledi"
+            number={appointmentNumber}
           />
           <GeneralStats
-            image={generalStatsProps[1].image}
-            text={generalStatsProps[1].text}
-            number={generalStatsProps[1].number}
-          />
-          <GeneralStats
-            image={generalStatsProps[2].image}
-            text={generalStatsProps[2].text}
-            number={generalStatsProps[2].number}
+            image={<FaUserInjured size="45px" />}
+            text="Broj pacijenata"
+            number={patients.length}
           />
         </div>
-        {appointments.length > 0 && (
-          <ScheduledAppointments appointments={appointments} />
+        {appointments.length > 0 ? (
+          <ScheduledAppointments
+            appointments={appointments.filter(
+              (appointment) => appointment.statusPregleda === "ZAKAZANO"
+            )}
+          />
+        ) : (
+          <p className="form-section-heading">
+            Trenutno nema zakazanih pregleda.
+          </p>
         )}
       </div>
     </>

@@ -12,7 +12,6 @@ const Table = (props) => {
     handleEdit,
     handleRowClick,
     handleButtonCanceled,
-    handleButtonFinished,
     handlecreateLabReport,
     handleCancelVisit,
     handleCreateLabReportTab1,
@@ -20,10 +19,18 @@ const Table = (props) => {
     handleCancelAdmission,
     handleChooseReferral,
     handleChooseRoom,
+    onResultChange,
   } = props;
 
   const listHeaders = headers.map((header) => {
-    if (header.key === "lbp" || header.key === "lbz") return <></>;
+    if (
+      header.key === "lbp" ||
+      header.key === "lbpPacijenta" ||
+      header.key === "lbz" ||
+      header.key === "uputId" ||
+      header.key === "obrisan"
+    )
+      return <></>;
     return (
       <th scope="col" key={header.key}>
         {header.value}
@@ -33,16 +40,25 @@ const Table = (props) => {
   if (
     tableType === "employees" ||
     tableType === "detailedResultPreview" ||
-    tableType === "admissionVisits"
+    tableType === "admissionVisits" ||
+    tableType === "admissionsFinish" ||
+    tableType === "patients"
   ) {
     listHeaders.push(<th scope="col"></th>);
     listHeaders.push(<th scope="col"></th>);
   }
-  if (tableType === "searchVisits" || tableType === "unrealizedLabReferrals") {
+  if (
+    tableType === "searchVisits" ||
+    tableType === "unrealizedLabReferrals" ||
+    tableType === "admissions" ||
+    tableType === "referralsStationary" ||
+    tableType === "referrals"
+  ) {
     listHeaders.push(<th scope="col"></th>);
   }
 
   const handleButton = (key, entry) => {
+    console.log(entry);
     const value = entry.filter((element) => element[0] === key);
     handleClick(value[0][1]);
   };
@@ -60,7 +76,9 @@ const Table = (props) => {
   const info = tableContent.map((content) => {
     const entry = Object.entries(content).filter((item, index) => {
       for (let i = 0; i < headers.length; i++) {
-        if (headers[i].key === item[0]) return item[1];
+        if (headers[i].key === item[0]) {
+          return item[1] ? item[1] : "/";
+        }
       }
       return false;
     });
@@ -70,11 +88,22 @@ const Table = (props) => {
   const listTable = info.map((entry) => (
     <tr key={entry} onClick={() => handleRowClick(entry)}>
       {entry.map((element) => {
-        if (element[0] === "lbp" || element[0] === "lbz") return <></>;
+        if (
+          element[0] === "lbp" ||
+          element[0] === "lbpPacijenta" ||
+          element[0] === "lbz" ||
+          element[0] === "uputId" ||
+          element[0] === "obrisan"
+        )
+          return <></>;
         if (
           element[0] === "datumPregleda" ||
           element[0] === "zakazanDatum" ||
-          element[0] === "datumVremeKreiranja"
+          element[0] === "datumVremeKreiranja" ||
+          element[0] === "datumRodjenja" ||
+          element[0] === "datumVremePrijema" ||
+          element[0] === "datumVreme" ||
+          element[0] === "dob"
         ) {
           return (
             <td key={element} style={{ padding: "25px 0px" }}>
@@ -82,15 +111,15 @@ const Table = (props) => {
             </td>
           );
         }
-        if (element[0] === "datumVreme") {
-          return (
-            <td key={element} style={{ padding: "25px 0px" }}>
-              {new Date(element[1]).toLocaleDateString() +
-                " " +
-                new Date(element[1]).toLocaleTimeString()}
-            </td>
-          );
-        }
+        // if (element[0] === "datumVreme") {
+        //   return (
+        //     <td key={element} style={{ padding: "25px 0px" }}>
+        //       {new Date(element[1]).toLocaleDateString() +
+        //         " " +
+        //         new Date(element[1]).toLocaleTimeString()}
+        //     </td>
+        //   );
+        // }
 
         if (element[0] === "status") {
           if (element[1] === "neobradjeno") {
@@ -104,26 +133,6 @@ const Table = (props) => {
                   }}
                 >
                   <ImFileText2 />
-                </button>
-              </td>
-            );
-          } else {
-            return <></>;
-          }
-        }
-
-        if (element[0] === "odabir") {
-          if (entry[2][1] > new Date().getTime() - 2592000000) {
-            return (
-              <td style={{ width: "5%" }}>
-                <button
-                  className="buttonBlue"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleChooseReferral("lbz", entry);
-                  }}
-                >
-                  Odaberi uput
                 </button>
               </td>
             );
@@ -243,7 +252,7 @@ const Table = (props) => {
         }
         return (
           <td key={element} style={{ padding: "25px 0px" }}>
-            {element[1]}
+            {element[1] !== "" && element[1] ? element[1] : "/"}
           </td>
         );
       })}
@@ -286,12 +295,29 @@ const Table = (props) => {
             </button>
           </td>
         </>
+      ) : tableType === "referralsStationary" ? (
+        <>
+          <td style={{ width: "5%" }}>
+            <button
+              className="buttonBlue"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleChooseReferral("lbz", entry);
+              }}
+            >
+              Odaberi uput
+            </button>
+          </td>
+        </>
       ) : tableType === "employees" ? (
         <>
           <td style={{ width: "5%" }}>
             <button
               className="buttonIconBlue"
-              onClick={() => handleEditButton("lbz", entry)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleEditButton("lbz", entry);
+              }}
             >
               <ImPencil />
             </button>
@@ -308,18 +334,105 @@ const Table = (props) => {
             </button>
           </td>
         </>
-      ) : tableType === "detailedResultPreview" ? (
+      ) : tableType === "admissionsFinish" ? (
         <>
           <td style={{ width: "5%" }}>
-            <button className="buttonIconBlue">
-              <ImPencil />
+            <>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleAcceptAdmission(entry);
+                }}
+                disabled={
+                  entry[3][1] === "OTKAZAN" || entry[3][1] === "REALIZOVAN"
+                }
+                style={
+                  entry[3][1] === "OTKAZAN" || entry[3][1] === "REALIZOVAN"
+                    ? { backgroundColor: "#cacccf", borderColor: "#cacccf" }
+                    : {}
+                }
+              >
+                Prijem
+              </button>
+            </>
+          </td>
+          <td style={{ width: "5%" }}>
+            <>
+              <button
+                className={"searchCanceled"}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleButtonCanceled(entry);
+                }}
+                disabled={
+                  entry[3][1] === "OTKAZAN" || entry[3][1] === "REALIZOVAN"
+                }
+                style={
+                  entry[3][1] === "OTKAZAN" || entry[3][1] === "REALIZOVAN"
+                    ? { backgroundColor: "#cacccf", borderColor: "#cacccf" }
+                    : {}
+                }
+              >
+                Otkazi
+              </button>
+            </>
+          </td>
+        </>
+      ) : tableType === "admissions" ? (
+        <>
+          <td style={{ width: "5%" }}>
+            <>
+              <button
+                className={"searchCanceled"}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleButtonCanceled(entry);
+                }}
+                disabled={
+                  entry[3][1] === "OTKAZAN" || entry[3][1] === "REALIZOVAN"
+                }
+                style={
+                  entry[3][1] === "OTKAZAN" || entry[3][1] === "REALIZOVAN"
+                    ? { backgroundColor: "#cacccf", borderColor: "#cacccf" }
+                    : {}
+                }
+              >
+                Otkazi
+              </button>
+            </>
+          </td>
+        </>
+      ) : tableType === "referrals" ? (
+        <>
+          <td style={{ width: "5%" }}>
+            <button
+              className="buttonIcon"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleButton("uputId", entry);
+              }}
+            >
+              <ImBin />
             </button>
+          </td>
+        </>
+      ) : tableType === "detailedResultPreview" ? (
+        <>
+          <td style={{ width: "10%" }}>
+            <input
+              type="text"
+              placeholder="Rezultat"
+              onChange={(e) => {
+                onResultChange(e, entry);
+              }}
+            />
           </td>
           <td style={{ width: "5%" }}>
             <button
               className="buttonIconGreen"
               onClick={(e) => {
                 e.stopPropagation();
+                handleClick(entry);
               }}
             >
               <ImCheckmark />
@@ -390,6 +503,14 @@ const Table = (props) => {
                 e.stopPropagation();
                 handleCreateLabReportTab1(entry);
               }}
+              disabled={
+                entry[4][1] === "OTKAZANO" || entry[4][1] === "ZAVRSENO"
+              }
+              style={
+                entry[4][1] === "OTKAZANO" || entry[4][1] === "ZAVRSENO"
+                  ? { backgroundColor: "#cacccf", borderColor: "#cacccf" }
+                  : {}
+              }
             >
               Nalog
             </button>
@@ -401,7 +522,7 @@ const Table = (props) => {
     </tr>
   ));
   const numberOfItems = listTable.length;
-  const numberPerPage = 6;
+  const numberPerPage = 5;
   const pageLimit = 1;
   const numberOfPages = Math.ceil(numberOfItems / numberPerPage);
   const [currentPage, setCurrentPage] = useState(1);
@@ -428,15 +549,7 @@ const Table = (props) => {
       <div className="responsivnes">
         <table className=" myTable table table-hover table-bordered">
           <thead className="header">
-            <tr>
-              {listHeaders}
-              {(tableType === "patients" || tableType === "employees") && (
-                <>
-                  <th></th>
-                  <th></th>
-                </>
-              )}
-            </tr>
+            <tr>{listHeaders}</tr>
           </thead>
           <tbody className="familyFix">
             {listTable.slice(trimStart, trimEnd)}

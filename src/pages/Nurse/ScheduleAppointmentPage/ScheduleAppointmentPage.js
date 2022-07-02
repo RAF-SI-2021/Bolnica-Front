@@ -10,11 +10,13 @@ import {
   createAppointment,
   deleteAppointment,
   getAppointments,
+  updateAppointment,
 } from "../../../redux/actions/appointments";
 import DeleteAppointment from "../../../components/DeleteAppointment/DeleteAppointment";
 import { getEmployees } from "../../../redux/actions/employee";
 import { getPatients } from "../../../redux/actions/patients";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
+import CustomModal from "../../../components/CustomModal/CustomModal";
 
 const ScheduleAppointmentPage = () => {
   const dispatch = useDispatch();
@@ -27,38 +29,35 @@ const ScheduleAppointmentPage = () => {
     useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState({});
   const [appointmentIdDelete, setAppointmentIdDelete] = useState(1);
-  const [events, setEvents] = useState([
-    {
-      id: 1,
-      startAt: "2022-04-08T08:00:00.000Z",
-      endAt: "2022-04-08T09:00:00.000Z",
-      summary: "Prvi pregled",
-      color: "#336cfb",
-      calendarID: "work",
-    },
-  ]);
+  const [events, setEvents] = useState([]);
+  const [cancelAppointmentId, setCancelAppointmentId] = useState(-1);
+  const [modalSuccess, setModalSuccess] = useState(false);
+  const [modalError, setModalError] = useState(false);
+
   useEffect(() => {
     dispatch(getEmployees());
     dispatch(getPatients());
   }, []);
 
   useEffect(() => {
-    if (employees.length > 0) {
-      setSelectedDoctor(employees[0]);
-      getAppointments(employees[0].lbz);
-    }
+    setSelectedDoctor(employees[0]);
+
+    if (employees[0]) dispatch(getAppointments(employees[0].lbz));
   }, [employees]);
 
   useEffect(() => {
     if (appointments.length > 0) {
+      const newEvents = appointments.filter((appo) =>
+        appo.statusPregleda === "ZAKAZANO" ? appo : false
+      );
       setEvents(
-        appointments.map((appointment) => {
+        newEvents.map((appointment) => {
           const date = new Date(appointment.datumIVremePregleda);
           return {
-            id: 1,
+            id: appointment.zakazaniPregledId,
             startAt: date.toISOString(),
             endAt: date.addHours(1).toISOString(),
-            summary: `Pacijent: ${appointment.pacijent.ime} ${appointment.pacijent.prezime} - ${appointment.statusPregleda}, Status prispeca: ${appointment.prispecePacijenta}`,
+            summary: `Pacijent: ${appointment.pacijent.ime} ${appointment.pacijent.prezime}`,
             color: "#336cfb",
             calendarID: "work",
           };
@@ -79,40 +78,69 @@ const ScheduleAppointmentPage = () => {
     dispatch(getAppointments(lbz));
   };
 
+  const setCancelAppointment = (id) => {
+    setDeleteAppointmentVisible(true);
+    setCancelAppointmentId(id);
+  };
+
   const createNewAppointment = (patientId, date, examinationType, note) => {
-    const newEvent = {
-      id: events.length + 1,
-      startAt: date.toISOString(),
-      endAt: date.addHours(1).toISOString(),
-      summary: events.length + 1 + ". pregled",
-      color: "#336cfb",
-      calendarID: "work",
-    };
     setNewAppointmentVisible(false);
-    setEvents([...events, newEvent]);
+    console.log({
+      lbz: selectedDoctor.lbz,
+      lbp: patientId,
+      dateAndTimeOfAppointment: date,
+      note,
+      // examinationType,
+    });
     dispatch(
-      createAppointment({
-        lbz: selectedDoctor.lbz,
-        lbp: patientId,
-        dateAndTimeOfAppointment: date.toISOString(),
-        note,
-        // examinationType,
+      createAppointment(
+        {
+          lbz: selectedDoctor.lbz,
+          lbp: patientId,
+          dateAndTimeOfAppointment: date,
+          note,
+          // examinationType,
+        },
+        toggleModalSuccess,
+        toggleModalError
+      )
+    );
+  };
+
+  const deleteAppointmentClick = () => {
+    setDeleteAppointmentVisible(false);
+    console.log({
+      appointmentId: cancelAppointmentId,
+      appointmentStatus: "OTKAZANO",
+    });
+    dispatch(
+      updateAppointment({
+        appointmentId: cancelAppointmentId,
+        appointmentStatus: "OTKAZANO",
       })
     );
   };
 
-  const deleteAppointment = () => {
-    setDeleteAppointmentVisible(false);
-    dispatch((appointmentIdDelete) =>
-      deleteAppointment({ appointmentIdDelete })
-    );
-  };
+  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
+  const toggleModalError = () => setModalError(!modalError);
 
   return (
     <div className="page-container">
       <div>
         <Sidebar links={getSidebarLinks("nurse", 3)} />
       </div>
+      <CustomModal
+        title="Uspeh"
+        content="Uspesno zakazan pregled."
+        toggleModal={toggleModalSuccess}
+        isOpen={modalSuccess}
+      />
+      <CustomModal
+        title="Greška"
+        content="Doslo je do greške prilikom zakazivanja pregleda."
+        toggleModal={toggleModalError}
+        isOpen={modalError}
+      />
       {selectedDoctor && (
         <Dropdown className="dropdownButton">
           <Dropdown.Toggle variant="primary" id="dropdown-basic">
@@ -134,12 +162,12 @@ const ScheduleAppointmentPage = () => {
           </Dropdown.Menu>
         </Dropdown>
       )}
-      <div style={{ marginLeft: "15%", height: "100vh" }}>
+      <div style={{ marginLeft: "20%", height: "100vh" }}>
         <CustomCalendar
           events={events}
           setDate={setDate}
           setNewAppointmentVisible={setNewAppointmentVisible}
-          setDeleteAppointmentVisible={setDeleteAppointmentVisible}
+          setCancelAppointment={setCancelAppointment}
           setAppointmentIdDelete={setAppointmentIdDelete}
         />
       </div>
@@ -163,7 +191,7 @@ const ScheduleAppointmentPage = () => {
           avatarUrl={"nikolaSlika 1.jpg"}
           userName={"Dr. Paun"}
           userTitle={"Kardiolog"}
-          deleteAppointment={deleteAppointment}
+          deleteAppointment={deleteAppointmentClick}
           date={date}
         />
       ) : (

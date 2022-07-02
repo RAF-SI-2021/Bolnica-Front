@@ -73,11 +73,12 @@ export const getSidebarLinks = (role, activeId) => {
         path: "/nurse/register-patient",
         icon: <FaPlusCircle />,
         isActive: activeId === 4 ? true : false,
+        dividerAfter: true,
       },
       {
         id: 5,
         text: "Zakazivanje prijema",
-        path: "/nurse/infirmary/scheduling-appointment",
+        path: "/nurse/infirmary/schedule-admission",
         icon: <FaBriefcaseMedical />,
         isActive: activeId === 5 ? true : false,
       },
@@ -132,18 +133,18 @@ export const getSidebarLinks = (role, activeId) => {
         isActive: activeId === 1 ? true : false,
       },
       {
-        id: 2,
-        text: "Prijem pacijenata",
-        path: "/technician/patient-admission",
-        icon: <FaUserInjured />,
-        isActive: activeId === 2 ? true : false,
-      },
-      {
         id: 3,
         text: "Zakazivanje posete",
         path: "/technician/visits",
         icon: <FaPlusCircle />,
         isActive: activeId === 3 ? true : false,
+      },
+      {
+        id: 2,
+        text: "Prijem pacijenata",
+        path: "/technician/patient-admission",
+        icon: <FaUserInjured />,
+        isActive: activeId === 2 ? true : false,
       },
       {
         id: 4,
@@ -262,13 +263,6 @@ export const getSidebarLinks = (role, activeId) => {
         icon: <MdCalendarToday />,
         isActive: activeId === 3 ? true : false,
         dividerAfter: true,
-      },
-      {
-        id: 5,
-        text: "Kreiraj uput",
-        path: "/create-refferal",
-        icon: <GiNotebook />,
-        isActive: activeId === 5 ? true : false,
       },
       {
         id: 6,

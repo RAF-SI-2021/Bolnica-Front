@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchPatientsHistory } from "../../api";
 import { getTableHeaders } from "../../commons/tableHeaders";
+import { getPatientStates } from "../../redux/actions/patientsStates";
 import Table from "../Table/Table";
 const History = (props) => {
   const { lbp, toggleClass2 } = props;
@@ -10,6 +11,7 @@ const History = (props) => {
   const [form2, setForm2] = useState();
   const [patHistory, setPatHistory] = useState();
   const dispatch = useDispatch();
+  const patientStates = useSelector((state) => state.patientStates);
 
   let formatted;
   const onChangeDateHandler = (e) => {
@@ -47,57 +49,17 @@ const History = (props) => {
   function handleGet(event) {
     event.preventDefault();
     // if (form.length > 0 && form2.length > 0)
-    dispatch(fetchPatientsHistory({ ...form, ...form2, lbp }));
+    dispatch(getPatientStates({ ...form, ...form2, lbp }));
   }
-
-  function handleGetTabel() {
-    setPatHistory(!patHistory);
-  }
-
-  const demoPatientHistory = [
-    {
-      stanjePacijenta: 1,
-      lbpPacijenta: 123,
-      lbzPacijenta: "000",
-      datumPregleda: "2022-03-03",
-      temperatura: "37,4",
-      krvniPritisak: "180/120",
-      puls: "100",
-      primenjeneTerapije: "nista",
-      opis: "dobar je",
-    },
-    {
-      stanjePacijenta: 2,
-      lbpPacijenta: 456,
-      lbzPacijenta: "000",
-      datumPregleda: "2022-03-03",
-      temperatura: "37,4",
-      krvniPritisak: "180/120",
-      puls: "100",
-      primenjeneTerapije: "nista",
-      opis: "dobar je",
-    },
-    {
-      stanjePacijenta: 3,
-      lbpPacijenta: 789,
-      lbzPacijenta: "000",
-      datumPregleda: "2022-03-03",
-      temperatura: "37,4",
-      krvniPritisak: "180/120",
-      puls: "100",
-      primenjeneTerapije: "nista",
-      opis: "dobar je",
-    },
-  ];
 
   let table;
   let button;
 
-  if (patHistory) {
+  if (patientStates && patientStates.length > 0) {
     table = (
       <Table
-        headers={getTableHeaders("patientsHistory")}
-        tableContent={demoPatientHistory}
+        headers={getTableHeaders("patientStates")}
+        tableContent={patientStates}
       />
     );
     button = (
@@ -105,7 +67,12 @@ const History = (props) => {
         Registruj novo stanje
       </button>
     );
-  }
+  } else
+    table = (
+      <p className="form-section-heading">
+        Trenutno ne postoji istorija stanja
+      </p>
+    );
 
   return (
     <div>
@@ -139,8 +106,7 @@ const History = (props) => {
             className="margin-right"
           />
 
-          {/* <button onClick={handleGet}>Pretraži</button> */}
-          <button type="button" onClick={handleGetTabel}>
+          <button type="button" onClick={handleGet}>
             Pretraži
           </button>
         </div>

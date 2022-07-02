@@ -4,6 +4,7 @@ import Sidebar from "../../../components/Sidebar/Sidebar";
 import { createPatient } from "../../../redux/actions/patients";
 import { useNavigate } from "react-router";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
+import CustomModal from "../../../components/CustomModal/CustomModal";
 
 const initialState = {
   jmbg: "",
@@ -29,10 +30,12 @@ const initialState = {
   datumVremeSmrti: new Date(),
 };
 
-const RecepcionistAddPatientPage = () => {
+function RegistrationPatientPage() {
   const [form, setForm] = useState(initialState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [modalSuccess, setModalSuccess] = useState(false);
+  const [modalError, setModalError] = useState(false);
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -53,11 +56,34 @@ const RecepcionistAddPatientPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createPatient({ ...form, pol: "MUSKI" }));
-    navigate("/recepcionist");
+    dispatch(
+      createPatient(
+        { ...form, pol: "MUSKI" },
+        toggleModalSuccess,
+        toggleModalError
+      )
+    );
   };
+
+  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
+  const toggleModalError = () => setModalError(!modalError);
+  const navigateToHomepage = () => navigate("/recepcionist");
+
   return (
     <div style={{ marginLeft: "20%" }}>
+      <CustomModal
+        title="Uspeh"
+        content="Uspesno registrovan pacijent."
+        toggleModal={toggleModalSuccess}
+        isOpen={modalSuccess}
+        handleClick={navigateToHomepage}
+      />
+      <CustomModal
+        title="Greška"
+        content="Doslo je do greške prilikom kreiranja pacijenta."
+        toggleModal={toggleModalError}
+        isOpen={modalError}
+      />
       <div className="sidebar-link-container">
         <Sidebar links={getSidebarLinks("recepcionist", 2)} />
       </div>
@@ -187,9 +213,9 @@ const RecepcionistAddPatientPage = () => {
               Porodicni status
             </option>
             <option value="OBA_RODITELJA">Oba roditelja</option>
-            <option value="RAZDVOJENI">Roditelj razdvojeni</option>
+            <option value="RAZDVOJENI">Roditelji razdvojeni</option>
             <option value="RAZVEDENI">Razvedeni</option>
-            <option value="JEDAN_RODITELJ">Jedan roditelje</option>
+            <option value="JEDAN_RODITELJ">Jedan roditelj</option>
             <option value="BEZ_RODITELJA">Bez roditelja</option>
             <option value="USVOJEN">Usvojen</option>
           </select>
@@ -278,6 +304,5 @@ const RecepcionistAddPatientPage = () => {
       </form>
     </div>
   );
-};
-
-export default RecepcionistAddPatientPage;
+}
+export default RegistrationPatientPage;

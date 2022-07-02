@@ -20,6 +20,8 @@ import ActionConfirmationModal from "../../../components/ActionConfirmationModal
 import { useEffect } from "react";
 import { getPatients } from "../../../redux/actions/patients";
 import { getEmployees } from "../../../redux/actions/employee";
+import CustomModalAnswer from "../../../components/CustomModalAnswer/CustomModalAnswer";
+import { getDepartments } from "../../../redux/actions/departments";
 
 const initialStateForm = {
   lbp: "",
@@ -35,44 +37,76 @@ const AdmissionPage = () => {
 
   const referrals = useSelector((state) => state.referrals);
   const employees = useSelector((state) => state.employees);
+  const departments = useSelector((state) => state.departments);
   const patients = useSelector((state) => state.patients);
-
+  const visits = useSelector((state) => state.visits);
   const [disable, setDisable] = useState(true);
   const dispatch = useDispatch();
   const [form, setForm] = useState(initialStateForm);
   const [formLbp, setFormLbp] = useState(initialStateFormLbp);
-  const [value, setValue] = useState();
+  const [value, setValue] = useState("");
   const [valueLbp, setValueLbp] = useState();
   const [referralTableContent, setReferralTableContent] = useState([]);
-
   const [isClicked1, setClicked1] = useState(true);
   const [isClicked2, setClicked2] = useState(false);
+  const [modalSuccess, setModalSuccess] = useState(false);
+  const [modalError, setModalError] = useState(false);
+  const [modalConfirm, setModalConfirm] = useState(false);
+  const [modalSuccess2, setModalSuccess2] = useState(false);
+  const [modalError2, setModalError2] = useState(false);
+  const [modalConfirm2, setModalConfirm2] = useState(false);
+  const [entry, setEntry] = useState();
+  const [entry2, setEntry2] = useState();
+  const [visitsTableContent, setVisitsTableContent] = useState([]);
 
   useEffect(() => {
-    // dispatch(searchLabVisits(dateValue));
+    dispatch(searchLabVisits({}));
+    dispatch(getDepartments());
     dispatch(getPatients());
     dispatch(getEmployees());
   }, []);
 
   useEffect(() => {
-    setReferralTableContent(
-      referrals.map((referral) => {
-        const employee = employees.find(
-          (employee) => employee.lbz === referral.lbz
-        );
-        return {
-          ...referral,
-          ...employee,
-        };
-      })
-    );
-  }, [referrals]);
+    if (
+      referrals.length > 0 &&
+      employees.length > 0 &&
+      departments.length > 0
+    ) {
+      setReferralTableContent(
+        referrals
+          .filter((referral) =>
+            referral.tip === "LABORATORIJA" ? referral : false
+          )
+          .map((referral) => {
+            const employee = employees.find(
+              (employee) => employee.lbz === referral.lbz
+            );
+            const izOdeljenja = departments.find(
+              (department) => department.odeljenjeId === referral.izOdeljenjaId
+            );
+            const zaOdeljenje = departments.find(
+              (department) => department.odeljenjeId === referral.zaOdeljenjeId
+            );
+            return {
+              ...referral,
+              ...employee,
+              izOdeljenjaNaziv: izOdeljenja ? izOdeljenja.naziv : "",
+              zaOdeljenjeNaziv: zaOdeljenje ? zaOdeljenje.naziv : "",
+            };
+          })
+      );
+      console.log(referralTableContent);
+    }
+  }, [referrals, employees, departments]);
 
-  const visits = useSelector((state) => state.visits);
-  console.log(visits);
-  console.log(employees);
-  console.log(referrals);
-  console.log(referralTableContent);
+  useEffect(() => {
+    console.log(visits);
+    setVisitsTableContent(
+      visits.filter((visit) =>
+        visit.statusPregleda === "ZAKAZANO" ? visit : false
+      )
+    );
+  }, [visits]);
 
   const toggleClass1 = () => {
     if (!isClicked1) {
@@ -96,37 +130,29 @@ const AdmissionPage = () => {
     console.log({ ...form });
     dispatch(getReferrals({ ...form }));
   };
-  const handleSubmitValue = (e) => {
-    e.preventDefault();
-    dispatch(getUnprocessedReferrals(value));
-  };
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    setDisable(e.target.value === "");
-  };
-  const handleChangeValue = (e) => {
-    setValue(e.target.value);
-    setDisable(e.target.value === "");
-    // dispatch(getUnprocessedReferrals(e.target.value));
-  };
+
   const handlePatientChange = (event) => {
     setForm({ ...form, lbp: event.target.value });
     console.log(event.target.value);
-    // dispatch(getUnprocessedReferrals(event.target.value));
     dispatch(searchLabVisits({ date: dateValue, lbp: event.target.value }));
   };
-  const handleChangeLbp = (e) => {
-    console.log(formLbp);
-    setFormLbp({ ...formLbp, [e.target.name]: e.target.value });
-    setDisable(e.target.value === "");
-    dispatch(searchLabVisits({ ...formLbp }, dateValue));
+  console.log(referralTableContent);
+
+  const handlePatientChange2 = (event) => {
+    console.log(event.target.value);
+    setValue(event.target.value);
+    dispatch(getUnprocessedReferrals(event.target.value));
   };
-  const handlecreateLabReport = (key, entry) => {
-    console.log(entry[0][1]);
-    dispatch(createLabReport(entry[0][1]));
-  };
-  const handleCancelVisit = (key, entry) => {
-    dispatch(updateLabVisits(entry[0][1], "Otkazano"));
+
+  const handlecreateLabReport = () => {
+    console.log(entry2);
+    dispatch(
+      createLabReport(entry2[0][1], toggleModalSuccess, toggleModalError)
+    );
+    console.log(value);
+    setTimeout(() => {
+      dispatch(getUnprocessedReferrals(value));
+    }, 100);
   };
 
   const handleCreateLabReportTab1 = (entry) => {
@@ -138,83 +164,28 @@ const AdmissionPage = () => {
     setValue(entry[2][1]);
   };
 
-  const demoUnrealizedLabReferrals = [
-    {
-      id: 1,
-      ime: "Marko",
-      prezime: "Markovic",
-      datumPregleda: new Date("December 30, 2018 17:30:00").getTime(),
-      odeljenje: "XX",
-      spisakAnaliza: "spisak",
-      komentar: "komentar",
-      kreiraj: "a",
-      /*       status: "obradjeno",
-       */
-    },
-    {
-      id: 2,
-      ime: "Petar",
-      prezime: "Markovic",
-      datumPregleda: new Date("December 30, 2018 17:30:00").getTime(),
-      odeljenje: "YY",
-      spisakAnaliza: "spisakAnaliza",
-      komentar: "koment",
-      kreiraj: "a",
-      /*       status: "obradjeno",
-       */
-    },
-    {
-      id: 3,
-      ime: "Mile",
-      prezime: "Miletic",
-      datumPregleda: new Date("May 05, 2022 10:30:00").getTime(),
-      odeljenje: "ZZ",
-      spisakAnaliza: "spisakAnaliza",
-      komentar: "koment",
-      kreiraj: "a",
-      /*       status: "neobradjeno",
-       */
-    },
-  ];
-  const demoLabVisits = [
-    {
-      id: 1,
-      lbpPacijenta: 1234,
-      lbzTehnicara: 321,
-      napomena: "napomena",
-      datumPregleda: new Date("December 30, 2019 17:30:00").getTime(),
-      statusPregledaZakazaniPacijenti: "XX",
-    },
-    {
-      id: 2,
-      lbpPacijenta: 456,
-      lbzTehnicara: 78910,
-      napomena: "nap",
-      datumPregleda: new Date("December 30, 2018 17:30:00").getTime(),
-      statusPregledaZakazaniPacijenti: "YY",
-    },
-  ];
-  /*   if (true) {
-    labRep = (
-      <Table
-        headers={getTableHeaders("unrealizedLabReferrals")}
-        tableContent={referrals}
-        handleClick={handleClick}
-        tableType="labReferrals"
-      />
+  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
+  const toggleModalError = () => setModalError(!modalError);
+  const toggleModalConfirm = (entry) => {
+    setModalConfirm(!modalConfirm);
+    if (entry) setEntry2(entry);
+  };
+  const toggleModalSuccess2 = () => setModalSuccess2(!modalSuccess2);
+  const toggleModalError2 = () => setModalError2(!modalError2);
+  const toggleModalConfirm2 = (entry) => {
+    setModalConfirm2(!modalConfirm2);
+    if (entry) setEntry(entry);
+  };
+
+  function handleButtonCanceled() {
+    dispatch(
+      updateLabVisits(
+        { id: entry[0][1], status: "OTKAZANO" },
+        toggleModalSuccess2,
+        toggleModalError2
+      )
     );
-  } else {
-    labRep = (
-      <div>
-        <CustomModal
-          title="Greska"
-          info="Lista neobradjenih uputa je prazna"
-          isSuccess={false}
-          id="false"
-        />
-      </div>
-    );
-  } */
+  }
   if (isClicked1) {
     tab = (
       <div>
@@ -247,20 +218,19 @@ const AdmissionPage = () => {
             </select>
           </div>
         </form>
-        {visits.length > 0 ? (
+        {visitsTableContent.length > 0 ? (
           <Table
-            /*              tableContent={visits}
-             */
             headers={getTableHeaders("scheduledVisits")}
-            // tableContent={visits}
-            tableContent={visits}
+            tableContent={visitsTableContent}
             tableType="admissionVisits"
             handleRowClick={handleRowClick}
-            handleCancelVisit={handleCancelVisit}
+            handleButtonCanceled={toggleModalConfirm2}
             handleCreateLabReportTab1={handleCreateLabReportTab1}
           />
         ) : (
-          <></>
+          <p className="form-section-heading">
+            Trenutno nema zakazanih pregleda.
+          </p>
         )}
       </div>
     );
@@ -270,48 +240,47 @@ const AdmissionPage = () => {
         <form onSubmit={handleSubmit} className="form-custom familyFix">
           <br></br>
           <div className="form-group-custom">
-            <input
-              className="margin-right"
-              placeholder="LBP"
-              onChange={handleChangeValue}
+            <select
+              className="form-select-custom small-select margin-right"
+              onChange={handlePatientChange2}
               name="lbp"
-              type="text"
               value={value}
-            />
-            <button
-              disabled={disable}
-              onClick={handleSubmitValue}
-              className={` ${disable ? "disabled" : ""}`}
-              type="button"
+              defaultValue=""
             >
-              Pretrazi
-            </button>
+              <option value="" disabled>
+                Izaberite pacijenta
+              </option>
+              {patients.length > 0 ? (
+                <>
+                  {patients.map((patient) => {
+                    return (
+                      <option key={patient.lbp} value={patient.lbp}>
+                        {patient.ime}
+                      </option>
+                    );
+                  })}
+                </>
+              ) : (
+                <></>
+              )}
+            </select>
           </div>
         </form>
-        {/*  {labRep} */}
-        {/*         {referrals.length > 0 && ( */}
-        {referrals.length > 0 && (
+        {referralTableContent.length > 0 ? (
           <Table
             headers={getTableHeaders("unrealizedLabReferrals")}
             tableContent={referralTableContent}
-            /*              tableContent={referrals}
-             */
-            handlecreateLabReport={handlecreateLabReport}
+            handlecreateLabReport={toggleModalConfirm}
             handleRowClick={handleRowClick}
             tableType="unrealizedLabReferrals"
-            handleClick={handleClick}
+            handleClick={toggleModalConfirm}
           />
-        )}
-        {/*         {referrals.length === 0 && ( */}
-        {demoUnrealizedLabReferrals.length === 0 && (
-          <div>
-            <CustomModal
-              title="Greska"
-              info="Lista neobradjenih uputa je prazna"
-              isSuccess={false}
-              id="false"
-            />
-          </div>
+        ) : value !== "" ? (
+          <p className="form-section-heading">
+            Trenutno ne postoji nijedan laboratorijski uput za datog pacijenta
+          </p>
+        ) : (
+          <></>
         )}
       </div>
     );
@@ -320,6 +289,49 @@ const AdmissionPage = () => {
     <div>
       <Sidebar links={getSidebarLinks("technician", 2)} />
       <div style={{ marginLeft: "20%" }}>
+        <CustomModalAnswer
+          title="Potvrda akcije"
+          content="Da li želite da zakažete posetu?"
+          toggleModal={toggleModalConfirm}
+          isOpen={modalConfirm}
+          handleClick={handlecreateLabReport}
+        />
+        <CustomModal
+          title="Uspeh"
+          content="Uspesno zakazana poseta."
+          toggleModal={toggleModalSuccess}
+          isOpen={modalSuccess}
+          handleClick={() => {
+            setClicked1(false);
+            setClicked2(true);
+            dispatch(searchLabVisits());
+          }}
+        />
+        <CustomModal
+          title="Greška"
+          content="Doslo je do greške prilikom zakazivanja posete."
+          toggleModal={toggleModalError}
+          isOpen={modalError}
+        />
+        <CustomModalAnswer
+          title="Potvrda akcije"
+          content="Da li želite da otkažete posetu?"
+          toggleModal={toggleModalConfirm2}
+          isOpen={modalConfirm2}
+          handleClick={handleButtonCanceled}
+        />
+        <CustomModal
+          title="Uspeh"
+          content="Uspesno otkazana poseta."
+          toggleModal={toggleModalSuccess2}
+          isOpen={modalSuccess2}
+        />
+        <CustomModal
+          title="Greška"
+          content="Doslo je do greške prilikom otkazivanja posete."
+          toggleModal={toggleModalError2}
+          isOpen={modalError2}
+        />
         <ul className="nav nav-tabs nav-justified">
           <li className="nav-item">
             <button

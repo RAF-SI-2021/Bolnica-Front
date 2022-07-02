@@ -7,6 +7,8 @@ import Registration from "../../../components/PatientsOfTheDepartment/Registrati
 import RegistrationOfVisits from "../../../components/PatientsOfTheDepartment/RegistrationOfVisits";
 import Visits from "../../../components/PatientsOfTheDepartment/Visits";
 import Sidebar from "../../../components/Sidebar/Sidebar";
+import { getPatientStates } from "../../../redux/actions/patientsStates";
+import { getPatientsVisits } from "../../../redux/actions/patientsVisits";
 
 const NurseInfirmaryPatientsOfTheDepartmentHistory = () => {
   const location = useLocation();
@@ -27,10 +29,13 @@ const NurseInfirmaryPatientsOfTheDepartmentHistory = () => {
     const pathParts = location.pathname.split("/");
     const values = pathParts[pathParts.length - 1];
     const perm = values.split(",");
-    setLbp(perm[1]);
-    setIme(perm[3]);
-    setPrezime(perm[5]);
-    setJmbg(perm[7]);
+    setLbp(perm[5]);
+    setIme(perm[7]);
+    setPrezime(perm[9]);
+    setJmbg(perm[11]);
+    dispatch(getPatientStates({ lbp: perm[5] }));
+    dispatch(getPatientsVisits(perm[5]));
+
     // dispatch(getEmployee(pathParts[pathParts.length - 1]));
   }, []);
 
@@ -78,7 +83,7 @@ const NurseInfirmaryPatientsOfTheDepartmentHistory = () => {
 
   let registration;
   if (isTab2) {
-    registration = <Registration lbp={lbp} />;
+    registration = <Registration lbp={lbp} toggleClass1={toggleClass1} />;
   }
 
   let visit;
@@ -88,7 +93,9 @@ const NurseInfirmaryPatientsOfTheDepartmentHistory = () => {
 
   let regOfVisits;
   if (isTab4) {
-    regOfVisits = <RegistrationOfVisits />;
+    regOfVisits = (
+      <RegistrationOfVisits lbp={lbp} toggleClass3={toggleClass3} />
+    );
   }
 
   return (
@@ -111,7 +118,7 @@ const NurseInfirmaryPatientsOfTheDepartmentHistory = () => {
               className={` ${isTab2 ? "active" : "disabled"}`}
               onClick={toggleClass2}
             >
-              Registrovanje stanja
+              Reg. stanja
             </button>
           </li>
           <li className="nav-item">
@@ -127,7 +134,7 @@ const NurseInfirmaryPatientsOfTheDepartmentHistory = () => {
               className={` ${isTab4 ? "active" : "disabled"}`}
               onClick={toggleClass4}
             >
-              Registracija posete
+              Reg. posete
             </button>
           </li>
         </ul>

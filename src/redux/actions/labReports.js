@@ -23,8 +23,19 @@ export const getLabReport = (id) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const verifyReport = (id, toggleModalSuccess) => async (dispatch) => {
+  try {
+    await api.verifyReportApi(id);
+    toggleModalSuccess();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const searchLabReports = (searchInfo) => async (dispatch) => {
   try {
+    console.log(searchInfo);
     const { data } = await api.searchLabReports({ searchInfo });
     console.log(data);
     dispatch({ type: GET_LAB_REPORTS, data });
@@ -33,15 +44,19 @@ export const searchLabReports = (searchInfo) => async (dispatch) => {
   }
 };
 
-export const createLabReport = (formData) => async (dispatch) => {
-  try {
-    console.log(formData);
-    const { data } = await api.createLabReport(formData);
-    dispatch({ type: CREATE_LAB_REPORT, data });
-  } catch (error) {
-    console.log(error);
-  }
-};
+export const createLabReport =
+  (formData, toggleModalSuccess, toggleModalError) => async (dispatch) => {
+    try {
+      console.log(formData);
+      const { data } = await api.createLabReport(formData);
+      console.log(data);
+      dispatch({ type: CREATE_LAB_REPORT, data });
+      if (toggleModalSuccess) toggleModalSuccess();
+    } catch (error) {
+      console.log(error);
+      toggleModalError();
+    }
+  };
 
 export const updateLabReport = (labReportData) => async (dispatch) => {
   try {

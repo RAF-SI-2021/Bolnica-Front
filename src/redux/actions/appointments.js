@@ -15,14 +15,18 @@ export const getAppointments = (lbz) => async (dispatch) => {
   }
 };
 
-export const createAppointment = (formData) => async (dispatch) => {
-  try {
-    const { data } = await api.createAppointment(formData);
-    dispatch({ type: CREATE_APPOINTMENT, data });
-  } catch (error) {
-    console.log(error);
-  }
-};
+export const createAppointment =
+  (formData, toggleModalSuccess, toggleModalError) => async (dispatch) => {
+    try {
+      console.log(formData);
+      const { data } = await api.createAppointment(formData);
+      dispatch({ type: CREATE_APPOINTMENT, data });
+      toggleModalSuccess();
+    } catch (error) {
+      console.log(error);
+      toggleModalError();
+    }
+  };
 
 export const updateAppointment = (appointmentData) => async (dispatch) => {
   try {
@@ -37,9 +41,9 @@ export const updateAppointment = (appointmentData) => async (dispatch) => {
   }
 };
 
-export const deleteAppointment = (formData) => async (dispatch) => {
+export const deleteAppointment = (id) => async (dispatch) => {
   try {
-    const { data } = await api.deleteAppointment(formData);
+    const { data } = await api.deleteAppointment(id);
     dispatch({ type: DELETE_APPOINTMENT, data });
   } catch (error) {
     console.log(error);

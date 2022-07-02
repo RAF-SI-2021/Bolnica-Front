@@ -14,6 +14,10 @@ export const getTableHeaders = (contentType) => {
         value: "LBZ",
       },
       {
+        key: "dob",
+        value: "Datum rodjenja",
+      },
+      {
         key: "contact",
         value: "Kontakt",
       },
@@ -29,10 +33,6 @@ export const getTableHeaders = (contentType) => {
         key: "profession",
         value: "Zanimanje",
       },
-      {
-        key: "department",
-        value: "Odeljenje",
-      },
     ];
   } else if (contentType === "patientPreview") {
     return [
@@ -45,6 +45,14 @@ export const getTableHeaders = (contentType) => {
         value: "Prezime",
       },
       {
+        key: "datumRodjenja",
+        value: "Datum rodjenja",
+      },
+      {
+        key: "jmbg",
+        value: "Jmbg",
+      },
+      {
         key: "kontaktTelefon",
         value: "Kontakt",
       },
@@ -52,10 +60,6 @@ export const getTableHeaders = (contentType) => {
         key: "email",
         value: "Email",
       },
-      // {
-      //   key: "zanimanje",
-      //   value: "Zanimanje",
-      // },
       {
         key: "lbp",
         value: "LBP",
@@ -78,6 +82,29 @@ export const getTableHeaders = (contentType) => {
       {
         key: "jmbg",
         value: "JMBG",
+      },
+    ];
+  } else if (contentType === "medicalReports") {
+    return [
+      {
+        key: "datumVremeKreiranja",
+        value: "Datum",
+      },
+      {
+        key: "objektivniNalaz",
+        value: "Objektivni nalaz",
+      },
+      {
+        key: "dijagnoza",
+        value: "Dijagnoza",
+      },
+      {
+        key: "predlozenaTerapija",
+        value: "Predlozena terapija",
+      },
+      {
+        key: "savet",
+        value: "Savet",
       },
     ];
   } else if (contentType === "patientsHistory") {
@@ -119,34 +146,22 @@ export const getTableHeaders = (contentType) => {
         value: "Opis",
       },
     ];
-  } else if (contentType === "patientsVisit") {
+  } else if (contentType === "patientsVisits") {
     return [
       {
-        key: "idPosete",
-        value: "ID posete",
-      },
-      {
-        key: "lbpPacijenta",
-        value: "LBP",
-      },
-      {
-        key: "lbzPacijenta",
-        value: "LBZ",
-      },
-      {
-        key: "datumPosete",
+        key: "datumVreme",
         value: "Datum",
       },
       {
-        key: "ime",
-        value: "Ime",
+        key: "imePosetioca",
+        value: "Ime posetioca",
       },
       {
-        key: "prezime",
-        value: "Prezime",
+        key: "prezimePosetioca",
+        value: "Prezime posetioca",
       },
       {
-        key: "jmbg",
+        key: "jmbgPosetioca",
         value: "JMBG",
       },
       {
@@ -167,6 +182,60 @@ export const getTableHeaders = (contentType) => {
       {
         key: "objektivniNalaz",
         value: "Objektivni nalaz",
+      },
+    ];
+  } else if (contentType === "dischargeLists") {
+    return [
+      {
+        key: "analize",
+        value: "Analize",
+      },
+      {
+        key: "anamneza",
+        value: "Anamneza",
+      },
+      {
+        key: "prateceDijagnoze",
+        value: "Preteće dijagnoze",
+      },
+      {
+        key: "terapija",
+        value: "Terapija",
+      },
+      {
+        key: "tokBolesti",
+        value: "Tok bolesti",
+      },
+      {
+        key: "zakljucak",
+        value: "Zaključak",
+      },
+    ];
+  } else if (contentType === "patientStates") {
+    return [
+      {
+        key: "datumVreme",
+        value: "Datum",
+      },
+      {
+        key: "temperatura",
+        value: "Temperatura",
+      },
+      {
+        key: "krvniPritisak",
+        value: "Krvni pritisak",
+      },
+      {
+        key: "puls",
+        value: "Puls",
+      },
+      {
+        key: "primenjeneTerapije",
+        value: "Primenjene terapije",
+      },
+      {
+        key: "opis",
+        value: "Opis stanja",
       },
     ];
   } else if (contentType === "diseaseHistory") {
@@ -203,12 +272,16 @@ export const getTableHeaders = (contentType) => {
   } else if (contentType === "labReportPreview") {
     return [
       {
-        key: "id",
+        key: "laboratorijskiRadniNalogId",
         value: "ID izvestaja",
       },
       {
-        key: "lbpPacijenta",
-        value: "LBP",
+        key: "datumVremeKreiranja",
+        value: "Datum kreiranja",
+      },
+      {
+        key: "statusObrade",
+        value: "Status obrade",
       },
       {
         key: "ime",
@@ -217,6 +290,33 @@ export const getTableHeaders = (contentType) => {
       {
         key: "prezime",
         value: "Prezime",
+      },
+    ];
+  } else if (contentType === "patientAdmissions") {
+    return [
+      {
+        key: "datumVremePrijema",
+        value: "Datum prijema",
+      },
+      {
+        key: "uputnaDijagnoza",
+        value: "Uputna dijagnoza",
+      },
+      {
+        key: "ime",
+        value: "Ime",
+      },
+      {
+        key: "prezime",
+        value: "Prezime",
+      },
+      {
+        key: "jmbg",
+        value: "JMBG",
+      },
+      {
+        key: "lbp",
+        value: "lbp",
       },
     ];
   } else if (contentType === "scheduledVisits") {
@@ -250,11 +350,11 @@ export const getTableHeaders = (contentType) => {
         value: "Napomena",
       },
     ];
-  } else if (contentType === "unrealizedLabReferrals") {
+  } else if (contentType === "referrals") {
     return [
       {
         key: "uputId",
-        value: "ID izvestaja",
+        value: "Id uputa",
       },
       {
         key: "tip",
@@ -263,10 +363,6 @@ export const getTableHeaders = (contentType) => {
       {
         key: "datumVremeKreiranja",
         value: "Datum",
-      },
-      {
-        key: "zahtevaneAnalize",
-        value: "Zahtevane analize",
       },
       {
         key: "komentar",
@@ -281,8 +377,86 @@ export const getTableHeaders = (contentType) => {
         value: "Prezime",
       },
       {
-        key: "kreiraj",
-        value: "",
+        key: "izOdeljenjaNaziv",
+        value: "Iz odeljenja",
+      },
+      {
+        key: "zaOdeljenjeNaziv",
+        value: "Za odeljenje",
+      },
+    ];
+  } else if (contentType === "unrealizedLabReferrals") {
+    return [
+      {
+        key: "tip",
+        value: "Tip",
+      },
+      {
+        key: "datumVremeKreiranja",
+        value: "Datum",
+      },
+      {
+        key: "komentar",
+        value: "Komentar",
+      },
+      {
+        key: "name",
+        value: "Ime",
+      },
+      {
+        key: "surname",
+        value: "Prezime",
+      },
+      {
+        key: "izOdeljenjaNaziv",
+        value: "Iz odeljenja",
+      },
+      {
+        key: "zaOdeljenjeNaziv",
+        value: "Za odeljenje",
+      },
+      {
+        key: "uputId",
+        value: "Uput ID",
+      },
+    ];
+  } else if (contentType === "referralsStationary") {
+    return [
+      {
+        key: "tip",
+        value: "Tip",
+      },
+      {
+        key: "datumVremeKreiranja",
+        value: "Datum",
+      },
+      {
+        key: "komentar",
+        value: "Komentar",
+      },
+      {
+        key: "uputnaDijagnoza",
+        value: "Dijagnoza",
+      },
+      {
+        key: "name",
+        value: "Ime",
+      },
+      {
+        key: "surname",
+        value: "Prezime",
+      },
+      {
+        key: "izOdeljenjaNaziv",
+        value: "Iz odeljenja",
+      },
+      {
+        key: "zaOdeljenjeNaziv",
+        value: "Za odeljenje",
+      },
+      {
+        key: "uputId",
+        value: "Uput ID",
       },
     ];
   } else if (contentType === "unrealizedReferrals") {
@@ -342,73 +516,109 @@ export const getTableHeaders = (contentType) => {
   } else if (contentType === "detailedResultPreview") {
     return [
       {
-        key: "analysisId",
-        value: "ID naloga",
-      },
-      {
-        key: "analysisName",
+        key: "skracenica",
         value: "Naziv analize",
       },
       {
-        key: "parameterId",
+        key: "parametarId",
         value: "ID parametra",
       },
       {
-        key: "parameterName",
+        key: "nazivParametra",
         value: "Naziv parametra",
       },
       {
-        key: "unit",
-        value: "Jedinica",
+        key: "jedinicaMere",
+        value: "Jedinica mere",
       },
       {
-        key: "lowerThreshold",
+        key: "donjaGranica",
         value: "Donja granica",
       },
       {
-        key: "upperThreshold",
+        key: "gornjaGranica",
         value: "Gornja granica",
       },
       {
-        key: "doctorName",
+        key: "name",
         value: "Ime lekara",
       },
       {
-        key: "doctorSurname",
+        key: "surname",
         value: "Prezime lekara",
-      }];
+      },
+    ];
+  } else if (contentType === "issuingResults") {
+    return [
+      {
+        key: "skracenica",
+        value: "Naziv analize",
+      },
+      {
+        key: "parametarId",
+        value: "ID parametra",
+      },
+      {
+        key: "nazivParametra",
+        value: "Naziv parametra",
+      },
+      {
+        key: "jedinicaMere",
+        value: "Jedinica mere",
+      },
+      {
+        key: "donjaGranica",
+        value: "Donja granica",
+      },
+      {
+        key: "gornjaGranica",
+        value: "Gornja granica",
+      },
+      {
+        key: "rezultat",
+        value: "Rezultat",
+      },
+      {
+        key: "name",
+        value: "Ime lekara",
+      },
+      {
+        key: "surname",
+        value: "Prezime lekara",
+      },
+    ];
   } else if (contentType === "visitPreview") {
     return [
-        {
-            key: "idOdeljenja",
-            value: "ID Odeljenja",
-        },
-        {
-            key: "nazivOdeljenja",
-            value: "Naziv odeljenja",
-        },
-        {
-            key: "idSobe",
-            value: "ID Sobe",
-        },
-        {
-            key: "lbp",
-            value: "LBP",
-        },
-        {
-            key: "ime",
-            value: "Ime",
-        },
-        {
-            key: "prezime",
-            value: "Prezime",
-        },
-        {
-            key: "jmbg",
-            value: "JMBG",
-        },
+      {
+        key: "idOdeljenja",
+        value: "ID Odeljenja",
+      },
+      {
+        key: "nazivOdeljenja",
+        value: "Naziv odeljenja",
+      },
+      {
+        key: "idSobe",
+        value: "ID Sobe",
+      },
+      {
+        key: "lbp",
+        value: "LBP",
+      },
+      {
+        key: "ime",
+        value: "Ime",
+      },
+      {
+        key: "prezime",
+        value: "Prezime",
+      },
+      {
+        key: "jmbg",
+        value: "JMBG",
+      },
     ];
-}else if (contentType === "patientsAdmissions") {
+  } else if (contentType === "patientsAdmissions") {
     return [
       {
         key: "id",
@@ -437,6 +647,41 @@ export const getTableHeaders = (contentType) => {
       {
         key: "komentarStacionar",
         value: "",
+      },
+    ];
+  } else if (contentType === "admissions") {
+    return [
+      {
+        key: "lbpPacijenta",
+        value: "LBP",
+      },
+      {
+        key: "zakazaniTerminPrijemaId",
+        value: "ID prijema",
+      },
+      {
+        key: "datumVremePrijema",
+        value: "Datum",
+      },
+      {
+        key: "statusTermina",
+        value: "Status prijema",
+      },
+      {
+        key: "napomena",
+        value: "Napomena",
+      },
+      {
+        key: "ime",
+        value: "Ime pacijenta",
+      },
+      {
+        key: "prezime",
+        value: "Prezime pacijenta",
+      },
+      {
+        key: "naziv",
+        value: "Odeljenje",
       },
     ];
   } else if (contentType === "hospitalRoom") {

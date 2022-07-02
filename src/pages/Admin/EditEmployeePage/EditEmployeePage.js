@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from "react-router";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import { updateEmployee, getEmployee } from "../../../redux/actions/employee";
 import { getSidebarLinks } from "../../../commons/sidebarLinks";
+import CustomModal from "../../../components/CustomModal/CustomModal";
+import { getDepartments } from "../../../redux/actions/departments";
 
 const initialState = {
   name: "",
@@ -29,17 +31,21 @@ function EditEmployeePage() {
   const dispatch = useDispatch();
   const [lbz, setLbz] = useState();
   const navigate = useNavigate();
-  const employee = useSelector((state) => state.employees);
+  const employee = useSelector((state) => state.employees)[0];
+  const departments = useSelector((state) => state.departments);
   const [form, setForm] = useState(initialState);
+  const [modalSuccess, setModalSuccess] = useState(false);
+  const [modalError, setModalError] = useState(false);
 
   useEffect(() => {
     const pathParts = location.pathname.split("/");
     setLbz(pathParts[pathParts.length - 1]);
     dispatch(getEmployee(pathParts[pathParts.length - 1]));
+    dispatch(getDepartments());
   }, []);
 
   useEffect(() => {
-    if (employee.length !== 0) {
+    if (employee && employee.length !== 0) {
       const dateOfBirth = new Date(employee.dob);
       var day = ("0" + dateOfBirth.getDate()).slice(-2);
       var month = ("0" + (dateOfBirth.getMonth() + 1)).slice(-2);
@@ -64,38 +70,12 @@ function EditEmployeePage() {
     }
   }, [employee]);
 
-  const departmentsDemo = [
-    {
-      id: 0,
-      name: "Prvo odeljenje",
-    },
-    {
-      id: 1,
-      name: "Drugo odeljenje",
-    },
-    {
-      id: 2,
-      name: "Trece odeljenje",
-    },
-  ];
-
-  const privilegesDemo = [
-    {
-      id: 0,
-      name: "Admin",
-    },
-    {
-      id: 1,
-      name: "Doktor",
-    },
-    {
-      id: 2,
-      name: "Sestra",
-    },
-  ];
-
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
+
+  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
+  const toggleModalError = () => setModalError(!modalError);
+  const navigateToHomepage = () => navigate("/admin/employee-preview");
 
   const onChangeDateHandler = (e) => {
     const date = new Date(e.target.value);
@@ -114,18 +94,33 @@ function EditEmployeePage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(
-      updateEmployee({
-        ...form,
-        department: 1,
-        newPassword: "",
-        oldPassword: "",
-        lbz,
-      })
+      updateEmployee(
+        {
+          ...form,
+          newPassword: "",
+          oldPassword: "",
+          lbz,
+        },
+        toggleModalSuccess,
+        toggleModalError
+      )
     );
-    navigate("/admin/employee-preview");
   };
   return (
     <div style={{ marginLeft: "20%" }}>
+      <CustomModal
+        title="Uspeh"
+        content="Uspesno izmenjen zaposleni."
+        toggleModal={toggleModalSuccess}
+        isOpen={modalSuccess}
+        handleClick={navigateToHomepage}
+      />
+      <CustomModal
+        title="Greška"
+        content="Doslo je do greške prilikom imene zaposlenog."
+        toggleModal={toggleModalError}
+        isOpen={modalError}
+      />
       <div className="sidebar-link-container">
         <Sidebar links={getSidebarLinks("admin", 0)} />
       </div>
@@ -215,7 +210,7 @@ function EditEmployeePage() {
             >
               <option value="">Titula</option>
               <option value="Prof. dr. med.">Prof. dr. med.</option>
-              <option value="Dr med. spec.">Dr med. spec.</option>
+              <option value="Dr med.spec.">Dr med.spec.</option>
               <option value="Dr. sci. med">Dr sci. med.</option>
               <option value="Dipl. farm.">Dipl. farm.</option>
               <option value="Mag. farm.">Mag. farm.</option>
@@ -246,22 +241,31 @@ function EditEmployeePage() {
               <option value="Spec. hirurg">Spec. hirurg</option>
             </select>
             <select
-              onChange={handleChange}
               className="form-select-custom small-select margin-left"
-              aria-label="Default select example"
+              onChange={handleChange}
               name="department"
               value={form.department}
+              defaultValue=""
             >
               <option value="" disabled>
-                Odeljenje
+                Izaberite odeljenje
               </option>
-              {departmentsDemo.map((department) => {
-                return (
-                  <option key={department.id} value="0">
-                    {department.name}
-                  </option>
-                );
-              })}
+              {departments.length > 0 ? (
+                <>
+                  {departments.map((department) => {
+                    return (
+                      <option
+                        key={department.odeljenjeId}
+                        value={department.odeljenjeId}
+                      >
+                        {department.naziv} - {department.bolnica.skracenNaziv}
+                      </option>
+                    );
+                  })}
+                </>
+              ) : (
+                <></>
+              )}
             </select>
           </div>
           <div className="form-group-custom">

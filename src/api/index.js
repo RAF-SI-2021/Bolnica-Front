@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://bolnica.k8s.elab.rs:32264" });
+const API = axios.create({ baseURL: "http://localhost:9092" });
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("token")) {
@@ -24,24 +24,29 @@ export const deleteDemo = (id) => API.delete(`/demos/${id}`);
 // GENERAL
 
 export const login = (formData) =>
-  API.post("/bolnica-user/api/login", formData);
+  API.post("/bolnica-user-service/api/login", formData);
 export const resetPassword = (email) =>
-  API.post("/bolnica-user/api/forgot-password", email);
+  API.post("/bolnica-user-service/api/forgot-password", email);
 
 // APPOINTMENTS
 
 export const fetchAppointments = (data) =>
   API.post(`/bolnica-management-service/api/list-appointments-by-lbz`, data);
-export const searchLabReports = (data) =>
-  API.post(
-    `/bolnica-laboratory-service/api/fetch-laboratory-work-orders?page=1&size=5`,
-    data
-  );
 export const createAppointment = (data) =>
   API.post("/bolnica-management-service/api/set-appointment", data);
 export const deleteAppointment = (id) => API.delete(`/demos/${id}`);
 export const updateAppointment = (data) =>
   API.put(`/bolnica-management-service/api/update-appointment-status`, data);
+
+// PATIENT STATES
+
+export const fetchPatientStates = (data) =>
+  API.post(`/bolnica-management-service/api/searchPatientStateHistory`, data);
+export const createPatientState = (data) =>
+  API.put("/bolnica-management-service/api/setPatientsState", data);
+export const deletePatientState = (id) => API.delete(`/demos/${id}`);
+export const updatePatientState = (data) =>
+  API.put(`/bolnica-management-service/api/update-State-status`, data);
 
 // REFERRALS
 
@@ -54,11 +59,19 @@ export const fetchUnprocessedReferrals = (data) =>
   );
 export const createReferral = (data) =>
   API.post("/bolnica-laboratory-service/api/create-uput", data);
-export const deleteReferral = (id) => API.delete(`/demos/${id}`);
+export const deleteReferral = (id) =>
+  API.delete(`/bolnica-laboratory-service/api/delete-uput?uputId=${id}`);
 export const updateReferral = (data) =>
   API.put(`/bolnica-management-service/api/update-referrals-status`, data);
 export const searchReferrals = (lbp, type, status) =>
   API.post("/bolnica-management-service/api/", lbp, type, status);
+
+//ANALYSIS RESULTS
+
+export const fetchAnalysisResults = (id) =>
+  API.get(`/bolnica-laboratory-service/api/fetch-analysis-results?id=${id}`);
+export const saveAnalysisResultApi = (data) =>
+  API.put(`/bolnica-laboratory-service/api/save-analysis-result`, data);
 
 // LAB REPORTS
 
@@ -73,9 +86,16 @@ export const createLabReport = (data) =>
   API.post(
     `/bolnica-laboratory-service/api/create-laboratory-work-order?uputId=${data}`
   );
+export const verifyReportApi = (id) =>
+  API.put(`/bolnica-laboratory-service/api/verify-work-order?id=${id}`);
 export const deleteLabReport = (id) => API.delete(`/demos/${id}`);
 export const updateLabReport = (data) =>
   API.put(`/bolnica-management-service/api/update-lab-report-status`, data);
+export const searchLabReports = (data) =>
+  API.post(
+    `/bolnica-laboratory-service/api/fetch-laboratory-work-orders?page=1&size=5`,
+    data
+  );
 
 // EXAMINATIONS
 
@@ -88,55 +108,62 @@ export const fetchExaminations = (lbp) =>
       on: null,
     }
   );
+
+// RECORDS
+
 export const createRecord = (formData) =>
   API.post(
     `/bolnica-management-service/api/create-examination-report`,
     formData
   );
-
-// RECORDS
-
 export const fetchRecord = (lbp) =>
   API.get(`/bolnica-management-service/api/fetch-zdravstveni-karton/${lbp}`);
+export const addVaccine = (formData) =>
+  API.post(`/bolnica-management-service/api/add-vaccine`, formData);
+export const addAlergen = (formData) =>
+  API.post(`/bolnica-management-service/api/add-allergen`, formData);
+export const updateRecord = (formData) =>
+  API.put(`/bolnica-management-service/api/update-medical-record`, formData);
 
 // EMPLOYEES
 export const fetchEmployees = () =>
-  API.post(`/bolnica-user/api/list-employees?page=1&size=5`, {
-    department: 1,
-  });
+  API.post(`/bolnica-user-service/api/list-employees?page=1&size=5`, {});
 export const fetchEmployeesDep = (id) =>
-  API.post(`/bolnica-user/api/list-employees?page=1&size=5`, {
+  API.post(`/bolnica-user-service/api/list-employees?page=1&size=5`, {
     department: id,
   });
 export const fetchEmployee = (lbz) =>
-  API.get(`/bolnica-user/api/get-employee/${lbz}`);
+  API.get(`/bolnica-user-service/api/get-employee/${lbz}`);
 export const createEmployee = (formData) =>
-  API.post(`/bolnica-user/api/create-employee`, formData);
+  API.post(`/bolnica-user-service/api/create-employee`, formData);
 export const updateEmployee = (formData) =>
-  API.put(`/bolnica-user/api/update-employee`, formData);
+  API.put(`/bolnica-user-service/api/update-employee`, formData);
 export const deleteEmployee = (lbz) =>
-  API.delete(`/bolnica-user/api/remove-employee/${lbz}`);
+  API.delete(`/bolnica-user-service/api/remove-employee?lbz=${lbz}`);
 export const searchEmployees = (searchValues) =>
-  API.post("/employees", searchValues);
+  API.post(
+    "/bolnica-user-service/api/list-employees?page=1&size=5",
+    searchValues
+  );
 
 // DEPARTMENTS
 
 export const fetchDepartments = () =>
-  API.get(`/bolnica-management-service/api/fetch-departments`);
+  API.get(`/bolnica-user-service/api/departments`);
+
+// HOSPITALS
+
+export const fetchHospitals = () =>
+  API.get(`/bolnica-user-service/api/hospitals`);
 
 // PATIENTS
 
 export const fetchPatients = () =>
   API.post(`/bolnica-management-service/api/filter-patients`, {});
-export const fetchPatientsVisits = (formData) =>
-  API.post(`/bolnica-management-service/api/filter-patients`, {
-    formData,
-  });
-export const createPatientVisit = (lbp, formData) =>
-  API.post(`/bolnica-management-service/api/filter-patients`, {
-    lbp,
-    formData,
-  });
+export const fetchPatientsVisits = (lbp) =>
+  API.get(`/bolnica-management-service/api/patient-visits/${lbp}`);
+export const createPatientVisit = (formData) =>
+  API.post(`/bolnica-management-service/api/patient-visit/save`, formData);
 export const fetchPatient = (lbp) =>
   API.get(`/bolnica-management-service/api/fetch-patient/${lbp}`);
 export const createPatient = (formData) =>
@@ -146,7 +173,7 @@ export const updatePatient = (formData, lbp) =>
 export const deletePatient = (lbp) =>
   API.delete(`/bolnica-management-service/api/remove-patient/${lbp}`);
 export const searchPatients = (searchValues) =>
-  API.post("/patients", searchValues);
+  API.post("/bolnica-management-service/api/filter-patients", searchValues);
 
 // DISEASES
 export const fetchDiseases = (lbp, data) =>
@@ -164,6 +191,8 @@ export const fetchNumberOfLabAppointments = (dateNum) =>
 //LAB VISITS
 export const searchLabVisits = (data) =>
   API.post("/bolnica-laboratory-service/api/get-lab-examinations", data);
+export const getVisitCount = (data) =>
+  API.post("/bolnica-laboratory-service/api/get-lab-examination-count", data);
 export const updateLabVisits = (data) =>
   API.put("/bolnica-laboratory-service/api/set-lab-examination-status", data);
 export const createVisit = (formData) =>
@@ -172,13 +201,48 @@ export const createVisit = (formData) =>
     formData
   );
 
+//ADMISSIONS
+export const searchAdmissions = (data) =>
+  API.post("/bolnica-management-service/api/get-lab-examinations", data);
+export const getAdmissions = (data) =>
+  API.post(
+    `/bolnica-management-service/api/get-zakazani-termini-prijema`,
+    data
+  );
+export const updateAdmission = (data) =>
+  API.put(
+    "/bolnica-management-service/api/update-zakazani-termin-prijema-status",
+    data
+  );
+export const createAdmission = (formData) =>
+  API.post(
+    "/bolnica-management-service/api/create-zakazani-termin-prijema",
+    formData
+  );
+
 //PATIENTS ADMISSIONS
-export const searchPatientsAdmissions = (lbp, dateValue) =>
-  API.post("/patientsAdmissions", lbp, dateValue);
+export const searchPatientsAdmissions = (data) =>
+  API.post("/bolnica-management-service/api/searchHospitalizedPatients", data);
 export const updatePatientAdmission = (id, status) =>
   API.put("/patientsAdmissions", id, status);
-export const createPatientAdmission = (id, status) =>
+export const createPatientAdmission = (data) =>
+  API.post("/bolnica-management-service/api/hospitalizePatient", data);
+
+//DISCHARGE LISTS
+export const getDischargeLists = (data) =>
+  API.post("/bolnica-management-service/api/search-otpusna-lista", data);
+export const updateDischargeList = (id, status) =>
   API.put("/patientsAdmissions", id, status);
+export const createDischargeList = (data) =>
+  API.post("/bolnica-management-service/api/add-otpusna-lista", data);
+
+//MEDICAL REPORTS
+export const getMedicalReports = (data) =>
+  API.post("/bolnica-management-service/api/search-lekarski-izvestaj", data);
+export const updateMedicalReport = (id, status) =>
+  API.put("/patientsAdmissions", id, status);
+export const createMedicalReport = (data) =>
+  API.post("/bolnica-management-service/api/add-lekarski-izvestaj", data);
 
 //HOSPITAL ROOMS
 export const searchHospitalRooms = (pbo) => API.post("/hospitalRooms", pbo);

@@ -26,7 +26,7 @@ const SingleAppointmentNurse = ({ appointment, updateAppointmentStatus }) => {
             <span className="text2">
               Starost: {age}, Pol: {pacijent.pol}
             </span>
-            <div className="d-flex">
+            {/* <div className="d-flex">
               <button
                 type="button"
                 className="btn customButton1"
@@ -51,7 +51,7 @@ const SingleAppointmentNurse = ({ appointment, updateAppointmentStatus }) => {
               <button type="button" className="btn customButton4">
                 Završeno
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

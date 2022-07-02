@@ -16,22 +16,21 @@ import RegistrationPage from "./pages/Admin/RegistrationPage/RegistrationPage";
 // DOCTOR
 import DoctorHomepage from "./pages/Doctor/DoctorHomepage/DoctorHomepage";
 import PatientPreview from "./pages/Doctor/PatientPreviewPage/PatientPreviewPage";
-import EditPatientPage from "./pages/Doctor/EditPatientPage/EditPatientPage";
-import CreateRefferalPage from "./pages/Doctor/CreateRefferalPage/CreateRefferalPage";
 import PatientExamination from "./pages/Doctor/PatientExaminationPage/PatientExaminationPage";
 import DoctorCalendarPage from "./pages/Doctor/DoctorCalendarPage/DoctorCalendarPage";
 import PatientStationaryPage from "./pages/Doctor/PatientStationaryPage/PatientStationaryPage";
+import PatientStationaryWorkspacePage from "./pages/Doctor/PatientStationaryPage/PatientStationaryWorkspacePage";
 
 // NURSE
 import NurseHomepage from "./pages/Nurse/NurseHomepage/NurseHomepage";
 import PatientPreviewNurses from "./pages/Nurse/PatientPreviewPageNurses/PatientPreviewPageNurses";
+import EditPatientPage from "./pages/Nurse/EditPatientPage/EditPatientPage";
 import RegistrationPatientPage from "./pages/Nurse/RegistrationPatientPage/RegistrationPatientPage";
 import ScheduleAppointmentPage from "./pages/Nurse/ScheduleAppointmentPage/ScheduleAppointmentPage";
-
-// NURSE INFIRMARY
 import NurseInfirmaryPatientAdmission from "./pages/Nurse/NurseInfirmaryPatientAdmission/NurseInfirmaryPatientAdmission";
 import NurseInfirmaryPatientsOfTheDepartment from "./pages/Nurse/NurseInfirmaryPatientsOfTheDepartment/NurseInfirmaryPatientsOfTheDepartment";
 import NurseInfirmaryPatientsOfTheDepartmentHistory from "./pages/Nurse/NurseInfirmaryPatientsOfTheDepartment/NurseInfirmaryPatientsOfTheDepartmentHistory";
+import ScheduleAdmissionPage from "./pages/Nurse/ScheduleAdmissionPage/ScheduleAdmissionPage";
 
 // BIOCHEMIST
 import BiochemistHomepage from "./pages/Biochemist/BiochemistHomepage/BiochemistHomepage";
@@ -47,6 +46,7 @@ import IssuingResultsDetailedPage from "./pages/Tehcnician/IssuingResultsDetaile
 //RECEPCIONIST
 import RecepcionistHomepage from "./pages/Recepcionist/RecepcionistHomepage/RecepcionistHomepage";
 import RecepcionistAddPatientPage from "./pages/Recepcionist/RecepcionistAddPatientPage/RecepcionistAddPatientPage";
+import RecepcionistEditPatientPage from "./pages/Recepcionist/RecepcionistEditPatientPage/RecepcionistEditPatientPage";
 import RecepcionistScheduleAppPage from "./pages/Recepcionist/RecepcionistScheduleAppPage/RecepcionistScheduleAppPage";
 import RecepcionistVisitsPage from "./pages/Recepcionist/RecepcionistVisitsPage/RecepcionistVisitsPage";
 import RecepcionistRegistationVisitsPage from "./pages/Recepcionist/RecepcionistRegistationVisitsPage/RecepcionistRegistationVisitsPage";
@@ -66,9 +66,13 @@ const App = () => {
         <Route path="/" exact element={<DoctorHomepage />} />
         <Route path="/examination/:id" exact element={<PatientExamination />} />
         <Route path="/patient-preview" exact element={<PatientPreview />} />
-        <Route path="/create-refferal" exact element={<CreateRefferalPage />} />
         <Route path="/appointments" exact element={<DoctorCalendarPage />} />
         <Route path="/stationary" exact element={<PatientStationaryPage />} />
+        <Route
+          path="/stationary/patient/:lbp"
+          exact
+          element={<PatientStationaryWorkspacePage />}
+        />
 
         {/* NURSE ROUTES */}
         <Route path="/nurse" exact element={<NurseHomepage />} />
@@ -92,7 +96,11 @@ const App = () => {
           exact
           element={<EditPatientPage />}
         />
-        {/* NURSE INFIRMARY ROUTES */}
+        <Route
+          path="/nurse/infirmary/schedule-admission"
+          exact
+          element={<ScheduleAdmissionPage />}
+        />
         <Route
           path="/nurse/infirmary/admission-of-patient"
           exact
@@ -127,6 +135,7 @@ const App = () => {
           element={<EditEmployeePage />}
         />
         <Route path="/edit-patient/:lbp" exact element={<EditPatientPage />} />
+
         {/* BIOCHEMIST ROUTES */}
         <Route path="/biochemist" exact element={<BiochemistHomepage />} />
         <Route
@@ -134,6 +143,7 @@ const App = () => {
           exact
           element={<DetailedResultPage />}
         />
+
         {/* TECHNICIAN ROUTES */}
         <Route path="/technician" exact element={<TechnicianHomepage />} />
         <Route
@@ -152,6 +162,7 @@ const App = () => {
           exact
           element={<IssuingResultsDetailedPage />}
         />
+
         {/* RECEPCIONIST ROUTES */}
         <Route path="/recepcionist" exact element={<RecepcionistHomepage />} />
         <Route
@@ -173,6 +184,11 @@ const App = () => {
           path="/recepcionist/registation-visits/:lbp"
           exact
           element={<RecepcionistRegistationVisitsPage />}
+        />
+        <Route
+          path="/recepcionist/edit-patient/:lbp"
+          exact
+          element={<RecepcionistEditPatientPage />}
         />
       </Routes>
     </BrowserRouter>

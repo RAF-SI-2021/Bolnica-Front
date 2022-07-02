@@ -23,12 +23,29 @@ const DoctorHomepage = () => {
   const [form, setForm] = useState({});
   const labReports = useSelector((state) => state.labReports);
   const patients = useSelector((state) => state.patients);
+  const [tableContent, setTableContent] = useState([]);
 
   useEffect(() => {
-    dispatch(getLabReports());
+    dispatch(searchLabReports({}));
     dispatch(getPatients());
   }, []);
-  console.log(labReports);
+
+  useEffect(() => {
+    if (patients.length > 0 && labReports.length > 0) {
+      setTableContent(
+        labReports
+          .filter((labReport) =>
+            labReport.statusObrade === "OBRADJEN" ? false : labReport
+          )
+          .map((labReport) => {
+            const patient = patients.find((patient) =>
+              patient.lbp === labReport.lbp ? patient : false
+            );
+            return { ...labReport, ...patient };
+          })
+      );
+    }
+  }, [patients, labReports]);
 
   function handleOnChange(event) {
     setForm({ ...form, lbp: event.target.value });
@@ -36,11 +53,12 @@ const DoctorHomepage = () => {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log({ ...form, status: "NEOBRADJEN" });
-    dispatch(searchLabReports({ ...form, status: "NEOBRADJEN" }));
+    console.log({ ...form, statusObrade: "NEOBRADJEN" });
+    dispatch(searchLabReports({ ...form, statusObrade: "NEOBRADJEN" }));
   }
 
   const handleRowClick = (entry) => {
+    console.log(entry);
     navigate(`/biochemist/detailed-result/${entry[0][1]}`);
   };
 
@@ -57,30 +75,7 @@ const DoctorHomepage = () => {
       ...form,
       [targetName]: formatted,
     });
-
-    console.log({ ...form });
   };
-
-  const demoLabReports = [
-    {
-      id: 1,
-      lbpPacijenta: "1029481922",
-      ime: "Marko",
-      prezime: "Markovic",
-    },
-    {
-      id: 2,
-      lbpPacijenta: "12398129381",
-      ime: "Zarko",
-      prezime: "Zarkovic",
-    },
-    {
-      id: 3,
-      lbpPacijenta: "129038192381",
-      ime: "Darko",
-      prezime: "Darkovic",
-    },
-  ];
 
   const headerProps = {
     userName: "Dr. Paun",
@@ -152,14 +147,14 @@ const DoctorHomepage = () => {
             </button>
           </form>
         </div>
-        {/* {labReports.length > 0 && ( */}
-        <Table
-          headers={getTableHeaders("labReportPreview")}
-          tableContent={demoLabReports}
-          handleRowClick={handleRowClick}
-          tableType="labReports"
-        />
-        {/* )} */}
+        {tableContent.length > 0 && (
+          <Table
+            headers={getTableHeaders("labReportPreview")}
+            tableContent={tableContent}
+            handleRowClick={handleRowClick}
+            tableType="labReports"
+          />
+        )}
       </div>
     </>
   );

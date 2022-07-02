@@ -1,5 +1,7 @@
 import React from "react";
 import { useState } from "react";
+import CustomModal from "../CustomModal/CustomModal";
+import CustomModalAnswer from "../CustomModalAnswer/CustomModalAnswer";
 import "./styles.css";
 
 const initialState = {
@@ -9,8 +11,8 @@ const initialState = {
   porodicnaAnamneza: "",
   misljenjePacijenta: "",
   objektivniNalaz: "",
-  dijagnoza: "",
-  rezultatLecenja: "",
+  dijagnoza: "A15.3",
+  rezultatLecenja: "U_TOKU",
   opisTekucegStanja: "",
   indikatorPoverljivosti: false,
   predlozenaTerapija: "",
@@ -20,6 +22,9 @@ const initialState = {
 const ExaminationForm = ({ saveExamination, record }) => {
   const [form, setForm] = useState(initialState);
   const [diagnosisContent, setDiagnosisContent] = useState(false);
+  const [modalConfirm, setModalConfirm] = useState(false);
+  const [modalError, setModalError] = useState(false);
+  const [modalSuccess, setModalSuccess] = useState(false);
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -31,15 +36,42 @@ const ExaminationForm = ({ saveExamination, record }) => {
     e.preventDefault();
     setDiagnosisContent(!diagnosisContent);
   };
+  const toggleModalConfirm = (e) => {
+    if (e) e.preventDefault();
+    setModalConfirm(!modalConfirm);
+  };
+  const toggleModalError = () => setModalError(!modalError);
+  const toggleModalSuccess = () => setModalSuccess(!modalSuccess);
 
   const dob = new Date(record.pacijent.datumRodjenja);
   const dobString = dob.toLocaleDateString();
 
-  const alergies = ["polen", "macja dlaka", "mleko"];
-  const activeDiagnosis = ["slomljena kost", "upala pluca"];
+  const confirmReport = (e) => {
+    if (e) e.preventDefault();
+    saveExamination(form);
+  };
 
   return (
     <form action="#" className="examForm">
+      <CustomModalAnswer
+        title="Potvrda akcije"
+        content="Da li želite da završite pregled?"
+        toggleModal={toggleModalConfirm}
+        isOpen={modalConfirm}
+        handleClick={confirmReport}
+      />
+      <CustomModal
+        title="Greška"
+        content="Doslo je do greške prilikom dodavanja."
+        toggleModal={toggleModalError}
+        isOpen={modalError}
+      />
+      <CustomModal
+        title="Uspeh"
+        content="Uspešno dodato"
+        toggleModal={toggleModalSuccess}
+        isOpen={modalSuccess}
+      />
       <p className="form-section-heading">Podaci o pacijentu</p>
       <div className="patient-info-custom">
         <div className="patient-personal-info">
@@ -51,11 +83,19 @@ const ExaminationForm = ({ saveExamination, record }) => {
         </div>
         <div className="patient-other-info">
           <p className="patient-info-text">
-            Alergije: {alergies.map((alergy) => `${alergy} `)}
+            Alergije:{" "}
+            {record.alergeni.map((alergy, index) => {
+              if (index === record.alergeni.length - 1) return alergy.alergen;
+              return `${alergy.alergen}, `;
+            })}
           </p>
           <p className="patient-info-text">
-            Aktivne dijagnoze:{" "}
-            {activeDiagnosis.map((diagnosis) => `${diagnosis} `)}
+            Vakcine:{" "}
+            {record.vakcinacije.map((vaccine, index) => {
+              if (index === record.vakcinacije.length - 1)
+                return vaccine.vakcina.naziv;
+              return `${vaccine.vakcina.naziv}, `;
+            })}
           </p>
         </div>
       </div>
@@ -174,13 +214,7 @@ const ExaminationForm = ({ saveExamination, record }) => {
         <textarea type="text" name="savet" onChange={handleChange} />
       </div>
 
-      <button
-        className="examSubmit"
-        onClick={(e) => {
-          e.preventDefault();
-          saveExamination(form);
-        }}
-      >
+      <button className="examSubmit" onClick={toggleModalConfirm}>
         Sacuvaj
       </button>
     </form>
