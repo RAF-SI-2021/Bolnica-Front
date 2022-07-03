@@ -53,8 +53,8 @@ const NurseInfirmaryPatientAdmission = () => {
   const navigate = useNavigate();
   const [formLbp2, setFormLbp2] = useState(initialStateFormLbp2);
   const [formLbp1, setFormLbp1] = useState(initialStateFormLbp1);
-  const [valueLbp2, setValueLbp2] = useState();
-  const [valueLbp1, setValueLbp1] = useState();
+  const [valueLbp2, setValueLbp2] = useState("");
+  const [valueLbp1, setValueLbp1] = useState("");
 
   const [referralId, setReferralId] = useState();
   const [referralDiagnosis, setReferralDiagnosis] = useState();
@@ -287,7 +287,6 @@ const NurseInfirmaryPatientAdmission = () => {
               onChange={handleChangeLbp2}
               name="lbp"
               value={valueLbp2}
-              defaultValue=""
             >
               <option value="" disabled>
                 Izaberite pacijenta
