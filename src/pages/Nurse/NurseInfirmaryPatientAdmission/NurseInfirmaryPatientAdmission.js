@@ -82,7 +82,7 @@ const NurseInfirmaryPatientAdmission = () => {
     dispatch(getPatients());
     dispatch(getDepartments());
     dispatch(getAdmissions({}));
-    dispatch(searchPatientsAdmissions(dateValue));
+    dispatch(searchPatientsAdmissions({}));
     dispatch(searchHospitalRooms(pbo));
     dispatch(getEmployeesDep(pbo));
   }, []);

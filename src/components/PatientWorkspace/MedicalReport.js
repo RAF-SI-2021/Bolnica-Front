@@ -24,7 +24,13 @@ const MedicalReport = ({ lbp }) => {
 
   const confirmReport = (e) => {
     if (e) e.preventDefault();
-    dispatch(createMedicalReport(form, toggleModalSuccess, toggleModalError));
+    dispatch(
+      createMedicalReport(
+        { ...form, lbp },
+        toggleModalSuccess,
+        toggleModalError
+      )
+    );
   };
 
   return (

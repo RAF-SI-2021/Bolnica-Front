@@ -16,6 +16,7 @@ import { searchLabReports } from "../../redux/actions/labReports";
 import { getDischargeLists } from "../../redux/actions/dischargeLists";
 import { getMedicalReports } from "../../redux/actions/medicalReports";
 import { printReport } from "../../api/index";
+import Base64Downloader from "common-base64-downloader-react";
 
 const MedicalRecord = ({
   record,
@@ -52,6 +53,7 @@ const MedicalRecord = ({
   const [deleteUput, setDeleteUput] = useState();
   const [successMessage, setSuccessMessage] = useState();
   const [formLabReports, setFormLabReports] = useState();
+  const [base64PDF, setBase64PDF] = useState();
   const [formDischarges, setFormDischarges] = useState({ lbp });
   const [formMedicalReports, setFormMedicalReports] = useState({
     lbp,
@@ -90,12 +92,16 @@ const MedicalRecord = ({
       )
     );
   };
+  // const base64PDF =
+  //   "data:application/pdf;base64,JVBERi0xLjcKCjEgMCBvYmogICUgZW50cnkgcG9pbnQKPDwKICAvVHlwZSAvQ2F0YWxvZwogIC9QYWdlcyAyIDAgUgo+PgplbmRvYmoKCjIgMCBvYmoKPDwKICAvVHlwZSAvUGFnZXMKICAvTWVkaWFCb3ggWyAwIDAgMjAwIDIwMCBdCiAgL0NvdW50IDEKICAvS2lkcyBbIDMgMCBSIF0KPj4KZW5kb2JqCgozIDAgb2JqCjw8CiAgL1R5cGUgL1BhZ2UKICAvUGFyZW50IDIgMCBSCiAgL1Jlc291cmNlcyA8PAogICAgL0ZvbnQgPDwKICAgICAgL0YxIDQgMCBSIAogICAgPj4KICA+PgogIC9Db250ZW50cyA1IDAgUgo+PgplbmRvYmoKCjQgMCBvYmoKPDwKICAvVHlwZSAvRm9udAogIC9TdWJ0eXBlIC9UeXBlMQogIC9CYXNlRm9udCAvVGltZXMtUm9tYW4KPj4KZW5kb2JqCgo1IDAgb2JqICAlIHBhZ2UgY29udGVudAo8PAogIC9MZW5ndGggNDQKPj4Kc3RyZWFtCkJUCjcwIDUwIFRECi9GMSAxMiBUZgooSGVsbG8sIHdvcmxkISkgVGoKRVQKZW5kc3RyZWFtCmVuZG9iagoKeHJlZgowIDYKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDEwIDAwMDAwIG4gCjAwMDAwMDAwNzkgMDAwMDAgbiAKMDAwMDAwMDE3MyAwMDAwMCBuIAowMDAwMDAwMzAxIDAwMDAwIG4gCjAwMDAwMDAzODAgMDAwMDAgbiAKdHJhaWxlcgo8PAogIC9TaXplIDYKICAvUm9vdCAxIDAgUgo+PgpzdGFydHhyZWYKNDkyCiUlRU9G";
 
   const printLabReport = async (entry) => {
     console.log(entry);
-    const pdfString = await printReport();
+    const { data } = await printReport({ labRadniNalogId: entry[0][1] });
+    console.log(data);
   };
 
+  console.log(labReports);
   const addNewVaccine = () => {
     dispatch(
       addVaccine(

@@ -477,19 +477,20 @@ const Table = (props) => {
           </>
         </td>
       ) : tableType === "labReports" ? (
-        <td style={{ width: "5%" }}>
-          <>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                printReport(entry);
-              }}
-            >
-              <FaPrint />
-            </button>
-          </>
-        </td>
-      ) : tableType === "admissionVisits" ? (
+        <></>
+      ) : // <td style={{ width: "5%" }}>
+      //   <>
+      //     <button
+      //       onClick={(e) => {
+      //         e.stopPropagation();
+      //         printReport(entry);
+      //       }}
+      //     >
+      //       <FaPrint />
+      //     </button>
+      //   </>
+      // </td>
+      tableType === "admissionVisits" ? (
         <>
           {" "}
           <td style={{ width: "5%" }}>
