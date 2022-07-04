@@ -80,7 +80,7 @@ const PatientWorkspacePage = () => {
     dispatch(getReferrals(perm[5]));
     dispatch(searchLabReports({}));
   }, []);
-  console.log(medicalReports);
+
   useEffect(() => {
     if (referrals.length > 0 && employees.length > 0 && departments.length > 0)
       setReferralTableContent(

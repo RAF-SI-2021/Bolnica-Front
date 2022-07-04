@@ -6,7 +6,7 @@ import Chance from "chance";
 const chance = new Chance();
 const dayjs = require("dayjs");
 
-describe("Nurse", () => {
+describe("Recepcionist", () => {
   beforeEach(() => {
     cy.loginAdmin(); //cy.loginRecepcionist();
     cy.visit("http://localhost:3001/recepcionist");
@@ -17,7 +17,7 @@ describe("Nurse", () => {
     cy.get("ul > li:nth-child(2)")
       .should("be.visible")
       .should("contain", "Dodavanje pacijenta")
-      .click();
+      .first().click();
     cy.url({ timeout: 10000 }).should("contain", "/recepcionist/add-patient");
     cy.get("form").should("be.visible");
     cy.get('input[name="ime"]').should("be.visible").type("Test");
@@ -141,20 +141,25 @@ describe("Nurse", () => {
       .click({ multiple: true });
   });
 
-  // it("should be able to see list of all patients", () => {
-  //   //meni ne radi
-  //   cy.get("ul").should("be.visible");
-  //   cy.get("ul > li:nth-child(4)")
-  //     .should("be.visible")
-  //     .should("contain", "Pretraga pacijenata")
-  //     .click({ multiple: true });
-  //   cy.url({ timeout: 10000 }).should(
-  //     "contain",
-  //     "/recepcionist/search-patient"
-  //   );
-
-  //   //...
-  // });
+  it("should be able to find patient and see his/hers history of visits, as well as add new ones", () => {
+    cy.get("ul").should("be.visible");
+    cy.get("ul > li:nth-child(4)")
+      .should("be.visible")
+      .should("contain", "Poseta")
+      .click({ multiple: true });
+    cy.url({ timeout: 10000 }).should(
+      "contain",
+      "/recepcionist/visits"
+    );
+    cy.get('.form-group-custom:nth-child(4) > .margin-right').click().type('99999');
+    cy.get('.form-custom > button').click();
+    cy.get('tr:nth-child(1) > td > .buttonIconBlue > svg > line:nth-child(3)').click();
+    cy.get('.form-group-custom:nth-child(3) > .margin-right').click().type(chance.name());
+    cy.get('.form-group-custom:nth-child(3) > .margin-left').click().type(chance.name());
+    cy.get('.form-group-custom:nth-child(4) > .margin-right').click().type(chance.integer({ min: 1000000000000, max: 9999999999999 }));
+    cy.get('.form-group-custom:nth-child(4) > .margin-left').click().type(chance.sentence({ words: 3 }));
+    cy.get('.form-custom > button').click()
+  });
 
   it("should be able to see user profile and update its data", () => {
     //vraca na admina

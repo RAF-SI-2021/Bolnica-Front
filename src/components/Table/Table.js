@@ -3,6 +3,7 @@ import "./styles.css";
 import { ImBin, ImPencil, ImFileText2, ImCheckmark } from "react-icons/im";
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import { FiPlusSquare } from "react-icons/fi";
+import { FaPrint } from "react-icons/fa";
 const Table = (props) => {
   const {
     headers,
@@ -20,6 +21,7 @@ const Table = (props) => {
     handleChooseReferral,
     handleChooseRoom,
     onResultChange,
+    printReport,
   } = props;
 
   const listHeaders = headers.map((header) => {
@@ -474,7 +476,21 @@ const Table = (props) => {
             </button>
           </>
         </td>
-      ) : tableType === "admissionVisits" ? (
+      ) : tableType === "labReports" ? (
+        <></>
+      ) : // <td style={{ width: "5%" }}>
+      //   <>
+      //     <button
+      //       onClick={(e) => {
+      //         e.stopPropagation();
+      //         printReport(entry);
+      //       }}
+      //     >
+      //       <FaPrint />
+      //     </button>
+      //   </>
+      // </td>
+      tableType === "admissionVisits" ? (
         <>
           {" "}
           <td style={{ width: "5%" }}>
