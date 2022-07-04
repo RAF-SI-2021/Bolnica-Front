@@ -53,7 +53,7 @@ const MedicalRecord = ({
   const [deleteUput, setDeleteUput] = useState();
   const [successMessage, setSuccessMessage] = useState();
   const [formLabReports, setFormLabReports] = useState();
-  const [base64PDF, setBase64PDF] = useState();
+  const [base64PDF, setBase64PDF] = useState("");
   const [formDischarges, setFormDischarges] = useState({ lbp });
   const [formMedicalReports, setFormMedicalReports] = useState({
     lbp,
@@ -99,6 +99,7 @@ const MedicalRecord = ({
     console.log(entry);
     const { data } = await printReport({ labRadniNalogId: entry[0][1] });
     console.log(data);
+    setBase64PDF(`data:application/pdf;base64,${data}`);
   };
 
   console.log(labReports);
@@ -703,6 +704,11 @@ const MedicalRecord = ({
         <p className="form-section-heading">
           Trenutno ne postoji istorija otpusnih listi i zdravstvenih izvestaja
         </p>
+      )}
+      {base64PDF !== "" && (
+        <Base64Downloader base64={base64PDF} downloadName="pdfDownload">
+          Preuzmi PDF
+        </Base64Downloader>
       )}
     </>
   );
