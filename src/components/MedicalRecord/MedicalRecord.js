@@ -15,6 +15,7 @@ import { deleteReferral } from "../../redux/actions/referrals";
 import { searchLabReports } from "../../redux/actions/labReports";
 import { getDischargeLists } from "../../redux/actions/dischargeLists";
 import { getMedicalReports } from "../../redux/actions/medicalReports";
+import { printReport } from "../../api/index";
 
 const MedicalRecord = ({
   record,
@@ -88,6 +89,11 @@ const MedicalRecord = ({
         toggleModalSuccess
       )
     );
+  };
+
+  const printLabReport = async (entry) => {
+    console.log(entry);
+    const pdfString = await printReport();
   };
 
   const addNewVaccine = () => {
@@ -586,6 +592,7 @@ const MedicalRecord = ({
             tableContent={tableContent}
             handleClick={handleClick}
             tableType="labReports"
+            printReport={printLabReport}
           />
         </>
       ) : (

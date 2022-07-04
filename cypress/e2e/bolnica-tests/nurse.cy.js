@@ -7,6 +7,8 @@ const chance = new Chance();
 const dayjs = require("dayjs");
 
 describe("Nurse", () => {
+  const lbp = "99999";
+
   beforeEach(() => {
     cy.loginAdmin(); //cy.loginNurse();
     cy.visit("http://localhost:3001/nurse");
@@ -179,6 +181,98 @@ describe("Nurse", () => {
     cy.get("button").should("be.visible").last().click();
     cy.url({ timeout: 10000 }).should("contain", "/nurse/patient-preview");
   });
+
+
+//INFIRMARY
+  it("should be able to see appointments", () => {
+    cy.get("ul").should("be.visible");
+    cy.get("ul > li:nth-child(5)")
+      .should("be.visible")
+      .should("contain", "Zakazivanje prijema")
+      .click({ multiple: true });
+    cy.url({ timeout: 10000 }).should("contain", "/scheduling-appointment");
+    //ne radi
+  });
+
+  it("should be able to see an overview of scheduled appointments and make new ones as well", () => {
+    cy.get("ul").should("be.visible");
+ 
+    cy.get(".link-list > .nav-item:nth-child(6)")
+      .should("be.visible")
+      .should("contain", "Prijem pacijenata")
+      .click();
+    cy.url({ timeout: 10000 }).should("contain", "/nurse/infirmary/admission-of-patient");
+    cy.get('.form-group-custom > .margin-right').click();
+    cy.get('.form-group-custom > .margin-right').type(lbp); //kada bude radilo
+    cy.get('.buttonPrihvati').first().click();
+
+    //cy.get('.form-group-custom > .margin-right').should('contain', lbp);
+    cy.get('tr:nth-child(1) > td > .buttonBlue').first().click();
+
+    cy.get('tr:nth-child(1) > td > .buttonBlue').first().click();
+
+    cy.get('.dropdown > #dropdown-basic').first().click();
+    cy.get('.dropdown > .dropdown-menu > .dropdown-item').last().should('contain', 'Dr. Test').click();
+    cy.get('.form-custom > .margin-right').click().type('Test napomena');
+    cy.get('.form-custom > button').click();
+  });
+
+  it("should be able to find patient and see his/hers history of conditions, as well as add new ones", () => {
+    cy.get("ul").should("be.visible"); 
+    cy.get(".link-list > .nav-item:nth-child(7)")
+      .should("be.visible")
+      .should("contain", "Pacijenti odeljenja")
+      .click();
+    cy.url({ timeout: 10000 }).should("contain", "/nurse/infirmary/patients-department");
+    cy.get('.form-group-custom:nth-child(3) > .margin-right:nth-child(1)').click().type(lbp);
+    cy.get('.form-custom > button').click()
+    cy.get('.responsivnes > .myTable > .familyFix > tr:nth-child(1) > td:nth-child(1)').click();//.should('contain', lbp).click();
+    
+    //cy.get('.form-group-custom > .margin-right:nth-child(1)').should('contain', lbp);
+    cy.get('.form-group-custom > .margin-right:nth-child(2)').last().click().type(dayjs().format('YYYY-MM-DD'));
+    cy.get('.form-group-custom > .margin-right:nth-child(4)').click().type('2023-01-01');
+    cy.get('.form-group-custom > button').click();
+
+    cy.get('.butReg').click()
+    cy.get('.form-group-custom:nth-child(1) > .margin-left:nth-child(1)').click().type('36');
+    cy.get('.form-group-custom:nth-child(1) > .margin-left:nth-child(2)').click().type('145');
+    cy.get('.form-group-custom:nth-child(2) > .margin-left:nth-child(1)').click().type('70');
+    cy.get('.form-group-custom:nth-child(2) > .margin-left:nth-child(2)').click().type('Terapija');
+    cy.get('.form-group-custom:nth-child(3) > .margin-left:nth-child(1)').click().type('Stabilno');
+    cy.get('.form-group-custom:nth-child(3) > .margin-left:nth-child(2)').click().type('2022-09-14');
+    cy.get('.form-group-custom > button').click();
+ 
+    cy.get('.nav-item:nth-child(1) > .disabled').click();
+    //cy.get('.form-group-custom > .margin-right:nth-child(1)').should('contain', lbp);
+    cy.get('.form-group-custom > .margin-right:nth-child(2)').last().click().type(dayjs().format('YYYY-MM-DD'));
+    cy.get('.form-group-custom > .margin-right:nth-child(4)').click().type('2023-01-01');
+    //cy.get('.responsivnes > .myTable > .familyFix > tr:nth-child(1) > td:nth-child(3)').should('contain', lbp);
+  });
+
+  it("should be able to find patient and see his/hers history of visits, as well as add new ones", () => {
+    cy.get("ul").should("be.visible"); 
+    cy.get(".link-list > .nav-item:nth-child(7)")
+      .should("be.visible")
+      .should("contain", "Pacijenti odeljenja")
+      .click();
+    cy.url({ timeout: 10000 }).should("contain", "/nurse/infirmary/patients-department");
+    cy.get('.form-group-custom:nth-child(3) > .margin-right:nth-child(1)').click().type(lbp);
+    cy.get('.form-custom > button').click()
+    cy.get('.responsivnes > .myTable > .familyFix > tr:nth-child(1) > td:nth-child(1)').click();//.should('contain', lbp).click();
+
+    cy.get('.nav-item:nth-child(3) > .disabled').click()
+    //cy.get('.form-group-custom > .margin-right:nth-child(1)').should('contain', lbp);
+    //cy.get('.responsivnes > .myTable > .familyFix > tr:nth-child(1) > td:nth-child(2)').should('contain', lbp);
+    cy.get('div > div > .nav > .nav-item:nth-child(4) > .disabled').click()
+    
+    //cy.get('.form-group-custom > .margin-right:nth-child(1)').should('contain', lbp);
+    cy.get('.form-group-custom:nth-child(1) > .margin-left:nth-child(1)').click().type('Test');
+    cy.get('.form-group-custom:nth-child(1) > .margin-left:nth-child(2)').click().type('Testic');
+    cy.get('.form-group-custom:nth-child(2) > .margin-left:nth-child(1)').click().type(chance.integer({ min: 1000000000000, max: 9999999999999 }));
+    cy.get('.form-group-custom:nth-child(2) > .margin-left:nth-child(2)').click().type(chance.sentence({ words: 3 }));
+    cy.get('.form-group-custom > button').click();
+  });
+  //
 
   // it('should be able to see user profile and update its data', () => {//vraca na admina
   //     cy.get('ul').should('be.visible');

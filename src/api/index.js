@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://bolnica.k8s.elab.rs:32264" });
+const API = axios.create({ baseURL: "http://localhost:9092" });
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("token")) {
@@ -53,10 +53,7 @@ export const updatePatientState = (data) =>
 export const fetchReferrals = (data) =>
   API.post(`/bolnica-laboratory/api/uput-history?page=1&size=5`, data);
 export const fetchUnprocessedReferrals = (data) =>
-  API.get(
-    `/bolnica-laboratory/api/unprocessed-uputi?lbp=${data}`,
-    data
-  );
+  API.get(`/bolnica-laboratory/api/unprocessed-uputi?lbp=${data}`, data);
 export const createReferral = (data) =>
   API.post("/bolnica-laboratory/api/create-uput", data);
 export const deleteReferral = (id) =>
@@ -100,22 +97,16 @@ export const searchLabReports = (data) =>
 // EXAMINATIONS
 
 export const fetchExaminations = (lbp) =>
-  API.post(
-    `/bolnica-management/api/fetch-examinations/${lbp}?page=1&size=5`,
-    {
-      from: null,
-      to: null,
-      on: null,
-    }
-  );
+  API.post(`/bolnica-management/api/fetch-examinations/${lbp}?page=1&size=5`, {
+    from: null,
+    to: null,
+    on: null,
+  });
 
 // RECORDS
 
 export const createRecord = (formData) =>
-  API.post(
-    `/bolnica-management/api/create-examination-report`,
-    formData
-  );
+  API.post(`/bolnica-management/api/create-examination-report`, formData);
 export const fetchRecord = (lbp) =>
   API.get(`/bolnica-management/api/fetch-zdravstveni-karton/${lbp}`);
 export const addVaccine = (formData) =>
@@ -141,20 +132,15 @@ export const updateEmployee = (formData) =>
 export const deleteEmployee = (lbz) =>
   API.delete(`/bolnica-user/api/remove-employee?lbz=${lbz}`);
 export const searchEmployees = (searchValues) =>
-  API.post(
-    "/bolnica-user/api/list-employees?page=1&size=5",
-    searchValues
-  );
+  API.post("/bolnica-user/api/list-employees?page=1&size=5", searchValues);
 
 // DEPARTMENTS
 
-export const fetchDepartments = () =>
-  API.get(`/bolnica-user/api/departments`);
+export const fetchDepartments = () => API.get(`/bolnica-user/api/departments`);
 
 // HOSPITALS
 
-export const fetchHospitals = () =>
-  API.get(`/bolnica-user/api/hospitals`);
+export const fetchHospitals = () => API.get(`/bolnica-user/api/hospitals`);
 
 // PATIENTS
 
@@ -184,9 +170,7 @@ export const fetchDiseases = (lbp, data) =>
 
 //LAB
 export const fetchNumberOfLabAppointments = (dateNum) =>
-  API.get(
-    `/bolnica-management/api/fetch-number-of-appointments/${dateNum}`
-  );
+  API.get(`/bolnica-management/api/fetch-number-of-appointments/${dateNum}`);
 
 //LAB VISITS
 export const searchLabVisits = (data) =>
@@ -196,29 +180,20 @@ export const getVisitCount = (data) =>
 export const updateLabVisits = (data) =>
   API.put("/bolnica-laboratory/api/set-lab-examination-status", data);
 export const createVisit = (formData) =>
-  API.post(
-    "/bolnica-laboratory/api/schedule-lab-examination",
-    formData
-  );
+  API.post("/bolnica-laboratory/api/schedule-lab-examination", formData);
 
 //ADMISSIONS
 export const searchAdmissions = (data) =>
   API.post("/bolnica-management/api/get-lab-examinations", data);
 export const getAdmissions = (data) =>
-  API.post(
-    `/bolnica-management/api/get-zakazani-termini-prijema`,
-    data
-  );
+  API.post(`/bolnica-management/api/get-zakazani-termini-prijema`, data);
 export const updateAdmission = (data) =>
   API.put(
     "/bolnica-management/api/update-zakazani-termin-prijema-status",
     data
   );
 export const createAdmission = (formData) =>
-  API.post(
-    "/bolnica-management/api/create-zakazani-termin-prijema",
-    formData
-  );
+  API.post("/bolnica-management/api/create-zakazani-termin-prijema", formData);
 
 //PATIENTS ADMISSIONS
 export const searchPatientsAdmissions = (data) =>
@@ -261,3 +236,9 @@ export const fetchPatientsVisitsHistory = (lbp) =>
 
 export const createPatientVisits = (lbp, formData) =>
   API.post(`/nurse/infirmary/patients-department/history`, lbp, formData);
+
+// PDF
+export const printReport = (id) =>
+  API.post(
+    `/bolnica-management/api/labreportprint?laboratorijskiIzvestajId=${id}`
+  );
