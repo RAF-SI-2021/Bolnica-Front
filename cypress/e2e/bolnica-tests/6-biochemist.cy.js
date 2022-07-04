@@ -13,22 +13,27 @@ describe("Biochemist", () => {
     cy.visit("http://localhost:3001/biochemist");
   });
 
-  // it("should be able to see unprocessed work orders/reports for today and their details", () => {
-  //   cy.get(".user-name").should("be.visible").should("contain", "Jasda"); //localStorage.getItem('name'));
-  //   cy.get(".user-title").should("be.visible").should("contain", "Alskcna"); //localStorage.getItem('title'));
+  it("Pick and insert results", () => {
+    cy.get("tr").eq(2).click();
+    cy.get("tr:nth-child(1) input").type("4");
+    cy.get("tr:nth-child(1) svg").click();
+    cy.wait(500);
+    cy.get(".btn-secondary").click();
+    cy.wait(500);
+    cy.get("tr:nth-child(2) input").click();
+    cy.get("tr:nth-child(2) input").type("30");
+    cy.get("tr:nth-child(2) .buttonIconGreen").click();
+    cy.wait(500);
+    cy.get(".btn-secondary").click();
+    cy.wait(500);
+    cy.get("button:nth-child(3)").click();
+    cy.wait(500);
+    cy.get(".btn-primary").click();
+    cy.wait(500);
+    cy.get(".btn-secondary").click();
+  });
 
-  //   cy.get("table").should("be.visible");
-
-  //   cy.get(
-  //     ".responsivnes > .myTable > .familyFix > tr:nth-child(1) > td:nth-child(2)"
-  //   )
-  //     .should("contain", lbp)
-  //     .click();
-  //   cy.url({ timeout: 5000 }).should("contain", "/biochemist/detailed-result");
-  // });
-
-  it("should be able to see user profile and update its data", () => {
-    //vraca na admina
+  it("Profile update", () => {
     cy.get("ul").should("be.visible");
     cy.get(".nav-item:nth-child(2) > .nav-link > .familyFix")
       .should("be.visible")
@@ -46,7 +51,7 @@ describe("Biochemist", () => {
     });
   });
 
-  it("should be able to logout", () => {
+  it("Logout", () => {
     cy.get(".logout-btn").should("be.visible").last().click();
   });
 });

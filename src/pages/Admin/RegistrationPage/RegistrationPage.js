@@ -67,7 +67,13 @@ function RegistrationPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createEmployee({ ...form }, toggleModalSuccess, toggleModalError));
+    dispatch(
+      createEmployee(
+        { ...form, roles: ["ROLE_ADMIN"] },
+        toggleModalSuccess,
+        toggleModalError
+      )
+    );
   };
 
   return (
